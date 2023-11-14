@@ -1,0 +1,24 @@
+syntax = 'proto3';
+
+message Car {
+ int32 id = 1;
+ string title = 2;
+ bool isDriving = 3;
+ int32 carSpeed = 4;
+}
+
+message Temperature{
+    double insideTemp = 1;
+    double outsideTemp = 2;
+}
+
+message GetCarByIdRequest {
+    int32 id = 1;
+}
+service CarService {
+    rpc getCar(GetCarByIdRequest) returns (Car);
+    rpc getCarStream(GetCarByIdRequest) returns (stream Car);
+    rpc getCarTempStream(Temperature) returns (stream Temperature);
+    
+}
+
