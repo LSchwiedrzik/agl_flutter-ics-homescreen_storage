@@ -127,7 +127,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     String hostName = 'localhost';
     int port = 8080;
     try {
-      var data = await rootBundle.loadString('config/config.yaml');
+      var data = await rootBundle.loadString('app-config/config.yaml');
       final dynamic yamlMap = loadYaml(data);
 
       if (yamlMap.containsKey('hostname')) {
