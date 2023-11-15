@@ -1,7 +1,6 @@
 export 'data/data_providers/app.dart';
 export 'data/data_providers/app_provider.dart';
 export 'presentation/router/routes/routes.dart';
-export 'data/data_providers/vss_provider.dart';
 export 'data/theme/theme.dart';
 
 //Models

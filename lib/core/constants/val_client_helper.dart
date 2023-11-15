@@ -1,10 +1,10 @@
 import 'package:protos/protos.dart';
 
 class ValClientHelper {
-  final ClientChannel channel;
   final VALClient stub;
+  final String authorization;
 
-  ValClientHelper({required this.channel, required this.stub});
+  ValClientHelper({required this.stub, required this.authorization});
 
   void setUint32(String path, int value, [bool actuator = true]) async {
     var dp = Datapoint()..uint32 = value;
@@ -50,9 +50,9 @@ class ValClientHelper {
     var request = SetRequest();
     request.updates.add(update);
     Map<String, String> metadata = {};
-    // if (config.authorization.isNotEmpty) {
-    //   metadata = {'authorization': "Bearer ${config.authorization}"};
-    // }
+    if (authorization.isNotEmpty) {
+      metadata = {'authorization': "Bearer ${authorization}"};
+    }
     await stub.set(request, options: CallOptions(metadata: metadata));
   }
 }

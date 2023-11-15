@@ -4,10 +4,28 @@ import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter/services.dart';
 import 'package:protos/protos.dart';
 
+class KuksaConfig {
+  final String hostname;
+  final int port;
+  final String authorization;
+  final bool use_tls;
+  final List<int> ca_certificate;
+  final String tls_server_name;
+
+  static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 55555;
+  static String defaultCaCertPath = '/etc/kuksa-val/CA.pem';
+
+  KuksaConfig({required this.hostname, required this.port, required this.authorization,
+    required this.use_tls, required this.ca_certificate, required this.tls_server_name});
+}
+
 class VehicleNotifier extends StateNotifier<Vehicle> {
   VehicleNotifier(super.state);
 
   late ClientChannel channel;
+  late String authorization;
   late VALClient stub;
 
   void updateSpeed(double newValue) {
@@ -123,33 +141,141 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     }
   }
 
-  void startListen() async {
-    String hostName = 'localhost';
-    int port = 8080;
+  Future<KuksaConfig> readConfig() async {
+    String hostname = KuksaConfig.defaultHostname;
+    int port = KuksaConfig.defaultPort;
+    bool use_tls = false;
+    String ca_path = KuksaConfig.defaultCaCertPath;
+    List<int> ca_cert = [];
+    String tls_server_name = "";
+    String token = "";
+
+    // Read build time configuration from bundle
     try {
       var data = await rootBundle.loadString('app-config/config.yaml');
       final dynamic yamlMap = loadYaml(data);
 
       if (yamlMap.containsKey('hostname')) {
-        hostName = yamlMap['hostname'];
+        hostname = yamlMap['hostname'];
       }
 
       if (yamlMap.containsKey('port')) {
         port = yamlMap['port'];
       }
+
+      if (yamlMap.containsKey('use-tls')) {
+        var value = yamlMap['use-tls'];
+        if (value is bool)
+          use_tls = value;
+      }
+
+      if (use_tls) {
+        if (yamlMap.containsKey('ca-certificate')) {
+          ca_path = yamlMap['ca-certificate'];
+        }
+
+        if (yamlMap.containsKey('tls-server-name')) {
+          tls_server_name = yamlMap['tls_server_name'];
+        }
+      }
+
+      if (yamlMap.containsKey('authorization')) {
+        token = yamlMap['authorization'];
+      }
+
     } catch (e) {
       //debugPrint('ERROR: Could not read from file: $configFile');
       debugPrint(e.toString());
     }
-    channel = ClientChannel(
-      hostName,
-      port: port,
-      options: const ChannelOptions(
-        credentials: ChannelCredentials.insecure(),
-      ),
-    );
 
-    debugPrint('Start Listen on port: $port');
+    // Try reading from configuration file in /etc
+    final configFile = File(KuksaConfig.configFilePath);
+    try {
+      print("Reading configuration ${KuksaConfig.configFilePath}");
+      String content = await configFile.readAsString();
+      final dynamic yamlMap = loadYaml(content);
+
+      if (yamlMap.containsKey('hostname')) {
+        hostname = yamlMap['hostname'];
+      }
+
+      if (yamlMap.containsKey('port')) {
+        port = yamlMap['port'];
+      }
+
+      if (yamlMap.containsKey('use-tls')) {
+        var value = yamlMap['use-tls'];
+        if (value is bool)
+          use_tls = value;
+      }
+      //debugPrint("Use TLS = $use_tls");
+
+      if (use_tls) {
+        if (yamlMap.containsKey('ca-certificate')) {
+          ca_path = yamlMap['ca-certificate'];
+        }
+        try {
+          ca_cert = File(ca_path).readAsBytesSync();
+        } on Exception catch(_) {
+          print("ERROR: Could not read CA certificate file $ca_path");
+          ca_cert = [];
+        }
+        //debugPrint("CA cert = $ca_cert");
+
+        if (yamlMap.containsKey('tls-server-name')) {
+          tls_server_name = yamlMap['tls_server_name'];
+        }
+      }
+
+      if (yamlMap.containsKey('authorization')) {
+        token = yamlMap['authorization'];
+      }
+      if (token.isNotEmpty) {
+        if (token.startsWith("/")) {
+          debugPrint("Reading authorization token $token");
+          String tokenFile = token;
+          try {
+            token = await File(tokenFile).readAsString();
+          } on Exception catch(_) {
+            print("ERROR: Could not read authorization token file $token");
+            token = "";
+          }
+        }
+      }
+      //debugPrint("authorization = $token");
+    } catch (e) {
+      debugPrint('WARNING: Could not read from file: $configFile');
+      //debugPrint(e.toString());
+    }
+    return KuksaConfig(
+            hostname: hostname,
+            port: port,
+            authorization: token,
+            use_tls: use_tls,
+            ca_certificate: ca_cert,
+            tls_server_name: tls_server_name
+          );
+  }
+
+  void startListen() async {
+    KuksaConfig config = await readConfig();
+    ChannelCredentials creds;
+    if (config.use_tls && config.ca_certificate.isNotEmpty) {
+      print("Using TLS");
+      if (config.tls_server_name.isNotEmpty)
+        creds = ChannelCredentials.secure(certificates: config.ca_certificate,
+          authority: config.tls_server_name);
+      else
+        creds = ChannelCredentials.secure(certificates: config.ca_certificate);
+    } else {
+      creds = ChannelCredentials.insecure();
+    }
+    channel = ClientChannel(
+      config.hostname,
+      port: config.port,
+      options: ChannelOptions(credentials: creds)
+    );
+    debugPrint('Start Listen on port: ${config.port}');
     stub = VALClient(channel);
     List<String> fewSignals = VSSPath().getSignalsList();
     var request = SubscribeRequest();
@@ -183,7 +309,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
   }
 
   void setChildLock({required String side}) {
-    var helper = ValClientHelper(channel: channel, stub: stub);
+    var helper = ValClientHelper(stub: stub, authorization: authorization);
     try {
       switch (side) {
         case 'left':
@@ -218,7 +344,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
   }
 
   void setHVACMode({required String mode}) {
-    var helper = ValClientHelper(channel: channel, stub: stub);
+    var helper = ValClientHelper(stub: stub, authorization: authorization);
     try {
       switch (mode) {
         case 'airCondition':
