@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import '../../export.dart';
 
 class HybridNotifier extends StateNotifier<Hybrid> {
@@ -83,7 +85,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     //   currentState = HybridState.baterryOutput;
     // }
 
-    // Zaktualizuj stan
+    // Update hybrid state
     if (currentState != previousState) {
       state = state.copyWith(hybridState: currentState);
     }

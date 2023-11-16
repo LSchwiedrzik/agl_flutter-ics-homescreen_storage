@@ -5,7 +5,8 @@ class VSSPath {
   static const String vehicleOutsideTemperature =
       'Vehicle.Exterior.AirTemperature';
   static const String vehicleRange = 'Vehicle.Powertrain.FuelSystem.Range';
-  static const String vehicleFuelLevel = 'Vehicle.OBD.FuelLevel';
+  static const String vehicleFuelLevel =
+      'Vehicle.Powertrain.FuelSystem.RelativeLevel';
   static const String vehicleMediaVolume =
       'Vehicle.Cabin.Infotainment.Media.Volume';
   static const String vehicleIsChildLockActiveLeft =
