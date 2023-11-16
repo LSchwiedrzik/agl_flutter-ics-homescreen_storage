@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:async';
 
 import 'package:flutter_ics_homescreen/export.dart';
@@ -55,8 +57,8 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         }
         break;
       case VSSPath.vehicleFuelLevel:
-        if (update.entry.value.hasFloat()) {
-          state = state.copyWith(fuelLevel: update.entry.value.float);
+        if (update.entry.value.hasUint32()) {
+          state = state.copyWith(fuelLevel: update.entry.value.uint32);
         }
         break;
       // case VSSPath.vehicleMediaVolume:
@@ -290,7 +292,6 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
       // });
     }
     try {
-      // ignore: unused_local_variable
       Map<String, String> metadata = {};
       //var responseStream = _stub.subscribe(request);
       stub.subscribe(request).listen((value) async {
@@ -434,11 +435,11 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
       actualFuelLevel = actualFuelLevel + 1;
 
       if (actualFuelLevel > fuelLevel) {
-        actualFuelLevel = fuelLevel;
+        actualFuelLevel = fuelLevel.toDouble();
 
         timer.cancel();
       }
-      state = state.copyWith(fuelLevel: actualFuelLevel);
+      state = state.copyWith(fuelLevel: actualFuelLevel.toInt());
     });
     Timer outsideTemperatureTimer =
         Timer.periodic(const Duration(milliseconds: 300), (timer) {

@@ -8,7 +8,7 @@ class Vehicle {
   final double insideTemperature;
   final double outsideTemperature;
   final int range;
-  final double fuelLevel;
+  final int fuelLevel;
   final int mediaVolume;
   final bool isChildLockActiveLeft;
   final bool isChildLockActiveRight;
@@ -68,7 +68,7 @@ class Vehicle {
         insideTemperature = 25,
         outsideTemperature = 32.0,
         range = 21,
-        fuelLevel = 49.5,
+        fuelLevel = 49,
         mediaVolume = 50,
         isChildLockActiveLeft = false,
         isChildLockActiveRight = true,
@@ -88,7 +88,7 @@ class Vehicle {
       double? insideTemperature,
       double? outsideTemperature,
       int? range,
-      double? fuelLevel,
+      int? fuelLevel,
       int? mediaVolume,
       bool? isChildLockActiveLeft,
       bool? isChildLockActiveRight,
