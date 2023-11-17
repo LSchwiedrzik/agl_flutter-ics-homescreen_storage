@@ -53,6 +53,8 @@ dependencies:
   device_preview: ^1.1.0
   rive: ^0.12.3
   new_virtual_keyboard: ^0.1.4
+  auto_size_text: ^3.0.0
+  get_ip_address: ^0.0.6
 
 
 dev_dependencies:

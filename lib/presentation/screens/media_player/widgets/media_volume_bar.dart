@@ -53,21 +53,39 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
           child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: SizedBox(
-                  width: 50,
-                  child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
+                padding: const EdgeInsets.only(left: 20),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () {
                         _dercrease();
                       },
-                      icon: const Icon(
-                        CustomIcons.vol_min,
-                        color: AGLDemoColors.periwinkleColor,
-                        size: 48,
-                      )),
+                      child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            CustomIcons.vol_min,
+                            color: AGLDemoColors.periwinkleColor,
+                            size: 60,
+                          ))),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 10.0),
+              //   child: SizedBox(
+              //     width: 50,
+              //     child: IconButton(
+              //         padding: EdgeInsets.zero,
+              //         onPressed: () {
+              //           _dercrease();
+              //         },
+              //         icon: const Icon(
+              //           CustomIcons.vol_min,
+              //           color: AGLDemoColors.periwinkleColor,
+              //           size: 48,
+              //         )),
+              //   ),
+              // ),
               Expanded(
                 child: SliderTheme(
                   data: SliderThemeData(
@@ -93,21 +111,39 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: SizedBox(
-                  width: 60,
-                  child: IconButton(
-                      padding: EdgeInsets.zero,
-                      onPressed: () {
+                padding: const EdgeInsets.only(right: 20),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                      customBorder: const CircleBorder(),
+                      onTap: () {
                         _increase();
                       },
-                      icon: const Icon(
-                        CustomIcons.vol_max,
-                        color: AGLDemoColors.periwinkleColor,
-                        size: 48,
-                      )),
+                      child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            CustomIcons.vol_max,
+                            color: AGLDemoColors.periwinkleColor,
+                            size: 60,
+                          ))),
                 ),
               ),
+              // Padding(
+              //   padding: const EdgeInsets.only(right: 10.0),
+              //   child: SizedBox(
+              //     width: 60,
+              //     child: IconButton(
+              //         padding: EdgeInsets.zero,
+              //         onPressed: () {
+              //           _increase();
+              //         },
+              //         icon: const Icon(
+              //           CustomIcons.vol_max,
+              //           color: AGLDemoColors.periwinkleColor,
+              //           size: 48,
+              //         )),
+              //   ),
+              // ),
             ],
           ),
         ),

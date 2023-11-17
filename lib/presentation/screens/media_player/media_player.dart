@@ -79,7 +79,7 @@ class _MediaPlayerBackgroundState extends State<MediaPlayerBackground> {
             },
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 144),
+            padding: const EdgeInsets.symmetric(horizontal: 80),
             child: SingleChildScrollView(
               child: selectedNav == "My Media"
                   ? const MediaPlayer()
@@ -88,10 +88,11 @@ class _MediaPlayerBackgroundState extends State<MediaPlayerBackground> {
                       : Container(),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 144, vertical: 23.5),
-            child: CustomVolumeSlider(),
-          ),
+          if (selectedNav == "My Media" || selectedNav == "FM")
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 144, vertical: 23.5),
+              child: CustomVolumeSlider(),
+            ),
         ],
       ),
     );

@@ -5,7 +5,7 @@ import 'export.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(DevicePreview(
-    enabled: false,
+    enabled: true,
     tools: const [
       ...DevicePreview.defaultTools,
     ],

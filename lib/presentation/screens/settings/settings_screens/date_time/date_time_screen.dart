@@ -1,4 +1,5 @@
 import 'package:flutter_ics_homescreen/export.dart';
+import 'package:intl/intl.dart';
 
 class DateTimePage extends ConsumerWidget {
   const DateTimePage({super.key});
@@ -7,6 +8,8 @@ class DateTimePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dateTime = ref.watch(dateTimeStateProvider.select((val) => val));
+    DateFormat dateFormat = DateFormat('hh:mm a');
+    final currentime = ref.watch(currentTimeProvider);
 
     return Scaffold(
       body: Column(
@@ -36,7 +39,7 @@ class DateTimePage extends ConsumerWidget {
                   UnitsTile(
                       image: "assets/Time.svg",
                       title: 'Time',
-                      unitName: dateTime.time,
+                      unitName: dateFormat.format(currentime),
                       hasSwich: true,
                       voidCallback: () {
                         context

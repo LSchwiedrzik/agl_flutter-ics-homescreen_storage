@@ -1,6 +1,7 @@
 import 'package:flutter_ics_homescreen/data/data_providers/datetime_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/hybrid_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/signal_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/time_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
@@ -60,4 +61,9 @@ final dateTimeStateProvider =
 });
 final hybridtateProvider = StateNotifierProvider<HybridNotifier, Hybrid>((ref) {
   return HybridNotifier(const Hybrid.initial());
+});
+
+final currentTimeProvider =
+    StateNotifierProvider<CurrentTimeNotifier, DateTime>((ref) {
+  return CurrentTimeNotifier();
 });
