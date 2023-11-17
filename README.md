@@ -14,3 +14,14 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## Useful environment variables
+
+- **DEBUG_DISPLAY** enables the Device Preview.
+- **DISABLE_ANIMATION** disables the main background animation.
+
+Use them like this:
+
+```
+flutter run --dart-define=DEBUG_DISPLAY=true,DISABLE_ANIMATION=true
+```
