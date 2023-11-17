@@ -7,6 +7,8 @@ class WeatherPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double weatherIconSize = MediaQuery.sizeOf(context).width * 0.278;
+    final unit =
+        ref.watch(unitStateProvider.select((unit) => unit.temperatureUnit));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -58,7 +60,7 @@ class WeatherPage extends ConsumerWidget {
                     height: 60,
                   ),
                   Text(
-                    "28.3°C",
+                    "28.3°${unit == TemperatureUnit.celsius ? "C" : "F"}",
                     style: GoogleFonts.brunoAce(
                         color: Colors.white, fontSize: 128),
                   ),

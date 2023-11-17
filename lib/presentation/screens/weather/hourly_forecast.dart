@@ -8,24 +8,16 @@ class HourlyForecast extends StatefulWidget {
 }
 
 class _HourlyForecastState extends State<HourlyForecast> {
-  String selectedForescastTime = "13:00";
+  String selectedForescastTime = "01:00 pm";
   List<ForecastModel> foreCastList = [
     ForecastModel(
-        time: "13:00", image: "assets/weatherStat.svg", weather: "29.1°"),
+        time: "01:00 pm", image: "assets/weatherStat.svg", weather: "29.1°"),
     ForecastModel(
-        time: "14:00", image: "assets/weatherStat.svg", weather: "28.1°"),
+        time: "02:00 pm", image: "assets/weatherStat.svg", weather: "28.1°"),
     ForecastModel(
-        time: "15:00", image: "assets/weatherStat.svg", weather: "27.1°"),
+        time: "03:00 pm", image: "assets/weatherStat.svg", weather: "27.1°"),
     ForecastModel(
-        time: "16:00", image: "assets/weatherStat.svg", weather: "29.1°"),
-    ForecastModel(
-        time: "13:00", image: "assets/weatherStat.svg", weather: "29.1°"),
-    ForecastModel(
-        time: "14:00", image: "assets/weatherStat.svg", weather: "28.1°"),
-    ForecastModel(
-        time: "15:00", image: "assets/weatherStat.svg", weather: "27.1°"),
-    ForecastModel(
-        time: "16:00", image: "assets/weatherStat.svg", weather: "29.1°"),
+        time: "04:00 pm", image: "assets/weatherStat.svg", weather: "29.1°"),
   ];
   @override
   Widget build(BuildContext context) {

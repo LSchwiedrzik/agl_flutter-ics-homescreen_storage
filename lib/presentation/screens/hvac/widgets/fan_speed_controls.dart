@@ -151,13 +151,14 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                   highlightColor: Colors.transparent,
                   customBorder: const CircleBorder(),
                   onTap: () {
-                    _isPlaying ? null : _controller.isActive = true;
                     setState(() {
                       if (controlProgress >= 0.80) {
                         controlProgress = 0.0;
                         isMainACSelected = false;
+                        _isPlaying = false;
                         animationController.reverse();
                       } else {
+                        _isPlaying ? null : _controller.isActive = true;
                         isMainACSelected = true;
                         _controller.isActive = true;
                         _isPlaying = true;

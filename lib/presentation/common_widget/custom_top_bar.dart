@@ -19,12 +19,8 @@ class CustomTopBarState extends ConsumerState<CustomTopBar> {
     final singnalsConnection =
         ref.watch(signalsProvider.select((sinals) => sinals));
     final user = ref.watch(usersProvider.select((user) => user));
-    final time2 =
-        ref.watch(dateTimeStateProvider.select((dateTime) => dateTime));
-
-    DateFormat dateFormat = DateFormat('HH:mm');
-    //var time = dateFormat.format(DateTime.now());
-    var time = time2.time;
+    DateFormat dateFormat = DateFormat('hh:mm a');
+    final currentime = ref.watch(currentTimeProvider);
 
     return AppBar(
       elevation: 0,
@@ -41,7 +37,7 @@ class CustomTopBarState extends ConsumerState<CustomTopBar> {
                 children: [
                   RichText(
                     text: TextSpan(
-                      text: '$time ',
+                      text: dateFormat.format(currentime),
                       style: const TextStyle(color: Colors.white, fontSize: 26),
                       children: <InlineSpan>[
                         const WidgetSpan(

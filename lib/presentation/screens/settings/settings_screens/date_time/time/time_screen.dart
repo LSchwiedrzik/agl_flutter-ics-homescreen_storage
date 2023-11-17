@@ -1,6 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:new_virtual_keyboard/virtual_keyboard.dart';
 
 class TimePage extends ConsumerWidget {
   const TimePage({super.key});
@@ -45,9 +46,22 @@ class TimeScreenWidgetState extends ConsumerState<TimeScreenWidget> {
 
   onPressed({required String type}) {
     if (type == "confirm") {
-      ref.read(dateTimeStateProvider.notifier).setTime(
-          "${hourController.text}:${minuteController.text} $selectedMeridien");
-      context.flow<AppState>().update((state) => AppState.dateTime);
+      if (hourController.text.isNotEmpty && minuteController.text.isNotEmpty) {
+        String input =
+            '${hourController.text}:${minuteController.text} $selectedMeridien';
+        DateTime selectedeDatetime = DateFormat.jm().parse(input);
+
+        ref
+            .read(currentTimeProvider.notifier)
+            .setCurrentTime(selectedeDatetime);
+
+        // ref.read(dateTimeStateProvider.notifier).setTime(
+        //     "${hourController.text}:${minuteController.text} $selectedMeridien");
+        context.flow<AppState>().update((state) => AppState.dateTime);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Time can't be empty!")));
+      }
     } else if (type == "cancel") {
       context.flow<AppState>().update((state) => AppState.dateTime);
     }
@@ -55,10 +69,9 @@ class TimeScreenWidgetState extends ConsumerState<TimeScreenWidget> {
 
   @override
   void initState() {
-    String time = ref.read(dateTimeStateProvider).time;
-    if (time == "hh:mm a") {
-      time = DateFormat('hh:mm a').format(DateTime.now());
-    }
+    DateTime currentTime = ref.read(currentTimeProvider);
+    String time = DateFormat('hh:mm a').format(currentTime);
+
     List<String> split = time.split(":");
     selectedTimeHour = int.parse(split[0]);
     List<String> splitMeridian = split[1].split(" ");
@@ -388,6 +401,74 @@ class _TimeTextFieldState extends State<TimeTextField> {
     return KeyEventResult.ignored;
   }
 
+  void showKeyboard() {
+    var ctx = homeScaffoldKey.currentContext;
+    showModalBottomSheet(
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      barrierColor: Colors.transparent,
+      context: ctx!,
+      builder: (ctx) {
+        return Container(
+          height: 479,
+          width: 1080,
+          decoration: const BoxDecoration(
+            color: AGLDemoColors.resolutionBlueColor,
+            border: Border(
+                top: BorderSide(
+              color: Color(0xFF295EF7),
+              width: 1,
+            )),
+          ),
+          child: VirtualKeyboard(
+            height: 478,
+            textColor: AGLDemoColors.periwinkleColor,
+            fontSize: 40,
+            // [A-Z, 0-9]
+            type: VirtualKeyboardType.Numeric,
+            // Callback for key press event
+            onKeyPress: (key) {
+              _onKeyPress(key);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  _onKeyPress(VirtualKeyboardKey key) {
+    String text = controller.text;
+
+    if (key.keyType == VirtualKeyboardKeyType.String) {
+      if (key.text != ".") {
+        text = text + key.text!;
+        int value = int.parse(text);
+
+        if (widget.type == "hour") {
+          if (value > 11) {
+            text = "12";
+          }
+        } else if (widget.type == "minute") {
+          if (value > 58) {
+            text = "59";
+          }
+        }
+      }
+    } else if (key.keyType == VirtualKeyboardKeyType.Action) {
+      switch (key.action) {
+        case VirtualKeyboardKeyAction.Backspace:
+          if (text.isEmpty) return;
+          text = text.substring(0, text.length - 1);
+          break;
+        // case VirtualKeyboardKeyAction.Return:
+        //   text = '$text\n';
+        //   break;
+        default:
+      }
+    }
+    controller.text = text;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -397,6 +478,9 @@ class _TimeTextFieldState extends State<TimeTextField> {
             return onKeyBoardEvent(event);
           }),
           child: TextField(
+            onTap: () {
+              showKeyboard();
+            },
             style: const TextStyle(color: Colors.white, fontSize: 40),
             decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(vertical: 23),

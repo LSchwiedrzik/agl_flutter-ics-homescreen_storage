@@ -17,7 +17,13 @@ class AudioContent extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomTrebleSlider(),
+                SizedBox(
+                  height: 120,
+                ),
                 CustomBassSlider(),
+                SizedBox(
+                  height: 120,
+                ),
                 CustomRearFrontSlider(),
               ],
             ),
@@ -30,9 +36,8 @@ class AudioContent extends ConsumerWidget {
               text: 'Reset to Default',
               onTap: () {
                 ref.read(audioStateProvider.notifier).resetToDefaults();
-                },
-              ),
-           
+              },
+            ),
           ),
         ],
       ),

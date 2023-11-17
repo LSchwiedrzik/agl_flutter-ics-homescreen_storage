@@ -43,8 +43,6 @@ class _SegmentedButtonsState extends State<SegmentedButtons> {
           child: Row(
             children: navItems
                 .map((e) => Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 24, horizontal: 32),
                       decoration: BoxDecoration(
                         borderRadius: selectedNav == e
                             ? BorderRadius.circular(40)
@@ -53,23 +51,30 @@ class _SegmentedButtonsState extends State<SegmentedButtons> {
                             ? AGLDemoColors.backgroundInsetColor
                             : null,
                       ),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(40),
-                        onTap: () {
-                          setState(() {
-                            selectedNav = e;
-                          });
-                        },
-                        child: Text(
-                          e,
-                          style: TextStyle(
-                              color: selectedNav == e
-                                  ? Colors.white
-                                  : AGLDemoColors.periwinkleColor,
-                              fontSize: 26,
-                              fontWeight: selectedNav == e
-                                  ? FontWeight.w700
-                                  : FontWeight.w500),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(40),
+                          onTap: () {
+                            setState(() {
+                              selectedNav = e;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 24, horizontal: 32),
+                            child: Text(
+                              e,
+                              style: TextStyle(
+                                  color: selectedNav == e
+                                      ? Colors.white
+                                      : AGLDemoColors.periwinkleColor,
+                                  fontSize: 26,
+                                  fontWeight: selectedNav == e
+                                      ? FontWeight.w700
+                                      : FontWeight.w500),
+                            ),
+                          ),
                         ),
                       ),
                     ))

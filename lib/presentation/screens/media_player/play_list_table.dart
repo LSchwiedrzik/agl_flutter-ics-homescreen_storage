@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_ics_homescreen/core/utils/helpers.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
@@ -117,8 +118,9 @@ class _PlayListTableState extends State<PlayListTable> {
                           children: [
                             Expanded(
                                 flex: 6,
-                                child: Text(
+                                child: AutoSizeText(
                                   index.songName,
+                                  maxLines: 1,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 40,
