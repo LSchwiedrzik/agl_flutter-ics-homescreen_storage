@@ -350,7 +350,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
   }
 
   void setTemperature({required Side side, required int value}) {
-    var helper = ValClientHelper(channel: channel, stub: stub);
+    var helper = ValClientHelper(stub: stub, authorization: authorization);
     try {
       switch (side) {
         case Side.left:
