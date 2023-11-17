@@ -285,7 +285,7 @@ class FuelProgressIndicatorState extends ConsumerState<FuelProgressIndicator>
                 width: 220,
                 child: CustomPaint(
                   foregroundPainter: CirclePainter(
-                      value: fuelLevel,
+                      value: fuelLevel.toDouble(),
                       maxValue: maxFuelLevel,
                       isFuel: true,
                       isRPM: false),

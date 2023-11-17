@@ -488,7 +488,7 @@ packages:
   protos:
     dependency: "direct main"
     description:
-      path: "./protos"
+      path: protos
       relative: true
     source: path
     version: "1.0.0"

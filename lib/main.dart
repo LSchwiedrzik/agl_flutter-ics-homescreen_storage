@@ -4,9 +4,8 @@ import 'export.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // MediaKit.ensureInitialized(); //replace with lottie
   runApp(DevicePreview(
-    enabled: false,
+    enabled: true,
     tools: const [
       ...DevicePreview.defaultTools,
     ],

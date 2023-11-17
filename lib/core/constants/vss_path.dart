@@ -5,7 +5,8 @@ class VSSPath {
   static const String vehicleOutsideTemperature =
       'Vehicle.Exterior.AirTemperature';
   static const String vehicleRange = 'Vehicle.Powertrain.FuelSystem.Range';
-  static const String vehicleFuelLevel = 'Vehicle.OBD.FuelLevel';
+  static const String vehicleFuelLevel =
+      'Vehicle.Powertrain.FuelSystem.RelativeLevel';
   static const String vehicleMediaVolume =
       'Vehicle.Cabin.Infotainment.Media.Volume';
   static const String vehicleIsChildLockActiveLeft =
@@ -32,6 +33,10 @@ class VSSPath {
       'Vehicle.Cabin.HVAC.IsRecirculationActive';
   static const String vehicleFanSpeed =
       'Vehicle.Cabin.HVAC.Station.Row1.Driver.FanSpeed';
+  static const String vehicleDriverTemperature =
+      'Vehicle.Cabin.HVAC.Station.Row1.Driver.Temperature';
+  static const String vehiclePassengerTemperature =
+      'Vehicle.Cabin.HVAC.Station.Row1.Passenger.Temperature';
 
   List<String> getSignalsList() {
     return const [
@@ -52,7 +57,9 @@ class VSSPath {
       vehicleIsFrontDefrosterActive,
       vehicleIsRearDefrosterActive,
       vehicleIsRecirculationActive,
-      vehicleFanSpeed
+      vehicleFanSpeed,
+      vehicleDriverTemperature,
+      vehiclePassengerTemperature,
     ];
   }
 }
