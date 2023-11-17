@@ -16,6 +16,24 @@
       "message": "I could not find a way to pass this environment variables to flutter-auto yet.",
       "revId": "85f95d12f5c52b51132f19a3e20ff5eacd5c2554",
       "serverId": "2db66874-6d0c-4434-a3ad-56d904acc56e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b653ea02_72849fcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2891
+      },
+      "writtenOn": "2023-11-17T23:14:31Z",
+      "side": 1,
+      "message": "@joel:\n\nThis is What I did:\n\nI modified the code to also have:\n\n```diff\n void main() async {\n+  print(\u0027HELLO\u0027);\n+  print(bool.fromEnvironment(\u0027DEBUG_DISPLAY\u0027));\n+  print(String.fromEnvironment(\u0027DEBUG_DISPLAY\u0027));\n+\n```\n\nThen I launched the app by hand:\n\n```\nroot@raspberrypi4-64:~# source /etc/default/flutter\nroot@raspberrypi4-64:~# export XDG_RUNTIME_DIR\u003d/run/user/1001/\nroot@raspberrypi4-64:~# /usr/bin/flutter-auto --b\u003d/usr/share/flutter/flutter_ics_homescreen/${FLUTTER_VERSION}/${FLUTTER_RUNTIME} --j\u003d/usr/share/flutter/flutter-ics-homescreen.json --xdg-shell-app-id\u003dhomescreen DEBUG_DISPLAY\u003dtrue\n[23:13:19.352974] [I] agl @ 3114782\n[23:13:19.353277] [I] **********\n[23:13:19.353364] [I] * Global *\n[23:13:19.353446] [I] **********\n[23:13:19.353532] [I] Application Id: .......... homescreen\n[23:13:19.353680] [I] JSON Configuration: ...... /usr/share/flutter/flutter-ics-homescreen.json\n[23:13:19.353772] [I] Disable Cursor: .......... false\n[23:13:19.353858] [I] Debug Backend: ........... false\n[23:13:19.353941] [I] ********\n[23:13:19.354021] [I] * View *\n[23:13:19.354101] [I] ********\n[23:13:19.354181] [I] VM Args:\n[23:13:19.354260] [I] DEBUG_DISPLAY\u003dtrue\n[23:13:19.354343] [I] Bundle Path: .............. /usr/share/flutter/flutter_ics_homescreen/3.13.9/release\n[23:13:19.354428] [I] Window Type: .............. BG\n[23:13:19.354519] [I] Output Index: ............. 0\n[23:13:19.354606] [I] Size: ..................... 1080 x 1920\n[23:13:19.354692] [I] Fullscreen: ............... true\n[23:13:19.354779] [I] Accessibility Features: ... 0\n[23:13:19.357028] [I] Wayland: agl_shell version: 10\n[23:13:19.357913] [I] Pointer Present\n[23:13:19.357977] [I] Keyboard Present\n[23:13:19.467755] [I] (0) Loading AOT: /usr/share/flutter/flutter_ics_homescreen/3.13.9/release/lib/libapp.so\n[23:13:19.649056] [I] HELLO\n[23:13:19.649132] [I] false\n[23:13:19.649986] [I] \n[23:13:19.649787] [I] (0) [go_router] Select Single Entry History\n[23:13:19.650604] [I] (0) [go_router] Route Information Updated\n```\n\nI also edited the json file:\n\n```\nroot@raspberrypi4-64:~# cat /usr/share/flutter/flutter-ics-homescreen.json \n{\n        \"view\" : [ {\n                \"window_type\" : \"BG\",\n                \"width\" : 1080,\n                \"height\": 1920,\n                \"fullscreen\": true\n                }\n        ],\n        \"DEBUG_DISPLAY\" : \"true\"\n}\n```\n\n\nSame output. Am I missing something here?",
+      "parentUuid": "7c14e137_c789e9a5",
+      "revId": "85f95d12f5c52b51132f19a3e20ff5eacd5c2554",
+      "serverId": "2db66874-6d0c-4434-a3ad-56d904acc56e"
     }
   ]
 }
