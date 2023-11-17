@@ -136,7 +136,17 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           state = state.copyWith(fanSpeed: update.entry.value.uint32);
         }
         break;
-
+      case VSSPath.vehicleDriverTemperature:
+        if (update.entry.value.hasInt32()) {
+          state = state.copyWith(driverTemperature: update.entry.value.int32);
+        }
+        break;
+      case VSSPath.vehiclePassengerTemperature:
+        if (update.entry.value.hasInt32()) {
+          state =
+              state.copyWith(passengerTemperature: update.entry.value.int32);
+        }
+        break;
       // default:
       //   debugPrint("ERROR: Unexpected path ${update.entry.path}");
       //   break;
@@ -302,7 +312,6 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
       }, onError: (stacktrace, errorDescriptor) {
         debugPrint(stacktrace.toString());
         state = const Vehicle.initialForDebug();
-
       });
     } catch (e) {
       debugPrint(e.toString());
@@ -330,6 +339,35 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           );
           state = state.copyWith(
               isChildLockActiveRight: !state.isChildLockActiveRight);
+          break;
+        default:
+          debugPrint("ERROR: Unexpected side value $side}");
+          break;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
+  void setTemperature({required Side side, required int value}) {
+    var helper = ValClientHelper(channel: channel, stub: stub);
+    try {
+      switch (side) {
+        case Side.left:
+          helper.setInt32(
+            VSSPath.vehicleDriverTemperature,
+            value,
+            false,
+          );
+          state = state.copyWith(driverTemperature: value);
+          break;
+        case Side.right:
+          helper.setInt32(
+            VSSPath.vehiclePassengerTemperature,
+            value,
+            false,
+          );
+          state = state.copyWith(passengerTemperature: value);
           break;
         default:
           debugPrint("ERROR: Unexpected side value $side}");
