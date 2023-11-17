@@ -1,0 +1,8 @@
+Code-Review+2: Lisandro Perez Meyer <lpmeyer@ics.com>
+Code-Review+1: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
+Verified+1: Lisandro Perez Meyer <lpmeyer@ics.com>
+Submitted-by: Lisandro Perez Meyer <lpmeyer@ics.com>
+Submitted-at: Fri, 17 Nov 2023 14:11:27 +0000
+Reviewed-on: https://gerrit.automotivelinux.org/gerrit/c/apps/flutter-ics-homescreen/+/29442
+Project: apps/flutter-ics-homescreen
+Branch: refs/heads/master
