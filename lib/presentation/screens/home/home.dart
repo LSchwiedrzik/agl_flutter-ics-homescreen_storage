@@ -31,6 +31,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   ) {
     return Consumer(builder: (context, ref, child) {
       final state = ref.read(appProvider);
+      const disableBkgAnimation = bool.fromEnvironment('DISABLE_BKG_ANIMATION');
+      if(disableBkgAnimation)
+        print('Background animation: disabled');
       return Scaffold(
         key: homeScaffoldKey,
         extendBody: true,
@@ -38,11 +41,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         appBar: const CustomTopBar(),
         body: Stack(
           children: [
-            Lottie.asset(
-              'animations/BG-dotwaveform.json',
-              fit: BoxFit.cover,
-              repeat: true,
-            ),
+            if (!disableBkgAnimation)
+              Lottie.asset(
+                'animations/BG-dotwaveform.json',
+                fit: BoxFit.cover,
+                repeat: true,
+              ),
             FlowBuilder<AppState>(
               state: ref.watch(appProvider),
               onGeneratePages: onGenerateAppViewPages,

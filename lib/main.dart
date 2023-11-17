@@ -4,8 +4,9 @@ import 'export.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  const debugDisplay = bool.fromEnvironment('DEBUG_DISPLAY');
   runApp(DevicePreview(
-    enabled: false,
+    enabled: debugDisplay,
     tools: const [
       ...DevicePreview.defaultTools,
     ],
