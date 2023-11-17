@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c14e137_c789e9a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2891
+      },
+      "writtenOn": "2023-11-17T17:56:51Z",
+      "side": 1,
+      "message": "I could not find a way to pass this environment variables to flutter-auto yet.",
+      "revId": "85f95d12f5c52b51132f19a3e20ff5eacd5c2554",
+      "serverId": "2db66874-6d0c-4434-a3ad-56d904acc56e"
+    }
+  ]
+}
