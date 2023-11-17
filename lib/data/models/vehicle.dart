@@ -22,6 +22,8 @@ class Vehicle {
   final bool isRearDefrosterActive;
   final bool isRecirculationActive;
   final int fanSpeed;
+  final int driverTemperature;
+  final int passengerTemperature;
 
   const Vehicle(
       this.speed,
@@ -41,7 +43,10 @@ class Vehicle {
       this.isFrontDefrosterActive,
       this.isRearDefrosterActive,
       this.isRecirculationActive,
-      this.fanSpeed);
+    this.fanSpeed,
+    this.driverTemperature,
+    this.passengerTemperature,
+  );
 
   const Vehicle.initial()
       : speed = 0,
@@ -61,7 +66,9 @@ class Vehicle {
         isFrontDefrosterActive = false,
         isRearDefrosterActive = false,
         isRecirculationActive = false,
-        fanSpeed = 0;
+        fanSpeed = 0,
+        driverTemperature = 26,
+        passengerTemperature = 26;
 
   const Vehicle.initialForDebug()
       : speed = 60,
@@ -81,7 +88,9 @@ class Vehicle {
         isFrontDefrosterActive = false,
         isRearDefrosterActive = false,
         isRecirculationActive = false,
-        fanSpeed = 0;
+        fanSpeed = 0,
+        driverTemperature = 26,
+        passengerTemperature = 26;
 
   Vehicle copyWith(
       {double? speed,
@@ -101,7 +110,10 @@ class Vehicle {
       bool? isFrontDefrosterActive,
       bool? isRearDefrosterActive,
       bool? isRecirculationActive,
-      int? fanSpeed}) {
+    int? fanSpeed,
+    int? driverTemperature,
+    int? passengerTemperature,
+  }) {
     return Vehicle(
         speed ?? this.speed,
         insideTemperature ?? this.insideTemperature,
@@ -120,7 +132,10 @@ class Vehicle {
         isFrontDefrosterActive ?? this.isFrontDefrosterActive,
         isRearDefrosterActive ?? this.isRearDefrosterActive,
         isRecirculationActive ?? this.isRecirculationActive,
-        fanSpeed ?? this.fanSpeed);
+      fanSpeed ?? this.fanSpeed,
+      driverTemperature ?? this.driverTemperature,
+      passengerTemperature ?? this.passengerTemperature,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -142,7 +157,9 @@ class Vehicle {
       'isFrontDefrosterActive': isFrontDefrosterActive,
       'isRearDefrosterActive': isRearDefrosterActive,
       'isRecirculationActive': isRecirculationActive,
-      'fanSpeed': fanSpeed
+      'fanSpeed': fanSpeed,
+      'driverTemperature': driverTemperature,
+      'passengerTemperature': passengerTemperature,
     };
   }
 
@@ -166,6 +183,8 @@ class Vehicle {
       map['isRearDefrosterActive'] ?? false,
       map['isRecirculationActive'] ?? false,
       map['fanSpeed'] ?? 0,
+      map['driverTemperature'] ?? 0,
+      map['passengerTemperature'] ?? 0,
     );
   }
 
@@ -176,7 +195,7 @@ class Vehicle {
 
   @override
   String toString() {
-    return 'Vehicle(speed: $speed, insideTemperature: $insideTemperature, outsideTemperature: $outsideTemperature, range: $range, fuelLevel: $fuelLevel, mediaVolume: $mediaVolume, isChildLockActiveLeft: $isChildLockActiveLeft, isChildLockActiveRight: $isChildLockActiveRight, engineSpeed: $engineSpeed, frontLeftTire: $frontLeftTire, frontRightTire: $frontRightTire, rearLeftTire: $rearLeftTire, rearRightTire: $rearRightTire, isAirConditioningActive: $isAirConditioningActive, isFrontDefrosterActive: $isFrontDefrosterActive, isRearDefrosterActive: $isRearDefrosterActive, isRecirculationActive: $isRecirculationActive,fanSpeed:$fanSpeed)';
+    return 'Vehicle(speed: $speed, insideTemperature: $insideTemperature, outsideTemperature: $outsideTemperature, range: $range, fuelLevel: $fuelLevel, mediaVolume: $mediaVolume, isChildLockActiveLeft: $isChildLockActiveLeft, isChildLockActiveRight: $isChildLockActiveRight, engineSpeed: $engineSpeed, frontLeftTire: $frontLeftTire, frontRightTire: $frontRightTire, rearLeftTire: $rearLeftTire, rearRightTire: $rearRightTire, isAirConditioningActive: $isAirConditioningActive, isFrontDefrosterActive: $isFrontDefrosterActive, isRearDefrosterActive: $isRearDefrosterActive, isRecirculationActive: $isRecirculationActive,fanSpeed:$fanSpeed,driverTemperature:$driverTemperature, passengerTemperature:$passengerTemperature)';
   }
 
   @override
@@ -201,7 +220,9 @@ class Vehicle {
         other.isFrontDefrosterActive == isFrontDefrosterActive &&
         other.isRearDefrosterActive == isRearDefrosterActive &&
         other.isRecirculationActive == isRecirculationActive &&
-        other.fanSpeed == fanSpeed;
+        other.fanSpeed == fanSpeed &&
+        other.driverTemperature == driverTemperature &&
+        other.passengerTemperature == passengerTemperature;
   }
 
   @override
@@ -223,7 +244,9 @@ class Vehicle {
         isFrontDefrosterActive.hashCode ^
         isRearDefrosterActive.hashCode ^
         isRecirculationActive.hashCode ^
-        fanSpeed.hashCode;
+        fanSpeed.hashCode ^
+        driverTemperature.hashCode ^
+        passengerTemperature.hashCode;
   }
 // }
 // /  class VehicleNotifier extends StateNotifier<Vehicle> {

@@ -1,14 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter_ics_homescreen/export.dart';
 
-class TemperatureControl extends StatefulWidget {
-  const TemperatureControl({super.key, required this.temperature});
+enum Side { left, right }
+
+class TemperatureControl extends ConsumerStatefulWidget {
+  const TemperatureControl(
+      {super.key, required this.temperature, required this.side});
   final int temperature;
+  final Side side;
 
   @override
-  State<TemperatureControl> createState() => _TemperatureControlState();
+  TemperatureControlState createState() => TemperatureControlState();
 }
 
-class _TemperatureControlState extends State<TemperatureControl> {
+class TemperatureControlState extends ConsumerState<TemperatureControl> {
+  late Timer tempButtonTimer;
   int temperature = 0;
   bool isUpButtonHighlighted = false;
   bool isDownButtonHighlighted = false;
@@ -21,19 +28,40 @@ class _TemperatureControlState extends State<TemperatureControl> {
     });
   }
 
-  onPressed({required String type}) {
+  onPressed({required String type, required Side side}) {
     setState(() {
       if (type == "add") {
         temperature = temperature + 1;
       } else if (type == "subtract") {
         temperature = temperature - 1;
       }
+      // limit the temperature to 60-100F
+      if (temperature <= 15) {
+        temperature = 15;
+      } else if (temperature >= 38) {
+        temperature = 38;
+      }
+      if (widget.side == Side.left) {
+        ref
+            .read(vehicleProvider.notifier)
+            .setTemperature(side: Side.left, value: temperature);
+      } else {
+        ref
+            .read(vehicleProvider.notifier)
+            .setTemperature(side: Side.right, value: temperature);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double iconSize = 32;
+    //final temperature = ref.watch(vehicleProvider.select((vehicle) => vehicle));
+    // final outsideTemperature = ref
+    //     .watch(vehicleProvider.select((vehicle) => vehicle.outsideTemperature));
+    final tempUnit =
+        ref.watch(unitStateProvider.select((unit) => unit.temperatureUnit));
+
+    //double iconSize = 32;
     double height = MediaQuery.sizeOf(context).height * 0.0417;
     double width = MediaQuery.sizeOf(context).width * 0.2112;
 
@@ -41,15 +69,29 @@ class _TemperatureControlState extends State<TemperatureControl> {
       children: [
         Material(
           color: Colors.transparent,
-          child: InkWell(
-            onHighlightChanged: (value) {
-              setState(() {
-                isUpButtonHighlighted = value;
+          child: GestureDetector(
+            onTapDown: (value) {
+              isUpButtonHighlighted = !isUpButtonHighlighted;
+              onPressed(type: "add", side: widget.side);
+            },
+            onTapUp: (detail) {
+              isUpButtonHighlighted = !isUpButtonHighlighted;
+              setState(() {});
+            },
+            onLongPress: () {
+              tempButtonTimer =
+                  Timer.periodic(const Duration(milliseconds: 500), (timer) {
+                onPressed(type: "add", side: widget.side);
               });
             },
-            onTap: () {
-              onPressed(type: "add");
+            onLongPressEnd: (details) {
+              setState(() {
+                isUpButtonHighlighted = !isUpButtonHighlighted;
+
+                tempButtonTimer.cancel();
+              });
             },
+            
             child: SizedBox(
                 height: height,
                 width: width,
@@ -120,21 +162,39 @@ class _TemperatureControlState extends State<TemperatureControl> {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Text(
-            "$temperature°C",
+            tempUnit == TemperatureUnit.celsius
+                ? '$temperature°C'
+                : '${((temperature * 9 / 5) + 32).toStringAsFixed(0)}°F', //converting from celsius. Step F unit = 2
             style: GoogleFonts.brunoAce(fontSize: 44, height: 1.25),
           ),
         ),
         Material(
           color: Colors.transparent,
-          child: InkWell(
-            onHighlightChanged: (value) {
+          child: GestureDetector(
+            onTapDown: (value) {
+              isDownButtonHighlighted = !isDownButtonHighlighted;
+              onPressed(type: "subtract", side: widget.side);
+            },
+            onTapUp: (detail) {
+             
               setState(() {
-                isDownButtonHighlighted = value;
+                isDownButtonHighlighted = !isDownButtonHighlighted;
               });
             },
-            onTap: () {
-              onPressed(type: "subtract");
+            onLongPress: () {
+              tempButtonTimer =
+                  Timer.periodic(const Duration(milliseconds: 500), (timer) {
+                onPressed(type: "subtract", side: widget.side);
+              });
             },
+            onLongPressEnd: (details) {
+              setState(() {
+                isDownButtonHighlighted = !isDownButtonHighlighted;
+
+                tempButtonTimer.cancel();
+              });
+            },
+
             child: SizedBox(
                 height: height,
                 width: width,

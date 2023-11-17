@@ -58,6 +58,8 @@ class HVACState extends ConsumerState<HVAC> {
     isRearDefrostSelected = vehicle.isRearDefrosterActive;
     isRecirculationSelected = vehicle.isRecirculationActive;
     Size size = MediaQuery.sizeOf(context);
+    temperatureLeft = vehicle.driverTemperature;
+    temperatureRight = vehicle.passengerTemperature;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -153,8 +155,14 @@ class HVACState extends ConsumerState<HVAC> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TemperatureControl(temperature: temperatureLeft),
-            TemperatureControl(temperature: temperatureRight)
+            TemperatureControl(
+              temperature: temperatureLeft,
+              side: Side.left,
+            ),
+            TemperatureControl(
+              temperature: temperatureRight,
+              side: Side.right,
+            )
           ],
         ),
         const SizedBox(
