@@ -38,11 +38,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         appBar: const CustomTopBar(),
         body: Stack(
           children: [
-            Lottie.asset(
-              'animations/BG-dotwaveform.json',
-              fit: BoxFit.cover,
-              repeat: true,
-            ),
+            if (!bool.fromEnvironment('DISABLE_BKG_ANIMATION'))
+              Lottie.asset(
+                'animations/BG-dotwaveform.json',
+                fit: BoxFit.cover,
+                repeat: true,
+              ),
             FlowBuilder<AppState>(
               state: ref.watch(appProvider),
               onGeneratePages: onGenerateAppViewPages,
