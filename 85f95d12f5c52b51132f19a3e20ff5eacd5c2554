@@ -52,6 +52,24 @@
       "parentUuid": "b653ea02_72849fcf",
       "revId": "85f95d12f5c52b51132f19a3e20ff5eacd5c2554",
       "serverId": "2db66874-6d0c-4434-a3ad-56d904acc56e"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc2d6232_e58a2eaf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 2891
+      },
+      "writtenOn": "2023-11-18T12:54:19Z",
+      "side": 1,
+      "message": "I have just tried this on purpose:\n\n```\nroot@raspberrypi4-64:~# /usr/bin/flutter-auto \\\n--b\u003d/usr/share/flutter/flutter_ics_homescreen/${FLUTTER_VERSION}/${FLUTTER_RUNTIME} \\\n--j\u003d/usr/share/flutter/flutter-ics-homescreen.json \\\n--xdg-shell-app-id\u003dhomescreen \\\n-d\u003dDEBUG_DISPLAY\u003dtrue -DDEBUG_DISPLAY\u003dtrue \\\n--dart-define\u003dDEBUG_DISPLAY\u003dtrue  DEBUG_DISPLAY\u003dtrue\n```\n\nAnd I can see in the log:\n\n```\n[12:50:27.463335] [I] ********\n[12:50:27.463365] [I] * View *\n[12:50:27.463399] [I] ********\n[12:50:27.463428] [I] VM Args:\n[12:50:27.463457] [I] -d\u003dDEBUG_DISPLAY\u003dtrue\n[12:50:27.463486] [I] -DDEBUG_DISPLAY\u003dtrue\n[12:50:27.463514] [I] --dart-define\u003dDEBUG_DISPLAY\u003dtrue\n[12:50:27.463543] [I] DEBUG_DISPLAY\u003dtrue\n```\n\nAnd:\n\n```\n[12:47:13.788745] [I] HELLO\n[12:47:13.788817] [I] false\n```\n\nSo the code still sees DEBUG_DISPLAY as false. The same goes with the JSON file. So either my code is somehow wrong or the app can not get the env variables from the VM.",
+      "parentUuid": "b6d6f0b8_cf400782",
+      "revId": "85f95d12f5c52b51132f19a3e20ff5eacd5c2554",
+      "serverId": "2db66874-6d0c-4434-a3ad-56d904acc56e"
     }
   ]
 }
