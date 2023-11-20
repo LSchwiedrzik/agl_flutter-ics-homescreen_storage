@@ -8,4 +8,8 @@ const maxFuelLevel = 100.0;
 const maxSpeed = 240.0;
 const maxRpm = 8000;
 final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey();
+const debugDisplay = bool.fromEnvironment('DEBUG_DISPLAY');
+const disableBkgAnimation = bool.fromEnvironment('DISABLE_BKG_ANIMATION');
+
+
 

@@ -31,9 +31,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   ) {
     return Consumer(builder: (context, ref, child) {
       final state = ref.read(appProvider);
-      const disableBkgAnimation = bool.fromEnvironment('DISABLE_BKG_ANIMATION');
-      if(disableBkgAnimation)
-        print('Background animation: disabled');
+      if (disableBkgAnimation) {
+        debugPrint('Background animation: disabled');
+      }
       return Scaffold(
         key: homeScaffoldKey,
         extendBody: true,
