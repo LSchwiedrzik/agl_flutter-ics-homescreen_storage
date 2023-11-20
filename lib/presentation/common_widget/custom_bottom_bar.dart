@@ -44,7 +44,7 @@ class CustomBottomBarState extends ConsumerState<CustomBottomBar> {
     setState(() {
       selectedNav = title;
     });
-
+    ref.read(currentTimeProvider.notifier).isYearChanged = false;
     ref.read(appProvider.notifier).update((state) => state = status);
   }
 
@@ -60,7 +60,6 @@ class CustomBottomBarState extends ConsumerState<CustomBottomBar> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Container(
-                        
                         margin: const EdgeInsets.symmetric(
                           horizontal: 2,
                         ),

@@ -1,11 +1,9 @@
-import 'package:flutter_ics_homescreen/data/data_providers/datetime_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/hybrid_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/signal_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/time_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
-import 'package:flutter_ics_homescreen/data/models/date_time.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import '../models/users.dart';
@@ -33,7 +31,8 @@ enum AppState {
   tempUnit,
   clock,
   date,
-  time
+  time,
+  year
 }
 
 final appProvider = StateProvider<AppState>((ref) => AppState.splash);
@@ -55,10 +54,6 @@ final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
   return UsersNotifier(Users.initial());
 });
 
-final dateTimeStateProvider =
-    StateNotifierProvider<DateTimeNotifier, DateAndTime>((ref) {
-  return DateTimeNotifier(DateAndTime.initial());
-});
 final hybridtateProvider = StateNotifierProvider<HybridNotifier, Hybrid>((ref) {
   return HybridNotifier(const Hybrid.initial());
 });

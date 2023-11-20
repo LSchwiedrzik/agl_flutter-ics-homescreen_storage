@@ -11,6 +11,8 @@ class CurrentTimeNotifier extends StateNotifier<DateTime> {
   }
 
   bool _hasInitialized = false;
+  int? selectedYear;
+  bool isYearChanged = false;
 
   void _initializeTimer() {
     Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -20,5 +22,6 @@ class CurrentTimeNotifier extends StateNotifier<DateTime> {
 
   void setCurrentTime(DateTime newTime) {
     state = newTime;
+    selectedYear = newTime.year;
   }
 }
