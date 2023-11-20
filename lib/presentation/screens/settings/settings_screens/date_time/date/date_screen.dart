@@ -1,5 +1,6 @@
+import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:intl/intl.dart';
 
 class DatePage extends ConsumerWidget {
@@ -14,6 +15,7 @@ class DatePage extends ConsumerWidget {
           title: 'Date',
           hasBackButton: true,
           onPressed: () {
+            ref.read(currentTimeProvider.notifier).isYearChanged = false;
             context.flow<AppState>().update((state) => AppState.dateTime);
           },
         ),
@@ -36,84 +38,170 @@ class DateScreenWidget extends ConsumerStatefulWidget {
 }
 
 class DateScreenWidgetState extends ConsumerState<DateScreenWidget> {
-  late String selectedDate;
+  late DateTime _currentDate;
+  late DateTime _currentDate2;
+  late String _currentMonth;
+  late DateTime _targetDateTime;
 
   onPressed({required String type}) {
     if (type == "confirm") {
-      ref.read(dateTimeStateProvider.notifier).setDate(selectedDate);
+      DateTime selectedeDate = _currentDate.copyWith(
+          day: _currentDate2.day,
+          year: _currentDate2.year,
+          month: _currentDate2.month);
+
+      ref.read(currentTimeProvider.notifier).setCurrentTime(selectedeDate);
       context.flow<AppState>().update((state) => AppState.dateTime);
     } else if (type == "cancel") {
+      ref.read(currentTimeProvider.notifier).isYearChanged = false;
       context.flow<AppState>().update((state) => AppState.dateTime);
     }
   }
 
   @override
   void initState() {
-    selectedDate = ref.read(dateTimeStateProvider).date;
-
+    _currentDate = ref.read(currentTimeProvider);
+    int? selectedYear = ref.read(currentTimeProvider.notifier).selectedYear;
+    if (selectedYear != null &&
+        ref.read(currentTimeProvider.notifier).isYearChanged) {
+      _currentDate = _currentDate.copyWith(year: selectedYear);
+    }
+    _currentDate2 = _currentDate;
+    _currentMonth = DateFormat.yMMM().format(_currentDate);
+    _targetDateTime = _currentDate;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
+
+    final calendarCarouselNoHeader = CalendarCarousel<Event>(
+      onDayPressed: (date, events) {
+        setState(() => _currentDate2 = date);
+      },
+      daysHaveCircularBorder: true,
+      showOnlyCurrentMonthDate: false,
+      weekendTextStyle:
+          const TextStyle(color: AGLDemoColors.periwinkleColor, fontSize: 40),
+      daysTextStyle:
+          const TextStyle(color: AGLDemoColors.periwinkleColor, fontSize: 40),
+      thisMonthDayBorderColor: Colors.transparent,
+      weekFormat: false,
+      height: 720.0,
+      selectedDateTime: _currentDate2,
+      targetDateTime: _targetDateTime,
+      selectedDayButtonColor: AGLDemoColors.buttonFillEnabledColor,
+      customGridViewPhysics: const NeverScrollableScrollPhysics(),
+      showHeader: false,
+      todayTextStyle:
+          const TextStyle(color: AGLDemoColors.periwinkleColor, fontSize: 40),
+      nextDaysTextStyle: const TextStyle(color: Colors.transparent),
+      todayButtonColor: Colors.transparent,
+      selectedDayTextStyle: const TextStyle(color: Colors.white, fontSize: 40),
+      minSelectedDate: _currentDate.subtract(const Duration(days: 10958)),
+      maxSelectedDate: _currentDate.add(const Duration(days: 10958)),
+      prevDaysTextStyle: const TextStyle(
+        color: Colors.transparent,
+      ),
+      weekdayTextStyle: const TextStyle(color: Colors.white, fontSize: 26),
+      todayBorderColor: AGLDemoColors.buttonFillEnabledColor,
+      onCalendarChanged: (DateTime date) {
+        setState(() {
+          _targetDateTime = date;
+          _currentMonth = DateFormat.yMMM().format(_targetDateTime);
+        });
+      },
+      onDayLongPressed: (DateTime date) {},
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CalendarDatePicker2(
-          config: CalendarDatePicker2Config(
-              calendarType: CalendarDatePicker2Type.single,
-              dayBuilder: (
-                  {required date,
-                  decoration,
-                  isDisabled,
-                  isSelected,
-                  isToday,
-                  textStyle}) {
-                Widget? dayWidget;
-                dayWidget = Container(
-                  decoration: decoration,
-                  child: Center(
-                    child: Stack(
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Text(
-                          MaterialLocalizations.of(context)
-                              .formatDecimal(date.day),
-                          style: textStyle,
-                        ),
-                      ],
+        Container(
+          margin: const EdgeInsets.only(
+            top: 30.0,
+            bottom: 16.0,
+            left: 16.0,
+            right: 16.0,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Flexible(
+                  child: TextButton(
+                onPressed: () {
+                  context.flow<AppState>().update((state) => AppState.year);
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      _currentMonth,
+                      style: const TextStyle(
+                        color: AGLDemoColors.periwinkleColor,
+                        fontSize: 40.0,
+                      ),
                     ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Icon(
+                        Icons.keyboard_arrow_down,
+                        size: 40,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    )
+                  ],
+                ),
+              )),
+              Row(
+                children: [
+                  TextButton(
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Icon(
+                        Icons.arrow_back_ios,
+                        size: 30,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month - 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
                   ),
-                );
-
-                return dayWidget;
-              },
-              dayTextStyle: const TextStyle(
-                  color: AGLDemoColors.periwinkleColor, fontSize: 40),
-              selectedDayHighlightColor: AGLDemoColors.neonBlueColor,
-              controlsTextStyle: const TextStyle(
-                  color: AGLDemoColors.periwinkleColor, fontSize: 40),
-              weekdayLabelTextStyle: const TextStyle(
-                  color: AGLDemoColors.periwinkleColor, fontSize: 40),
-              controlsHeight: 40,
-              dayTextStylePredicate: ({required date}) {
-                return const TextStyle(
-                    color: AGLDemoColors.periwinkleColor, fontSize: 40);
-              },
-              selectedDayTextStyle:
-                  const TextStyle(color: Colors.white, fontSize: 40)),
-          value: selectedDate == "mm/dd/yyyy"
-              ? []
-              : [DateFormat().add_yMMMMd().parse(selectedDate)],
-          onValueChanged: (dates) {
-            setState(() {
-              selectedDate = DateFormat().add_yMMMMd().format(dates.first!);
-            });
-          },
+                  TextButton(
+                    child: const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Icon(
+                        Icons.arrow_forward_ios,
+                        size: 30,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _targetDateTime = DateTime(
+                            _targetDateTime.year, _targetDateTime.month + 1);
+                        _currentMonth =
+                            DateFormat.yMMM().format(_targetDateTime);
+                      });
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Container(
+          child: calendarCarouselNoHeader,
         ),
         const SizedBox(
-          height: 120,
+          height: 180,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -43,14 +43,17 @@ class TimeScreenWidgetState extends ConsumerState<TimeScreenWidget> {
 
   TextEditingController hourController = TextEditingController();
   TextEditingController minuteController = TextEditingController();
-
+  late DateTime currentTime;
   onPressed({required String type}) {
     if (type == "confirm") {
       if (hourController.text.isNotEmpty && minuteController.text.isNotEmpty) {
         String input =
             '${hourController.text}:${minuteController.text} $selectedMeridien';
         DateTime selectedeDatetime = DateFormat.jm().parse(input);
-
+        selectedeDatetime = selectedeDatetime.copyWith(
+            day: currentTime.day,
+            year: currentTime.year,
+            month: currentTime.month);
         ref
             .read(currentTimeProvider.notifier)
             .setCurrentTime(selectedeDatetime);
@@ -69,7 +72,7 @@ class TimeScreenWidgetState extends ConsumerState<TimeScreenWidget> {
 
   @override
   void initState() {
-    DateTime currentTime = ref.read(currentTimeProvider);
+    currentTime = ref.read(currentTimeProvider);
     String time = DateFormat('hh:mm a').format(currentTime);
 
     List<String> split = time.split(":");

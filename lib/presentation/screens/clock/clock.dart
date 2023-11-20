@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter_ics_homescreen/export.dart';
+import 'package:intl/intl.dart';
 
 class ClockPage extends ConsumerWidget {
   const ClockPage({super.key});
@@ -10,6 +9,7 @@ class ClockPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     double clockSize = MediaQuery.sizeOf(context).width * 0.51;
+    final currentTime = ref.watch(currentTimeProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -66,8 +66,9 @@ class ClockPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    child: const AnalogClock(
+                    child: AnalogClock(
                       dialColor: null,
+                      dateTime: currentTime,
                       markingColor: null,
                       hourNumberColor: null,
                       secondHandColor: AGLDemoColors.jordyBlueColor,
@@ -96,47 +97,21 @@ class ClockPage extends ConsumerWidget {
   }
 }
 
-class RealTimeClock extends StatefulWidget {
+class RealTimeClock extends ConsumerStatefulWidget {
   const RealTimeClock({super.key});
 
   @override
-  State<RealTimeClock> createState() => _RealTimeClockState();
+  RealTimeClockState createState() => RealTimeClockState();
 }
 
-class _RealTimeClockState extends State<RealTimeClock> {
+class RealTimeClockState extends ConsumerState<RealTimeClock> {
   late String _timeString;
-  late Timer _timer;
-
-  @override
-  void initState() {
-    _timeString = _formatDateTime(DateTime.now());
-    _timer =
-        Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void _getTime() {
-    final DateTime now = DateTime.now();
-    final String formattedDateTime = _formatDateTime(now);
-    if (mounted) {
-      setState(() {
-        _timeString = formattedDateTime;
-      });
-    }
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return "${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}";
-  }
+  DateFormat dateFormat = DateFormat('hh:mm a');
 
   @override
   Widget build(BuildContext context) {
+    final currentTime = ref.watch(currentTimeProvider);
+    _timeString = dateFormat.format(currentTime);
     return Text(
       _timeString,
       style: GoogleFonts.brunoAce(color: Colors.white, fontSize: 128),
