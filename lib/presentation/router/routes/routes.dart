@@ -1,4 +1,5 @@
 import 'package:flutter_ics_homescreen/presentation/screens/settings/settings_screens/date_time/date/date_screen.dart';
+import 'package:flutter_ics_homescreen/presentation/screens/settings/settings_screens/date_time/date/select_year.dart';
 import 'package:flutter_ics_homescreen/presentation/screens/settings/settings_screens/date_time/time/time_screen.dart';
 
 import '../../../../export.dart';
@@ -52,5 +53,7 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [DatePage.page()];
     case AppState.time:
       return [TimePage.page()];
+    case AppState.year:
+      return [SelectYearPage.page()];
   }
 }

@@ -7,8 +7,9 @@ class DateTimePage extends ConsumerWidget {
   static Page<void> page() => const MaterialPage<void>(child: DateTimePage());
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dateTime = ref.watch(dateTimeStateProvider.select((val) => val));
-    DateFormat dateFormat = DateFormat('hh:mm a');
+    DateFormat dateFormat = DateFormat().add_yMMMMd();
+    DateFormat timeFormat = DateFormat('hh:mm a');
+
     final currentime = ref.watch(currentTimeProvider);
 
     return Scaffold(
@@ -29,7 +30,7 @@ class DateTimePage extends ConsumerWidget {
                   UnitsTile(
                       image: "assets/Calendar.svg",
                       title: 'Date',
-                      unitName: dateTime.date,
+                      unitName: dateFormat.format(currentime),
                       hasSwich: false,
                       voidCallback: () async {
                         context
@@ -39,7 +40,7 @@ class DateTimePage extends ConsumerWidget {
                   UnitsTile(
                       image: "assets/Time.svg",
                       title: 'Time',
-                      unitName: dateFormat.format(currentime),
+                      unitName: timeFormat.format(currentime),
                       hasSwich: true,
                       voidCallback: () {
                         context
