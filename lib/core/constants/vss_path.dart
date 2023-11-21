@@ -10,9 +10,9 @@ class VSSPath {
   static const String vehicleMediaVolume =
       'Vehicle.Cabin.Infotainment.Media.Volume';
   static const String vehicleIsChildLockActiveLeft =
-      'Vehicle.Cabin.Door.Row1.DriverSide.IsChildLockActive';
+      'Vehicle.Cabin.Door.Row2.DriverSide.IsChildLockActive';
   static const String vehicleIsChildLockActiveRight =
-      'Vehicle.Cabin.Door.Row1.PassengerSide.IsChildLockActive';
+      'Vehicle.Cabin.Door.Row2.PassengerSide.IsChildLockActive';
   static const String vehicleEngineSpeed =
       'Vehicle.Powertrain.CombustionEngine.Speed';
   static const String vehicleFrontLeftTire =

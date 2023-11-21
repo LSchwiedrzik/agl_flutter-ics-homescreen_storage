@@ -19,8 +19,13 @@ class KuksaConfig {
   static int defaultPort = 55555;
   static String defaultCaCertPath = '/etc/kuksa-val/CA.pem';
 
-  KuksaConfig({required this.hostname, required this.port, required this.authorization,
-    required this.use_tls, required this.ca_certificate, required this.tls_server_name});
+  KuksaConfig(
+      {required this.hostname,
+      required this.port,
+      required this.authorization,
+      required this.use_tls,
+      required this.ca_certificate,
+      required this.tls_server_name});
 }
 
 class VehicleNotifier extends StateNotifier<Vehicle> {
@@ -61,13 +66,11 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           state = state.copyWith(fuelLevel: update.entry.value.uint32);
         }
         break;
-      // case VSSPath.vehicleMediaVolume:
-      //   if (update.entry.value.hasInt32()) {
-      //     ref
-      //         .read(vehicleMediaVolume.notifier)
-      //         .update((state) => state = update.entry.value.uint32);
-      //   }
-      //   break;
+      case VSSPath.vehicleMediaVolume:
+        if (update.entry.value.hasUint32()) {
+          state = state.copyWith(mediaVolume: update.entry.value.uint32);
+        }
+        break;
       case VSSPath.vehicleIsChildLockActiveLeft:
         if (update.entry.value.hasBool_12()) {
           state =
@@ -106,7 +109,6 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         }
         break;
 
-      ///
       case VSSPath.vehicleIsAirConditioningActive:
         if (update.entry.value.hasBool_12()) {
           state = state.copyWith(
@@ -177,8 +179,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
 
       if (yamlMap.containsKey('use-tls')) {
         var value = yamlMap['use-tls'];
-        if (value is bool)
-          use_tls = value;
+        if (value is bool) use_tls = value;
       }
 
       if (use_tls) {
@@ -194,7 +195,6 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
       if (yamlMap.containsKey('authorization')) {
         token = yamlMap['authorization'];
       }
-
     } catch (e) {
       //debugPrint('ERROR: Could not read from file: $configFile');
       debugPrint(e.toString());
@@ -217,8 +217,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
 
       if (yamlMap.containsKey('use-tls')) {
         var value = yamlMap['use-tls'];
-        if (value is bool)
-          use_tls = value;
+        if (value is bool) use_tls = value;
       }
       //debugPrint("Use TLS = $use_tls");
 
@@ -228,7 +227,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         }
         try {
           ca_cert = File(ca_path).readAsBytesSync();
-        } on Exception catch(_) {
+        } on Exception catch (_) {
           print("ERROR: Could not read CA certificate file $ca_path");
           ca_cert = [];
         }
@@ -248,7 +247,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           String tokenFile = token;
           try {
             token = await File(tokenFile).readAsString();
-          } on Exception catch(_) {
+          } on Exception catch (_) {
             print("ERROR: Could not read authorization token file $token");
             token = "";
           }
@@ -260,13 +259,12 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
       //debugPrint(e.toString());
     }
     return KuksaConfig(
-            hostname: hostname,
-            port: port,
-            authorization: token,
-            use_tls: use_tls,
-            ca_certificate: ca_cert,
-            tls_server_name: tls_server_name
-          );
+        hostname: hostname,
+        port: port,
+        authorization: token,
+        use_tls: use_tls,
+        ca_certificate: ca_cert,
+        tls_server_name: tls_server_name);
   }
 
   void startListen() async {
@@ -275,20 +273,19 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     if (config.use_tls && config.ca_certificate.isNotEmpty) {
       print("Using TLS");
       if (config.tls_server_name.isNotEmpty)
-        creds = ChannelCredentials.secure(certificates: config.ca_certificate,
-          authority: config.tls_server_name);
+        creds = ChannelCredentials.secure(
+            certificates: config.ca_certificate,
+            authority: config.tls_server_name);
       else
         creds = ChannelCredentials.secure(certificates: config.ca_certificate);
     } else {
       creds = ChannelCredentials.insecure();
     }
-    channel = ClientChannel(
-      config.hostname,
-      port: config.port,
-      options: ChannelOptions(credentials: creds)
-    );
+    channel = ClientChannel(config.hostname,
+        port: config.port, options: ChannelOptions(credentials: creds));
     debugPrint('Start Listen on port: ${config.port}');
     stub = VALClient(channel);
+    authorization = config.authorization;
     List<String> fewSignals = VSSPath().getSignalsList();
     var request = SubscribeRequest();
     for (int i = 0; i < fewSignals.length; i++) {
@@ -318,7 +315,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     }
   }
 
-  void setChildLock({required String side}) {
+  void setChildLock({required String side}) async {
     var helper = ValClientHelper(stub: stub, authorization: authorization);
     try {
       switch (side) {
@@ -347,6 +344,16 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     } catch (e) {
       debugPrint(e.toString());
     }
+  }
+
+  void setVolume(double newVal) {
+    state = state.copyWith(mediaVolume: newVal.toInt());
+    var helper = ValClientHelper(stub: stub, authorization: authorization);
+    helper.setUint32(
+      VSSPath.vehicleMediaVolume,
+      newVal.toInt(),
+      false,
+    );
   }
 
   void setTemperature({required Side side, required int value}) {

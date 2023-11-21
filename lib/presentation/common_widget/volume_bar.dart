@@ -14,32 +14,32 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
   @override
   void initState() {
     super.initState();
-    // "ref" can be used in all life-cycles of a StatefulWidget.
-    //ref.read(counterProvider);
   }
 
   void increaseVolume() {
+    val += 10;
+    if (val > 100) {
+      val = 100;
+    }
     setState(() {
-      if (val < 20) {
-        val++;
-        ref.read(audioStateProvider.notifier).setVolume(val);
-      }
+      ref.read(vehicleProvider.notifier).setVolume(val);
     });
   }
 
   void decreaseVolume() {
+    val -= 10;
+    if (val < 0) {
+      val = 0;
+    }
     setState(() {
-      if (val > 0) {
-        val--;
-        ref.read(audioStateProvider.notifier).setVolume(val);
-      }
+      ref.read(vehicleProvider.notifier).setVolume(val);
     });
   }
 
   void setVolume(double newWalue) {
     setState(() {
       val = newWalue;
-      ref.read(audioStateProvider.notifier).setVolume(val);
+      ref.read(vehicleProvider.notifier).setVolume(val);
     });
   }
 
@@ -48,8 +48,8 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
   @override
   Widget build(BuildContext context) {
     final volumeValue =
-        ref.watch(audioStateProvider.select((audio) => audio.volume));
-    val = volumeValue;
+        ref.watch(vehicleProvider.select((vehicle) => vehicle.mediaVolume));
+    val = volumeValue.toDouble();
     return Column(
       // mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,9 +114,9 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
                       ),
                       child: Slider(
                         min: 0,
-                        max: 20,
-                        value: volumeValue,
-                        divisions: 20,
+                        max: 100,
+                        value: volumeValue.toDouble(),
+                        divisions: 10,
                         onChanged: (newValue) {
                           setVolume(newValue);
                         },

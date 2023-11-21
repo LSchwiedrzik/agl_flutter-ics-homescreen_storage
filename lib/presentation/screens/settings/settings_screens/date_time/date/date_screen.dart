@@ -200,6 +200,9 @@ class DateScreenWidgetState extends ConsumerState<DateScreenWidget> {
         Container(
           child: calendarCarouselNoHeader,
         ),
+        Container(
+          child: calendarCarouselNoHeader,
+        ),
         const SizedBox(
           height: 180,
         ),

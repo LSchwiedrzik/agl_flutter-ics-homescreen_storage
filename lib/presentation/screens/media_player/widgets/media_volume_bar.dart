@@ -14,28 +14,30 @@ class CustomVolumeSlider extends ConsumerStatefulWidget {
 
 class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
   void _increase() {
+    _currentVal += 10;
+    if (_currentVal > 100) {
+      _currentVal = 100;
+    }
     setState(() {
-      if (_currentVal < 20) {
-        _currentVal++;
-        ref.read(audioStateProvider.notifier).setVolume(_currentVal);
-      }
+      ref.read(vehicleProvider.notifier).setVolume(_currentVal);
     });
   }
 
   void _dercrease() {
+    _currentVal -= 10;
+    if (_currentVal < 0) {
+      _currentVal = 0;
+    }
     setState(() {
-      if (_currentVal > 0) {
-        _currentVal--;
-        ref.read(audioStateProvider.notifier).setVolume(_currentVal);
-      }
+      ref.read(vehicleProvider.notifier).setVolume(_currentVal);
     });
   }
 
-  double _currentVal = 5;
+  double _currentVal = 50;
   @override
   Widget build(BuildContext context) {
     final volumeValue =
-        ref.watch(audioStateProvider.select((audio) => audio.volume));
+        ref.watch(vehicleProvider.select((audio) => audio.mediaVolume));
 
     return Column(
       //crossAxisAlignment: CrossAxisAlignment.center,
@@ -99,12 +101,12 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                     //trackHeight: 5,
                   ),
                   child: Slider(
-                    divisions: 20,
+                    divisions: 10,
                     min: 0,
-                    max: 20,
-                    value: volumeValue,
+                    max: 100,
+                    value: volumeValue.toDouble(),
                     onChanged: (newValue) {
-                      ref.read(audioStateProvider.notifier).setVolume(newValue);
+                      ref.read(vehicleProvider.notifier).setVolume(newValue);
                       _currentVal = newValue;
                     },
                   ),
