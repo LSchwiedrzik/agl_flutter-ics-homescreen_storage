@@ -18,7 +18,8 @@ class CustomTopBarState extends ConsumerState<CustomTopBar> {
   Widget build(BuildContext context) {
     final singnalsConnection =
         ref.watch(signalsProvider.select((sinals) => sinals));
-    final user = ref.watch(usersProvider.select((user) => user));
+    final userName =
+        ref.watch(usersProvider.select((user) => user.selectedUser.name));
     DateFormat dateFormat = DateFormat('hh:mm a');
     final currentime = ref.watch(currentTimeProvider);
 
@@ -44,7 +45,7 @@ class CustomTopBarState extends ConsumerState<CustomTopBar> {
                           child: SizedBox(width: 16), // 16px space
                         ),
                         TextSpan(
-                          text: user.selectedUser.name,
+                          text: userName,
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
