@@ -25,6 +25,7 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
   double controlProgress = 0.0;
   int selectedFanSpeed = 0;
   late rive.RiveAnimationController _controller;
+  bool isButtonHighlighted = false;
 
   bool _isPlaying = false;
 
@@ -90,33 +91,32 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
         Center(
             child: Container(
           margin: const EdgeInsets.only(top: 3),
-          // decoration: BoxDecoration(
-          //   shape: BoxShape.circle,
-          //   gradient: LinearGradient(
-          //       colors: !isMainACSelected
-          //           ? [
-          //               AGLDemoColors.neonBlueColor,
-          //               AGLDemoColors.neonBlueColor.withOpacity(0.2)
-          //             ]
-          //           : [
-          //               const Color.fromARGB(255, 255, 193, 193)
-          //                   .withOpacity(0.2),
-          //               const Color.fromARGB(255, 255, 193, 193)
-          //             ]),
-          //   boxShadow: isMainACSelected
-          //       ? [
-          //           BoxShadow(
-          //               offset: Offset(
-          //                   isMainACSelected ? 1 : 1, isMainACSelected ? 2 : 2),
-          //               blurRadius: isMainACSelected ? 16 : 16,
-          //               spreadRadius: 0,
-          //               color: isMainACSelected
-          //                   ? Colors.black.withOpacity(0.5)
-          //                   : Colors.black)
-          //         ]
-          //       : [],
-          // ),
-          //border: Border.all(color: Colors.white12, width: 1)),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+                colors: !isButtonHighlighted
+                    ? [
+                        AGLDemoColors.neonBlueColor,
+                        AGLDemoColors.neonBlueColor.withOpacity(0.2)
+                      ]
+                    : [
+                        AGLDemoColors.resolutionBlueColor,
+                        const Color(0xff141F64)
+                      ]),
+            boxShadow: isButtonHighlighted
+                ? [
+                    BoxShadow(
+                        offset: Offset(isButtonHighlighted ? 1 : 1,
+                            isButtonHighlighted ? 2 : 2),
+                        blurRadius: isButtonHighlighted ? 16 : 16,
+                        spreadRadius: 0,
+                        color: isButtonHighlighted
+                            ? Colors.black.withOpacity(0.5)
+                            : Colors.black)
+                  ]
+                : [],
+          ),
+          // border: Border.all(color: Colors.white12, width: 1),
           //width: 90,
           //height: 90,
           child: Container(
@@ -126,18 +126,16 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
               image: const DecorationImage(
                 image: AssetImage("assets/PlusVector.png"),
               ),
-              gradient: Gradient.lerp(gradientEnable1, gradientEnable2, 0.5),
-              // border: Border.all(
-              //     color: isMainACSelected
-              //         ? AGLDemoColors.buttonFillEnabledColor
-              //         : Colors.white12,
-              //     width: isMainACSelected ? 3 : 1),
-              border: const GradientBoxBorder(
-                width: 2,
+              border: GradientBoxBorder(
+                width: 1,
                 gradient: LinearGradient(
                   colors: [
-                    Color(0x30C1D8FF),
-                    Color(0xFFC1D8FF),
+                    isButtonHighlighted
+                        ? AGLDemoColors.neonBlueColor
+                        : AGLDemoColors.periwinkleColor.withOpacity(0.20),
+                    isButtonHighlighted
+                        ? AGLDemoColors.neonBlueColor.withOpacity(0.20)
+                        : AGLDemoColors.periwinkleColor,
                   ],
                 ),
               ),
@@ -150,6 +148,11 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   customBorder: const CircleBorder(),
+                  onHighlightChanged: (value) {
+                    setState(() {
+                      isButtonHighlighted = value;
+                    });
+                  },
                   onTap: () {
                     setState(() {
                       if (controlProgress >= 0.80) {
@@ -158,9 +161,8 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                         _isPlaying = false;
                         animationController.reverse();
                       } else {
-                        _isPlaying ? null : _controller.isActive = true;
-                        isMainACSelected = true;
                         _controller.isActive = true;
+                        isMainACSelected = true;
                         _isPlaying = true;
                         controlProgress += 0.30;
                         animationController.forward();
@@ -168,44 +170,11 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                       ref
                           .read(vehicleProvider.notifier)
                           .updateFanSpeed(controlProgress ~/ 0.3);
-
-                      // isMainACSelected = !isMainACSelected;
-                      // if (controlProgress != 0.0) {
-                      //   previousProgress = controlProgress;
-                      // }
-                      // if (isMainACSelected) {
-                      //   controlProgress = previousProgress;
-                      //   animationController.forward();
-                      // } else {
-                      //   controlProgress = 0.0;
-                      //   animationController.reverse();
-                      // }
                     });
                   },
                   onTapDown: (details) {
-                    setState(() {
-                      gradientEnable1 = LinearGradient(colors: <Color>[
-                        const Color(0xFF2962FF).withOpacity(0.15),
-                        const Color(0x802962FF).withOpacity(0.15),
-                      ]);
-                      gradientEnable2 = const LinearGradient(colors: <Color>[
-                        Color(0xFF1A237E),
-                        Color(0xFF1C2D92),
-                      ]);
-                    });
-                    //change style
                   },
                   onTapUp: (details) {
-                    setState(() {
-                      gradientEnable1 = const LinearGradient(colors: <Color>[
-                        Color(0xFF2962FF),
-                        Color(0x802962FF),
-                      ]);
-                      gradientEnable2 = const LinearGradient(colors: <Color>[
-                        Color(0xFF1A237E),
-                        Color(0xFF141F64),
-                      ]);
-                    });
                   },
                   child: Container(
                       width: size,
@@ -217,12 +186,6 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                               width: iconSize,
                               height: iconSize,
                             )
-                          // : !_isPlaying && controlProgress > 0.8
-                          //     ? SvgPicture.asset(
-                          //         "assets/ACMainButton.svg",
-                          //         width: iconSize,
-                          //         height: iconSize,
-                          //       )
                           : SizedBox(
                               width: iconSize,
                               height: iconSize,
@@ -232,16 +195,6 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
                                   onInit: (_) => setState(() {
                                         _controller.isActive = true;
                                       }))))
-                  // Container(
-                  //   width: size,
-                  //   height: size,
-                  //   alignment: Alignment.center,
-                  //   child: SvgPicture.asset(
-                  //     "assets/ACMainButton.svg",
-                  //     width: iconSize,
-                  //     height: iconSize,
-                  //   ),
-                  // ),
                   ),
             ),
           ),

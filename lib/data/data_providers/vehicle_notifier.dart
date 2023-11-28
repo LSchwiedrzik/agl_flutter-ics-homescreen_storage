@@ -158,10 +158,10 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
   Future<KuksaConfig> readConfig() async {
     String hostname = KuksaConfig.defaultHostname;
     int port = KuksaConfig.defaultPort;
-    bool use_tls = false;
-    String ca_path = KuksaConfig.defaultCaCertPath;
-    List<int> ca_cert = [];
-    String tls_server_name = "";
+    bool useTls = false;
+    String caPath = KuksaConfig.defaultCaCertPath;
+    List<int> caCert = [];
+    String tlsServerName = "";
     String token = "";
 
     // Read build time configuration from bundle
@@ -179,16 +179,18 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
 
       if (yamlMap.containsKey('use-tls')) {
         var value = yamlMap['use-tls'];
-        if (value is bool) use_tls = value;
+        if (value is bool) {
+          useTls = value;
+        }
       }
 
-      if (use_tls) {
+      if (useTls) {
         if (yamlMap.containsKey('ca-certificate')) {
-          ca_path = yamlMap['ca-certificate'];
+          caPath = yamlMap['ca-certificate'];
         }
 
         if (yamlMap.containsKey('tls-server-name')) {
-          tls_server_name = yamlMap['tls_server_name'];
+          tlsServerName = yamlMap['tls_server_name'];
         }
       }
 
@@ -217,24 +219,26 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
 
       if (yamlMap.containsKey('use-tls')) {
         var value = yamlMap['use-tls'];
-        if (value is bool) use_tls = value;
+        if (value is bool) {
+          useTls = value;
+        }
       }
       //debugPrint("Use TLS = $use_tls");
 
-      if (use_tls) {
+      if (useTls) {
         if (yamlMap.containsKey('ca-certificate')) {
-          ca_path = yamlMap['ca-certificate'];
+          caPath = yamlMap['ca-certificate'];
         }
         try {
-          ca_cert = File(ca_path).readAsBytesSync();
+          caCert = File(caPath).readAsBytesSync();
         } on Exception catch (_) {
-          print("ERROR: Could not read CA certificate file $ca_path");
-          ca_cert = [];
+          print("ERROR: Could not read CA certificate file $caPath");
+          caCert = [];
         }
         //debugPrint("CA cert = $ca_cert");
 
         if (yamlMap.containsKey('tls-server-name')) {
-          tls_server_name = yamlMap['tls_server_name'];
+          tlsServerName = yamlMap['tls_server_name'];
         }
       }
 
@@ -262,9 +266,9 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         hostname: hostname,
         port: port,
         authorization: token,
-        use_tls: use_tls,
-        ca_certificate: ca_cert,
-        tls_server_name: tls_server_name);
+        use_tls: useTls,
+        ca_certificate: caCert,
+        tls_server_name: tlsServerName);
   }
 
   void startListen() async {
@@ -272,14 +276,15 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     ChannelCredentials creds;
     if (config.use_tls && config.ca_certificate.isNotEmpty) {
       print("Using TLS");
-      if (config.tls_server_name.isNotEmpty)
+      if (config.tls_server_name.isNotEmpty) {
         creds = ChannelCredentials.secure(
             certificates: config.ca_certificate,
             authority: config.tls_server_name);
-      else
+      } else {
         creds = ChannelCredentials.secure(certificates: config.ca_certificate);
+      }
     } else {
-      creds = ChannelCredentials.insecure();
+      creds = const ChannelCredentials.insecure();
     }
     channel = ClientChannel(config.hostname,
         port: config.port, options: ChannelOptions(credentials: creds));
