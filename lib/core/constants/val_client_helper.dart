@@ -51,7 +51,7 @@ class ValClientHelper {
     request.updates.add(update);
     Map<String, String> metadata = {};
     if (authorization.isNotEmpty) {
-      metadata = {'authorization': "Bearer ${authorization}"};
+      metadata = {'authorization': "Bearer $authorization"};
     }
     await stub.set(request, options: CallOptions(metadata: metadata));
   }
