@@ -116,7 +116,6 @@ class CustomTrebleSliderState extends ConsumerState<CustomTrebleSlider> {
                   ),
                 ),
               ),
-              
               Padding(
                 padding: const EdgeInsets.only(
                   right: 40,

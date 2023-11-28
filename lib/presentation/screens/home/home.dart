@@ -11,9 +11,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class HomeScreenState extends ConsumerState<HomeScreen> {
-
-
-
   @override
   void initState() {
     super.initState();
@@ -32,7 +29,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     return Consumer(builder: (context, ref, child) {
       final state = ref.read(appProvider);
       if (disableBkgAnimation) {
-        debugPrint('Background animation: disabled');
+        print('Background animation: disabled');
       }
       return Scaffold(
         key: homeScaffoldKey,

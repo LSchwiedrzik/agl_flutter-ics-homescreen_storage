@@ -10,10 +10,10 @@ class TemperatureWidget extends ConsumerWidget {
     //     .watch(vehicleProvider.select((vehicle) => vehicle.outsideTemperature));
     final tempUnit =
         ref.watch(unitStateProvider.select((unit) => unit.temperatureUnit));
-    
+
     TextStyle temperatureTextStyle = const TextStyle(
       fontFamily: 'BrunoAce',
-      color: Colors.white, 
+      color: Colors.white,
       fontSize: 44,
     );
 
@@ -39,7 +39,8 @@ class TemperatureWidget extends ConsumerWidget {
         ),
         //color: Colors.grey,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(65), // Half of the height for an oval effect
+          borderRadius: BorderRadius.circular(
+              65), // Half of the height for an oval effect
           side: const BorderSide(
             color: Color.fromARGB(156, 0, 0, 0),
             width: 2,
@@ -76,8 +77,8 @@ class TemperatureWidget extends ConsumerWidget {
       ),
     );
   }
-  
-   Widget buildTemperatureRow(
+
+  Widget buildTemperatureRow(
     BuildContext context,
     IconData icon,
     String label,
@@ -86,58 +87,59 @@ class TemperatureWidget extends ConsumerWidget {
     TextStyle tempTextStyle,
     TextStyle unitTextStyle,
     bool isOutside,
-
   ) {
-      int temperatureAsInt = temperatureValue.toInt();
-      double convertedTemperature = tempUnit == TemperatureUnit.celsius
-          ? temperatureAsInt.toDouble()
-          : (temperatureAsInt * 9 / 5) + 32;
+    int temperatureAsInt = temperatureValue.toInt();
+    double convertedTemperature = tempUnit == TemperatureUnit.celsius
+        ? temperatureAsInt.toDouble()
+        : (temperatureAsInt * 9 / 5) + 32;
 
-      // Format the temperature for display.
-      String temperatureDisplay = tempUnit == TemperatureUnit.celsius
-          ? '$temperatureAsInt'
-          : '${convertedTemperature.toStringAsFixed(0)}'; 
+    // Format the temperature for display.
+    String temperatureDisplay = tempUnit == TemperatureUnit.celsius
+        ? '$temperatureAsInt'
+        : convertedTemperature.toStringAsFixed(0);
 
     return Padding(
-          padding: isOutside 
-        ? const EdgeInsets.only(right: 22) // Padding for the outside temperature
-        : const EdgeInsets.only(left: 12),  // Padding for the inside temperature
+      padding: isOutside
+          ? const EdgeInsets.only(
+              right: 22) // Padding for the outside temperature
+          : const EdgeInsets.only(
+              left: 12), // Padding for the inside temperature
       child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: const Color(0xFF2962FF),
-          size: 48,
-        ),
-        const SizedBox(width: 4), // Space between icon and text
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                color: Color(0xFFC1D8FF),
-                fontSize: 26,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: const Color(0xFF2962FF),
+            size: 48,
+          ),
+          const SizedBox(width: 4), // Space between icon and text
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  color: Color(0xFFC1D8FF),
+                  fontSize: 26,
+                ),
               ),
-            ),
-            RichText(
-              text: TextSpan(
-                text: temperatureDisplay,
-                style: tempTextStyle,
-                children: <TextSpan>[
-                  TextSpan(
-                    text: tempUnit == TemperatureUnit.celsius ? '°C' : '°F',
-                    style: unitTextStyle,
-                  ),
-                ],
+              RichText(
+                text: TextSpan(
+                  text: temperatureDisplay,
+                  style: tempTextStyle,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: tempUnit == TemperatureUnit.celsius ? '°C' : '°F',
+                      style: unitTextStyle,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
-    ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
