@@ -62,7 +62,6 @@ export 'core/utils/widgets/back_button.dart';
 export 'core/constants/vss_path.dart';
 export 'core/constants/val_client_helper.dart';
 export 'core/constants/constants.dart';
-export 'core/constants/paths.dart';
 //Common widgets
 export 'presentation/common_widget/settings_top_bar.dart';
 export 'presentation/common_widget/generic_button.dart';

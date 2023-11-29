@@ -12,7 +12,7 @@ class Vehicle {
   final int mediaVolume;
   final bool isChildLockActiveLeft;
   final bool isChildLockActiveRight;
-  final int engineSpeed;
+  final double engineSpeed;
   final int frontLeftTire;
   final int frontRightTire;
   final int rearLeftTire;
@@ -101,7 +101,7 @@ class Vehicle {
       int? mediaVolume,
       bool? isChildLockActiveLeft,
       bool? isChildLockActiveRight,
-      int? engineSpeed,
+      double? engineSpeed,
       int? frontLeftTire,
       int? frontRightTire,
       int? rearLeftTire,

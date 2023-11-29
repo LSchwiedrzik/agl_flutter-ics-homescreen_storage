@@ -46,7 +46,7 @@ class RPMProgressIndicatorState extends ConsumerState<RPMProgressIndicator>
             children: [
             
               Text(
-                rpm.toString(),
+                rpm.toStringAsFixed(0),
                 style: GoogleFonts.brunoAce(
                   textStyle: const TextStyle(color: Colors.white, fontSize: 44),
                 ),
@@ -87,7 +87,7 @@ class RPMProgressIndicatorState extends ConsumerState<RPMProgressIndicator>
                 width: 220,
                 child: CustomPaint(
                   foregroundPainter: CirclePainter(
-                    value: rpm.toDouble(),
+                    value: rpm,
                     maxValue: maxRpm.toDouble(),
                     isRPM: true,
                   ),

@@ -84,8 +84,8 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         }
         break;
       case VSSPath.vehicleEngineSpeed:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(engineSpeed: update.entry.value.uint32);
+        if (update.entry.value.hasFloat()) {
+          state = state.copyWith(engineSpeed: update.entry.value.float);
         }
         break;
       case VSSPath.vehicleFrontLeftTire:
@@ -135,7 +135,16 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
         break;
       case VSSPath.vehicleFanSpeed:
         if (update.entry.value.hasUint32()) {
-          state = state.copyWith(fanSpeed: update.entry.value.uint32);
+          // Convert 0-100 to local 0-3 setting
+          var value = update.entry.value.uint32;
+          var fanSpeed = 0;
+          if (value > 66)
+            fanSpeed = 3;
+          else if (value > 33)
+            fanSpeed = 2;
+          else if (value > 0)
+            fanSpeed = 1;
+          state = state.copyWith(fanSpeed: fanSpeed);
         }
         break;
       case VSSPath.vehicleDriverTemperature:
@@ -293,20 +302,20 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     authorization = config.authorization;
     List<String> fewSignals = VSSPath().getSignalsList();
     var request = SubscribeRequest();
+    Map<String, String> metadata = {};
+    if (authorization.isNotEmpty) {
+      metadata = {'authorization': "Bearer ${authorization}"};
+    }
     for (int i = 0; i < fewSignals.length; i++) {
       var entry = SubscribeEntry();
       entry.path = fewSignals[i];
       entry.fields.add(Field.FIELD_PATH);
       entry.fields.add(Field.FIELD_VALUE);
       request.entries.add(entry);
-      // _stub.subscribe(request).listen((value) async {
-      //   //debugPrint(value.toString());
-      // });
     }
     try {
-      Map<String, String> metadata = {};
-      //var responseStream = _stub.subscribe(request);
-      stub.subscribe(request).listen((value) async {
+      var responseStream = stub.subscribe(request, options: CallOptions(metadata: metadata));
+      responseStream.listen((value) async {
         for (var update in value.updates) {
           if (!(update.hasEntry() && update.entry.hasPath())) continue;
           handleSignalsUpdate(update);
@@ -357,7 +366,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     helper.setUint32(
       VSSPath.vehicleMediaVolume,
       newVal.toInt(),
-      false,
+      true,
     );
   }
 
@@ -369,7 +378,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setInt32(
             VSSPath.vehicleDriverTemperature,
             value,
-            false,
+            true,
           );
           state = state.copyWith(driverTemperature: value);
           break;
@@ -377,7 +386,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setInt32(
             VSSPath.vehiclePassengerTemperature,
             value,
-            false,
+            true,
           );
           state = state.copyWith(passengerTemperature: value);
           break;
@@ -391,6 +400,27 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
   }
 
   void updateFanSpeed(int newValue) {
+    // Convert local 0-3 setting to the 0-100 the VSS signal expects
+    var targetFanSpeed = 0;
+    switch (newValue) {
+      case 1:
+        targetFanSpeed = 33;
+        break;
+      case 2:
+        targetFanSpeed = 66;
+        break;
+      case 3:
+        targetFanSpeed = 100;
+      case 0:
+      default:
+        break;
+    }
+    var helper = ValClientHelper(stub: stub, authorization: authorization);
+    helper.setUint32(
+      VSSPath.vehicleFanSpeed,
+      targetFanSpeed,
+      true,
+    );
     state = state.copyWith(fanSpeed: newValue);
   }
 
@@ -402,7 +432,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setBool(
             VSSPath.vehicleIsAirConditioningActive,
             !state.isAirConditioningActive,
-            false,
+            true,
           );
           state = state.copyWith(
               isAirConditioningActive: !state.isAirConditioningActive);
@@ -411,7 +441,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setBool(
             VSSPath.vehicleIsFrontDefrosterActive,
             !state.isFrontDefrosterActive,
-            false,
+            true,
           );
           state = state.copyWith(
               isFrontDefrosterActive: !state.isFrontDefrosterActive);
@@ -420,7 +450,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setBool(
             VSSPath.vehicleIsRearDefrosterActive,
             !state.isRearDefrosterActive,
-            false,
+            true,
           );
           state = state.copyWith(
               isRearDefrosterActive: !state.isRearDefrosterActive);
@@ -429,7 +459,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
           helper.setBool(
             VSSPath.vehicleIsRecirculationActive,
             !state.isRecirculationActive,
-            false,
+            true,
           );
           state = state.copyWith(
               isRecirculationActive: !state.isRecirculationActive);
@@ -452,7 +482,7 @@ class VehicleNotifier extends StateNotifier<Vehicle> {
     var range = state.range;
     var psi = state.frontLeftTire;
     var actualSpeed = 0.0;
-    var actualRpm = 0;
+    var actualRpm = 0.0;
     var actualFuelLevel = 0.0;
     var actualInsideTemp = 0.0;
     var actualOutsideTemp = 0.0;
