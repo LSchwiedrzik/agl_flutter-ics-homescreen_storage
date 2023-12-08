@@ -5,6 +5,7 @@ import '../../export.dart';
 @immutable
 class Vehicle {
   final double speed;
+  final double engineSpeed;
   final double insideTemperature;
   final double outsideTemperature;
   final int range;
@@ -12,7 +13,6 @@ class Vehicle {
   final int mediaVolume;
   final bool isChildLockActiveLeft;
   final bool isChildLockActiveRight;
-  final double engineSpeed;
   final int frontLeftTire;
   final int frontRightTire;
   final int rearLeftTire;
@@ -24,9 +24,11 @@ class Vehicle {
   final int fanSpeed;
   final int driverTemperature;
   final int passengerTemperature;
+  final bool temperatureSynced;
 
   const Vehicle(
       this.speed,
+      this.engineSpeed,
       this.insideTemperature,
       this.outsideTemperature,
       this.range,
@@ -34,7 +36,6 @@ class Vehicle {
       this.mediaVolume,
       this.isChildLockActiveLeft,
       this.isChildLockActiveRight,
-      this.engineSpeed,
       this.frontLeftTire,
       this.frontRightTire,
       this.rearLeftTire,
@@ -43,13 +44,15 @@ class Vehicle {
       this.isFrontDefrosterActive,
       this.isRearDefrosterActive,
       this.isRecirculationActive,
-    this.fanSpeed,
-    this.driverTemperature,
-    this.passengerTemperature,
+      this.fanSpeed,
+      this.driverTemperature,
+      this.passengerTemperature,
+      this.temperatureSynced,
   );
 
   const Vehicle.initial()
       : speed = 0,
+        engineSpeed = 0,
         insideTemperature = 0,
         outsideTemperature = 0,
         range = 0,
@@ -57,7 +60,6 @@ class Vehicle {
         mediaVolume = 50,
         isChildLockActiveLeft = false,
         isChildLockActiveRight = true,
-        engineSpeed = 0,
         frontLeftTire = 33,
         frontRightTire = 31,
         rearLeftTire = 31,
@@ -68,10 +70,12 @@ class Vehicle {
         isRecirculationActive = false,
         fanSpeed = 0,
         driverTemperature = 26,
-        passengerTemperature = 26;
+        passengerTemperature = 26,
+        temperatureSynced = true;
 
   const Vehicle.initialForDebug()
       : speed = 60,
+        engineSpeed = 6500,
         insideTemperature = 25,
         outsideTemperature = 32.0,
         range = 21,
@@ -79,7 +83,6 @@ class Vehicle {
         mediaVolume = 50,
         isChildLockActiveLeft = false,
         isChildLockActiveRight = true,
-        engineSpeed = 6500,
         frontLeftTire = 33,
         frontRightTire = 31,
         rearLeftTire = 31,
@@ -90,10 +93,12 @@ class Vehicle {
         isRecirculationActive = false,
         fanSpeed = 0,
         driverTemperature = 26,
-        passengerTemperature = 26;
+        passengerTemperature = 26,
+        temperatureSynced = true;
 
   Vehicle copyWith(
       {double? speed,
+      double? engineSpeed,
       double? insideTemperature,
       double? outsideTemperature,
       int? range,
@@ -101,7 +106,6 @@ class Vehicle {
       int? mediaVolume,
       bool? isChildLockActiveLeft,
       bool? isChildLockActiveRight,
-      double? engineSpeed,
       int? frontLeftTire,
       int? frontRightTire,
       int? rearLeftTire,
@@ -110,12 +114,14 @@ class Vehicle {
       bool? isFrontDefrosterActive,
       bool? isRearDefrosterActive,
       bool? isRecirculationActive,
-    int? fanSpeed,
-    int? driverTemperature,
-    int? passengerTemperature,
+      int? fanSpeed,
+      int? driverTemperature,
+      int? passengerTemperature,
+      bool? temperatureSynced,
   }) {
     return Vehicle(
         speed ?? this.speed,
+        engineSpeed ?? this.engineSpeed,
         insideTemperature ?? this.insideTemperature,
         outsideTemperature ?? this.outsideTemperature,
         range ?? this.range,
@@ -123,7 +129,6 @@ class Vehicle {
         mediaVolume ?? this.mediaVolume,
         isChildLockActiveLeft ?? this.isChildLockActiveLeft,
         isChildLockActiveRight ?? this.isChildLockActiveRight,
-        engineSpeed ?? this.engineSpeed,
         frontLeftTire ?? this.frontLeftTire,
         frontRightTire ?? this.frontRightTire,
         rearLeftTire ?? this.rearLeftTire,
@@ -132,15 +137,17 @@ class Vehicle {
         isFrontDefrosterActive ?? this.isFrontDefrosterActive,
         isRearDefrosterActive ?? this.isRearDefrosterActive,
         isRecirculationActive ?? this.isRecirculationActive,
-      fanSpeed ?? this.fanSpeed,
-      driverTemperature ?? this.driverTemperature,
-      passengerTemperature ?? this.passengerTemperature,
+        fanSpeed ?? this.fanSpeed,
+        driverTemperature ?? this.driverTemperature,
+        passengerTemperature ?? this.passengerTemperature,
+        temperatureSynced ?? this.temperatureSynced,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'speed': speed,
+      'engineSpeed': engineSpeed,
       'insideTemperature': insideTemperature,
       'outsideTemperature': outsideTemperature,
       'range': range,
@@ -148,7 +155,6 @@ class Vehicle {
       'mediaVolume': mediaVolume,
       'isChildLockActiveLeft': isChildLockActiveLeft,
       'isChildLockActiveRight': isChildLockActiveRight,
-      'engineSpeed': engineSpeed,
       'frontLeftTire': frontLeftTire,
       'frontRightTire': frontRightTire,
       'rearLeftTire': rearLeftTire,
@@ -160,12 +166,14 @@ class Vehicle {
       'fanSpeed': fanSpeed,
       'driverTemperature': driverTemperature,
       'passengerTemperature': passengerTemperature,
+      'temperatureSynced': temperatureSynced,
     };
   }
 
   factory Vehicle.fromMap(Map<String, dynamic> map) {
     return Vehicle(
       map['speed']?.toDouble() ?? 0.0,
+      map['engineSpeed']?.toDouble() ?? 0.0,
       map['insideTemperature']?.toDouble() ?? 0.0,
       map['outsideTemperature']?.toDouble() ?? 0.0,
       map['range']?.toInt() ?? 0,
@@ -173,7 +181,6 @@ class Vehicle {
       map['mediaVolume']?.toInt() ?? 0,
       map['isChildLockActiveLeft'] ?? false,
       map['isChildLockActiveRight'] ?? false,
-      map['engineSpeed']?.toInt() ?? 0,
       map['frontLeftTire']?.toInt() ?? 0,
       map['frontRightTire']?.toInt() ?? 0,
       map['rearLeftTire']?.toInt() ?? 0,
@@ -185,6 +192,7 @@ class Vehicle {
       map['fanSpeed'] ?? 0,
       map['driverTemperature'] ?? 0,
       map['passengerTemperature'] ?? 0,
+      map['temperatureSynced'] ?? false,
     );
   }
 
@@ -222,7 +230,8 @@ class Vehicle {
         other.isRecirculationActive == isRecirculationActive &&
         other.fanSpeed == fanSpeed &&
         other.driverTemperature == driverTemperature &&
-        other.passengerTemperature == passengerTemperature;
+        other.passengerTemperature == passengerTemperature &&
+        other.temperatureSynced == temperatureSynced;
   }
 
   @override
@@ -246,7 +255,8 @@ class Vehicle {
         isRecirculationActive.hashCode ^
         fanSpeed.hashCode ^
         driverTemperature.hashCode ^
-        passengerTemperature.hashCode;
+        passengerTemperature.hashCode ^
+        temperatureSynced.hashCode;
   }
 // }
 // /  class VehicleNotifier extends StateNotifier<Vehicle> {

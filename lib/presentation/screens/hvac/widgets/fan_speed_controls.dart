@@ -69,8 +69,7 @@ class FanSpeedControlsState extends ConsumerState<FanSpeedControls>
 
     double iconSize = 80;
 
-    final vehicle = ref.watch(vehicleProvider.select((vehicle) => vehicle));
-    selectedFanSpeed = vehicle.fanSpeed;
+    int selectedFanSpeed = ref.watch(vehicleProvider.select((vehicle) => vehicle.fanSpeed));
     controlProgress = selectedFanSpeed * 0.3;
 
     return Stack(

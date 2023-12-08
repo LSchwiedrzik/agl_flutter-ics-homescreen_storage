@@ -13,15 +13,8 @@ class HVACState extends ConsumerState<HVAC> {
   bool isFanFocusLeftBottomSelected = true;
   bool isFanFocusRightBottomSelected = false;
 
-  late bool isACSelected;
-  bool isSYNCSelected = true;
-  late bool isFrontDefrostSelected;
   bool isAutoSelected = true;
-  late bool isRecirculationSelected;
-  late bool isRearDefrostSelected;
 
-  int temperatureLeft = 26;
-  int temperatureRight = 26;
   @override
   void initState() {
     super.initState();
@@ -52,14 +45,12 @@ class HVACState extends ConsumerState<HVAC> {
 
   @override
   Widget build(BuildContext context) {
-    final vehicle = ref.watch(vehicleProvider.select((vehicle) => vehicle));
-    isACSelected = vehicle.isAirConditioningActive;
-    isFrontDefrostSelected = vehicle.isFrontDefrosterActive;
-    isRearDefrostSelected = vehicle.isRearDefrosterActive;
-    isRecirculationSelected = vehicle.isRecirculationActive;
+    bool isACSelected = ref.watch(vehicleProvider.select((vehicle) => vehicle.isAirConditioningActive));
+    bool isFrontDefrostSelected = ref.watch(vehicleProvider.select((vehicle) => vehicle.isFrontDefrosterActive));
+    bool isRearDefrostSelected = ref.watch(vehicleProvider.select((vehicle) => vehicle.isRearDefrosterActive));
+    bool isRecirculationSelected = ref.watch(vehicleProvider.select((vehicle) => vehicle.isRecirculationActive));
+    bool isSYNCSelected = ref.watch(vehicleProvider.select((vehicle) => vehicle.temperatureSynced));
     Size size = MediaQuery.sizeOf(context);
-    temperatureLeft = vehicle.driverTemperature;
-    temperatureRight = vehicle.passengerTemperature;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -155,14 +146,8 @@ class HVACState extends ConsumerState<HVAC> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            TemperatureControl(
-              temperature: temperatureLeft,
-              side: Side.left,
-            ),
-            TemperatureControl(
-              temperature: temperatureRight,
-              side: Side.right,
-            )
+            TemperatureControl(side: Side.left),
+            TemperatureControl(side: Side.right)
           ],
         ),
         const SizedBox(
@@ -190,9 +175,15 @@ class HVACState extends ConsumerState<HVAC> {
                 )),
             ClimateControls(
                 onPressed: () {
-                  setState(() {
-                    isSYNCSelected = !isSYNCSelected;
-                  });
+                  if (!isSYNCSelected) {
+                    int temperature = ref.read(vehicleProvider.select((vehicle) => vehicle.driverTemperature));
+                    ref
+                        .read(vehicleProvider.notifier)
+                        .setTemperature(side: Side.right, value: temperature);
+                  }
+                  ref
+                      .read(vehicleProvider.notifier)
+                      .setTemperatureSynced(!isSYNCSelected);
                 },
                 isSelected: isSYNCSelected,
                 child: Text(

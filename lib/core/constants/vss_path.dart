@@ -1,5 +1,7 @@
 class VSSPath {
   static const String vehicleSpeed = 'Vehicle.Speed';
+  static const String vehicleEngineSpeed =
+      'Vehicle.Powertrain.CombustionEngine.Speed';
   static const String vehicleInsideTemperature =
       'Vehicle.Cabin.HVAC.AmbientAirTemperature';
   static const String vehicleOutsideTemperature =
@@ -13,8 +15,6 @@ class VSSPath {
       'Vehicle.Cabin.Door.Row2.DriverSide.IsChildLockActive';
   static const String vehicleIsChildLockActiveRight =
       'Vehicle.Cabin.Door.Row2.PassengerSide.IsChildLockActive';
-  static const String vehicleEngineSpeed =
-      'Vehicle.Powertrain.CombustionEngine.Speed';
   static const String vehicleFrontLeftTire =
       'Vehicle.Chassis.Axle.Row1.Wheel.Left.Tire.Pressure';
   static const String vehicleFrontRightTire =
@@ -41,6 +41,7 @@ class VSSPath {
   List<String> getSignalsList() {
     return const [
       vehicleSpeed,
+      vehicleEngineSpeed,
       vehicleInsideTemperature,
       vehicleOutsideTemperature,
       vehicleRange,
@@ -48,7 +49,6 @@ class VSSPath {
       vehicleMediaVolume,
       vehicleIsChildLockActiveLeft,
       vehicleIsChildLockActiveRight,
-      vehicleEngineSpeed,
       vehicleFrontLeftTire,
       vehicleFrontRightTire,
       vehicleRearLeftTire,

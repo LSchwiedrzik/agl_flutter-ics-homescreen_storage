@@ -6,8 +6,7 @@ enum Side { left, right }
 
 class TemperatureControl extends ConsumerStatefulWidget {
   const TemperatureControl(
-      {super.key, required this.temperature, required this.side});
-  final int temperature;
+      {super.key, required this.side});
   final Side side;
 
   @override
@@ -16,48 +15,57 @@ class TemperatureControl extends ConsumerStatefulWidget {
 
 class TemperatureControlState extends ConsumerState<TemperatureControl> {
   late Timer tempButtonTimer;
-  int temperature = 0;
   bool isUpButtonHighlighted = false;
   bool isDownButtonHighlighted = false;
 
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      temperature = widget.temperature;
-    });
-  }
-
   onPressed({required String type, required Side side}) {
-    setState(() {
-      if (type == "add") {
-        temperature = temperature + 1;
-      } else if (type == "subtract") {
-        temperature = temperature - 1;
-      }
-      // limit the temperature to 60-100F
-      if (temperature <= 15) {
-        temperature = 15;
-      } else if (temperature >= 38) {
-        temperature = 38;
-      }
-      if (widget.side == Side.left) {
-        ref
-            .read(vehicleProvider.notifier)
-            .setTemperature(side: Side.left, value: temperature);
-      } else {
+    int temperature = 0;
+    if (side == Side.left) {
+      temperature = ref.read(vehicleProvider.select((vehicle) => vehicle.driverTemperature));
+    } else {
+      temperature = ref.read(vehicleProvider.select((vehicle) => vehicle.passengerTemperature));
+    }
+    if (type == "add") {
+      temperature = temperature + 1;
+    } else if (type == "subtract") {
+      temperature = temperature - 1;
+    }
+    // limit the temperature to 60-100F
+    if (temperature <= 15) {
+      temperature = 15;
+    } else if (temperature >= 38) {
+      temperature = 38;
+    }
+    bool isSynced = ref.read(vehicleProvider.select((vehicle) => vehicle.temperatureSynced));
+    if (widget.side == Side.left) {
+      ref
+          .read(vehicleProvider.notifier)
+          .setTemperature(side: Side.left, value: temperature);
+      if (isSynced) {
         ref
             .read(vehicleProvider.notifier)
             .setTemperature(side: Side.right, value: temperature);
       }
-    });
+    } else {
+      if (isSynced) {
+        ref
+            .read(vehicleProvider.notifier)
+            .setTemperatureSynced(false);
+      }
+      ref
+          .read(vehicleProvider.notifier)
+          .setTemperature(side: Side.right, value: temperature);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    //final temperature = ref.watch(vehicleProvider.select((vehicle) => vehicle));
-    // final outsideTemperature = ref
-    //     .watch(vehicleProvider.select((vehicle) => vehicle.outsideTemperature));
+    int temperature = 0;
+    if (widget.side == Side.left) {
+      temperature = ref.watch(vehicleProvider.select((vehicle) => vehicle.driverTemperature));
+    } else {
+      temperature = ref.watch(vehicleProvider.select((vehicle) => vehicle.passengerTemperature));
+    }
     final tempUnit =
         ref.watch(unitStateProvider.select((unit) => unit.temperatureUnit));
 
