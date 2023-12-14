@@ -43,7 +43,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     state = state.copyWith(hybridState: hybridState);
   }
 
-  void updateHybridState() {
+  void updateHybridState(double speed, double engineSpeed, bool brake) {
     // Variable to store the current state
     HybridState currentState = state.hybridState;
 
@@ -56,38 +56,25 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     // Variable for storing the average value of RPM
     double avgRpm = 0.0;
 
-    // Variable to store the brake value state
-    bool brake = false;
-
-    // Collect 10 samples
-    for (int i = 0; i < 10; i++) {
-      // Get the current values for speed, engine rpm and brake status
-
-      // speed = vehicleProvider();
-      // rpm = _rpmFromServer();
-      // brake = _brakeFromServer();
-
-      // Calculate the average speed value
-      // avgSpeed = (avgSpeed * (i + 1) + speed) / (i + 2);
-
-      // Calculate the average engine rpm
-      // avgRpm = (avgRpm * (i + 1) + rpm) / (i + 2);
+ 
+    if (speed == 0 && engineSpeed == 0) {
+      // Set idle state.
+      currentState = HybridState.idle;
+    } else if (engineSpeed > 0 && speed > 0) {
+      // Set stan na engine output state..
+      currentState = HybridState.engineOutput;
+    } else if (speed < 0 && brake) {
+      // Set  regenerative breaking state
+      currentState = HybridState.regenerativeBreaking;
+    } else if (speed > 0 && engineSpeed <= 0) {
+      // Set battery output state
+      currentState = HybridState.baterryOutput;
     }
-
-    // define new state
-    // if (avgSpeed == 0 && avgRpm == 0) {
-    //   currentState = HybridState.idle;
-    // } else if (avgRpm > 0 && avgSpeed > 0) {
-    //   currentState = HybridState.engineOutput;
-    // } else if (avgRpm == 0 && brake) {
-    //   currentState = HybridState.regenerativeBreaking;
-    // } else if (avgSpeed > 0 && avgRpm <= avgSpeed) {
-    //   currentState = HybridState.baterryOutput;
-    // }
 
     // Update hybrid state
     if (currentState != previousState) {
-      state = state.copyWith(hybridState: currentState);
+      //state = state.copyWith(hybridState: currentState);
+      setHybridState(currentState);
     }
   }
 }

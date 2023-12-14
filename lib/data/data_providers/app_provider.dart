@@ -54,7 +54,8 @@ final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
   return UsersNotifier(Users.initial());
 });
 
-final hybridtateProvider = StateNotifierProvider<HybridNotifier, Hybrid>((ref) {
+final hybridStateProvider =
+    StateNotifierProvider<HybridNotifier, Hybrid>((ref) {
   return HybridNotifier(const Hybrid.initial());
 });
 
@@ -62,3 +63,4 @@ final currentTimeProvider =
     StateNotifierProvider<CurrentTimeNotifier, DateTime>((ref) {
   return CurrentTimeNotifier();
 });
+

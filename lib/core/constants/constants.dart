@@ -10,6 +10,7 @@ const maxRpm = 8000;
 final GlobalKey<ScaffoldState> homeScaffoldKey = GlobalKey();
 const debugDisplay = bool.fromEnvironment('DEBUG_DISPLAY');
 const disableBkgAnimation = bool.fromEnvironment('DISABLE_BKG_ANIMATION');
+const randomHybridAnimation = bool.fromEnvironment('RANDOM_HYBRID_ANIMATION');
 
 
 

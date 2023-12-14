@@ -21,7 +21,7 @@ class TopArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(0, -0.75),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridtateProvider.select((hybrid) => hybrid));
+        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
         Widget? widget;
         switch (state.topArrowState) {
           case ArrowState.blue:
@@ -56,7 +56,7 @@ class LeftArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(-0.7, 0.5),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridtateProvider.select((hybrid) => hybrid));
+        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
         Widget? widget;
         switch (state.leftArrowState) {
           case ArrowState.blue:
@@ -92,7 +92,7 @@ class RightArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(0.70, 0.5),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridtateProvider.select((hybrid) => hybrid));
+        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
 
         Widget? widget;
         switch (state.rightArrowState) {
@@ -131,7 +131,7 @@ class BatteryHybrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final batteryState =
-        ref.watch(hybridtateProvider.select((hybrid) => hybrid.batteryState));
+        ref.watch(hybridStateProvider.select((hybrid) => hybrid.batteryState));
     return Align(
       alignment: const Alignment(0, 0.8),
       child: SvgPicture.asset(
