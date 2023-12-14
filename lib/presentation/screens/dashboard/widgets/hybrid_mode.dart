@@ -1,29 +1,36 @@
 import 'package:flutter_ics_homescreen/export.dart';
 
-class HybridModel extends StatefulWidget {
+class HybridModel extends ConsumerStatefulWidget {
   const HybridModel({super.key});
 
   @override
-  State<HybridModel> createState() => _HybridModelState();
+  HybridModelState createState() => HybridModelState();
 }
 
-class _HybridModelState extends State<HybridModel> {
+class HybridModelState extends ConsumerState<HybridModel> {
+
   @override
   Widget build(BuildContext context) {
-
-    return GestureDetector(
-      child: const SizedBox(
-        width: 500,
-        height: 500,
-        child: Stack(
-          children: [
-            HybridBackround(),
-            TopArrow(),
-            LeftArrow(),
-            RightArrow(),
-            BatteryHybrid(),
-          ],
-        ),
+    if (!randomHybridAnimation) {
+      ref.listen<Vehicle>(vehicleProvider, (Vehicle? previous, Vehicle next) {
+        ref.watch(hybridStateProvider.notifier).updateHybridState(
+            next.speed,
+            next.engineSpeed,
+            false); //TODO get brake value and improve state logic
+      });
+    }
+    
+    return const SizedBox(
+      width: 500,
+      height: 500,
+      child: Stack(
+        children: [
+          HybridBackround(),
+          TopArrow(),
+          LeftArrow(),
+          RightArrow(),
+          BatteryHybrid(),
+        ],
       ),
     );
   }

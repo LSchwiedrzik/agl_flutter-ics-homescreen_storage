@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter_ics_homescreen/export.dart';
@@ -14,6 +15,7 @@ class DashBoardState extends ConsumerState<DashBoard>
   late AnimationController _animationController;
   late Animation<double> _animation;
   static bool _isAnimationPlayed = false;
+  late Timer timer;
 
   @override
   void initState() {
@@ -36,11 +38,21 @@ class DashBoardState extends ConsumerState<DashBoard>
         _isAnimationPlayed = true;
       });
     }
+
+    if (randomHybridAnimation) {
+      timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+        Random random = Random();
+        int randomState = random.nextInt(4);
+        var hybridState = HybridState.values[randomState];
+        ref.read(hybridStateProvider.notifier).setHybridState(hybridState);
+      });
+    }
   }
 
   @override
   void dispose() {
     _animationController.dispose();
+    timer.cancel();
     super.dispose();
   }
 
@@ -58,11 +70,11 @@ class DashBoardState extends ConsumerState<DashBoard>
 
     Widget fadeContent = FadeTransition(
         opacity: _animation,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               //mainAxisSize: MainAxisSize.max,
               children: [
@@ -71,24 +83,15 @@ class DashBoardState extends ConsumerState<DashBoard>
                 FuelProgressIndicator(),
               ],
             ),
-            GestureDetector(
-                onTap: () {
-                  Random random = Random();
-                  int randomState = random.nextInt(4);
-                  var hybridState = HybridState.values[randomState];
-                  ref
-                      .read(hybridtateProvider.notifier)
-                      .setHybridState(hybridState);
-                },
-                child: const HybridModel()),
-            const Row(
+            HybridModel(),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TemperatureWidget(),
                 RangeWidget(),
               ],
             ),
-            const CarStatus(),
+            CarStatus(),
           ],
         ));
 
