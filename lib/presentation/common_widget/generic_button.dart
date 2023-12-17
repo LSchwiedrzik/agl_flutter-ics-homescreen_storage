@@ -1,14 +1,14 @@
 import 'package:flutter_ics_homescreen/export.dart';
 
 class GenericButton extends StatefulWidget {
-  final double heigth;
+  final double height;
   final double width;
   final String text;
   final Function onTap;
 
   const GenericButton({
     super.key,
-    required this.heigth,
+    required this.height,
     required this.width,
     required this.text,
     required this.onTap,
@@ -57,7 +57,7 @@ class _GenericButtonState extends State<GenericButton> {
         widget.onTap();
       },
       child: Container(
-        height: widget.heigth,
+        height: widget.height,
         width: widget.width,
         decoration: BoxDecoration(
           gradient: Gradient.lerp(gradientEnable1, gradientEnable2, 0.5),

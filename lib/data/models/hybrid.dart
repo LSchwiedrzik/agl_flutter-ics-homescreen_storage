@@ -2,7 +2,7 @@ enum HybridState {
   idle,
   engineOutput,
   regenerativeBreaking,
-  baterryOutput,
+  batteryOutput,
 }
 
 enum ArrowState { blue, red, green, yellow }

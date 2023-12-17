@@ -1,7 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
 
-class HybridBackround extends StatelessWidget {
-  const HybridBackround({
+class HybridBackground extends StatelessWidget {
+  const HybridBackground({
     super.key,
   });
 
@@ -21,9 +21,9 @@ class TopArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(0, -0.75),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
+        final arrowState = ref.watch(hybridStateProvider.select((hybrid) => hybrid.topArrowState));
         Widget? widget;
-        switch (state.topArrowState) {
+        switch (arrowState) {
           case ArrowState.blue:
             widget = SvgPicture.asset(
               'animations/hybrid_model/top_blue.svg',
@@ -56,9 +56,9 @@ class LeftArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(-0.7, 0.5),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
+        final arrowState = ref.watch(hybridStateProvider.select((hybrid) => hybrid.leftArrowState));
         Widget? widget;
-        switch (state.leftArrowState) {
+        switch (arrowState) {
           case ArrowState.blue:
             widget = SvgPicture.asset(
               'animations/hybrid_model/left_blue.svg',
@@ -92,10 +92,10 @@ class RightArrow extends StatelessWidget {
     return Align(
       alignment: const Alignment(0.70, 0.5),
       child: Consumer(builder: (context, ref, child) {
-        final state = ref.watch(hybridStateProvider.select((hybrid) => hybrid));
+        final arrowState = ref.watch(hybridStateProvider.select((hybrid) => hybrid.rightArrowState));
 
         Widget? widget;
-        switch (state.rightArrowState) {
+        switch (arrowState) {
           case ArrowState.blue:
             widget = SvgPicture.asset(
               'animations/hybrid_model/right_blue.svg',

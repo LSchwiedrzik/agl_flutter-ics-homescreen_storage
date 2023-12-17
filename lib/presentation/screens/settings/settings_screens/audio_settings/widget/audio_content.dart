@@ -16,22 +16,26 @@ class AudioContent extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                CustomBalanceSlider(),
+                SizedBox(
+                  height: 60,
+                ),
+                CustomFaderSlider(),
+                SizedBox(
+                  height: 60,
+                ),
                 CustomTrebleSlider(),
                 SizedBox(
-                  height: 120,
+                  height: 60,
                 ),
                 CustomBassSlider(),
-                SizedBox(
-                  height: 120,
-                ),
-                CustomRearFrontSlider(),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 150),
             child: GenericButton(
-              heigth: 130,
+              height: 130,
               width: 420,
               text: 'Reset to Default',
               onTap: () {

@@ -4,6 +4,7 @@ import 'package:flutter_ics_homescreen/data/data_providers/time_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/val_client.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import '../models/users.dart';
@@ -36,9 +37,15 @@ enum AppState {
 }
 
 final appProvider = StateProvider<AppState>((ref) => AppState.splash);
-final vehicleProvider = StateNotifierProvider<VehicleNotifier, Vehicle>((ref) {
-  return VehicleNotifier(const Vehicle.initial());
+
+final valClientProvider = Provider((ref) {
+  KuksaConfig config = ref.watch(appConfigProvider).kuksaConfig;
+  return ValClient(config: config, ref: ref);
 });
+
+final vehicleProvider =
+    NotifierProvider<VehicleNotifier, Vehicle>(VehicleNotifier.new);
+
 final signalsProvider = StateNotifierProvider<SignalNotifier, Signals>((ref) {
   return SignalNotifier(const Signals.initial());
 });
@@ -46,9 +53,9 @@ final signalsProvider = StateNotifierProvider<SignalNotifier, Signals>((ref) {
 final unitStateProvider = StateNotifierProvider<UnitsNotifier, Units>((ref) {
   return UnitsNotifier(const Units.initial());
 });
-final audioStateProvider = StateNotifierProvider<AudioNotifier, Audio>((ref) {
-  return AudioNotifier(const Audio.initial());
-});
+
+final audioStateProvider =
+    NotifierProvider<AudioNotifier, Audio>(AudioNotifier.new);
 
 final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
   return UsersNotifier(Users.initial());

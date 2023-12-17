@@ -28,6 +28,8 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   ) {
     return Consumer(builder: (context, ref, child) {
       final state = ref.read(appProvider);
+      final bool disableBkgAnimation =
+          ref.read(appConfigProvider).disableBkgAnimation;
       if (disableBkgAnimation) {
         print('Background animation: disabled');
       }

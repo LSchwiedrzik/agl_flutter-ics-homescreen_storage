@@ -1,6 +1,292 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter_ics_homescreen/presentation/custom_icons/custom_icons.dart';
 
+class CustomBalanceSlider extends ConsumerStatefulWidget {
+  const CustomBalanceSlider({
+    super.key,
+  });
+
+  @override
+  CustomBalanceState createState() => CustomBalanceState();
+}
+
+class CustomBalanceState extends ConsumerState<CustomBalanceSlider> {
+  bool isPressed = false;
+
+  void _increase() {
+    setState(() {
+      if (_currentVal < 10) {
+        _currentVal++;
+        ref.read(audioStateProvider.notifier).setBalance(_currentVal);
+      }
+    });
+  }
+
+  void _decrease() {
+    setState(() {
+      if (_currentVal > 0) {
+        _currentVal--;
+        ref.read(audioStateProvider.notifier).setBalance(_currentVal);
+      }
+    });
+  }
+
+  double _currentVal = 5;
+  @override
+  Widget build(BuildContext context) {
+    final balanceValue =
+        ref.watch(audioStateProvider.select((audio) => audio.balance));
+    return Column(
+      //crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'Balance',
+            style: TextStyle(fontSize: 40),
+          ),
+        ),
+        Container(
+          width: 792,
+          height: 160,
+          decoration: const ShapeDecoration(
+            gradient: LinearGradient(
+              colors: <Color>[
+                AGLDemoColors.neonBlueColor,
+                AGLDemoColors.resolutionBlueColor,
+                Color.fromARGB(127, 20, 31, 100),
+                Color(0xFF2962FF)
+              ],
+              stops: [0, 0, 1, 1],
+            ),
+            shape: StadiumBorder(
+                side: BorderSide(
+              color: Color(0xFF5477D4),
+              width: 1,
+            )),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: InkWell(
+                    onTap: () {
+                      _decrease();
+                    },
+                    child: Text(
+                      'LEFT',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    )),
+              ),
+              SizedBox(
+                width: 584,
+                child: SliderTheme(
+                  data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                    trackShape: CustomRoundedRectSliderTrackShape(
+                        sliderVal: balanceValue, isFrontRear: true),
+                    activeTickMarkColor: Colors.transparent,
+                    inactiveTickMarkColor: Colors.transparent,
+                    inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
+                    thumbShape: PolygonSliderThumb(
+                        sliderValue: 3, thumbRadius: 23, isPressed: isPressed),
+                    trackHeight: 16,
+                  ),
+                  child: Slider(
+                    divisions: 10,
+                    min: 0,
+                    max: 10,
+                    value: balanceValue,
+                    onChanged: (newValue) {
+                      ref
+                          .read(audioStateProvider.notifier)
+                          .setBalance(newValue);
+                      _currentVal = newValue;
+                    },
+                    onChangeEnd: (value) {
+                      setState(() {
+                        isPressed = false;
+                      });
+                    },
+                    onChangeStart: (value) {
+                      setState(() {
+                        isPressed = true;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 40),
+                child: InkWell(
+                    onTap: () {
+                      _increase();
+                    },
+                    child: Text(
+                      'RIGHT',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CustomFaderSlider extends ConsumerStatefulWidget {
+  const CustomFaderSlider({
+    super.key,
+  });
+
+  @override
+  CustomFaderState createState() => CustomFaderState();
+}
+
+class CustomFaderState extends ConsumerState<CustomFaderSlider> {
+  bool isPressed = false;
+
+  void _increase() {
+    setState(() {
+      if (_currentVal < 10) {
+        _currentVal++;
+        ref.read(audioStateProvider.notifier).setFade(_currentVal);
+      }
+    });
+  }
+
+  void _decrease() {
+    setState(() {
+      if (_currentVal > 0) {
+        _currentVal--;
+        ref.read(audioStateProvider.notifier).setFade(_currentVal);
+      }
+    });
+  }
+
+  double _currentVal = 5;
+  @override
+  Widget build(BuildContext context) {
+    final faderValue =
+        ref.watch(audioStateProvider.select((audio) => audio.fade));
+    return Column(
+      //crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Text(
+            'Fade',
+            style: TextStyle(fontSize: 40),
+          ),
+        ),
+        Container(
+          width: 792,
+          height: 160,
+          decoration: const ShapeDecoration(
+            gradient: LinearGradient(
+              colors: <Color>[
+                AGLDemoColors.neonBlueColor,
+                AGLDemoColors.resolutionBlueColor,
+                Color.fromARGB(127, 20, 31, 100),
+                Color(0xFF2962FF)
+              ],
+              stops: [0, 0, 1, 1],
+            ),
+            shape: StadiumBorder(
+                side: BorderSide(
+              color: Color(0xFF5477D4),
+              width: 1,
+            )),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 40),
+                child: InkWell(
+                    onTap: () {
+                      _decrease();
+                    },
+                    child: Text(
+                      'REAR',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                  )),
+              ),
+              SizedBox(
+                width: 584,
+                child: SliderTheme(
+                  data: SliderThemeData(
+                    showValueIndicator: ShowValueIndicator.always,
+                    trackShape: CustomRoundedRectSliderTrackShape(
+                        sliderVal: faderValue, isFrontRear: true),
+                    activeTickMarkColor: Colors.transparent,
+                    inactiveTickMarkColor: Colors.transparent,
+                    inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
+                    thumbShape: PolygonSliderThumb(
+                        sliderValue: 3, thumbRadius: 23, isPressed: isPressed),
+                    trackHeight: 16,
+                  ),
+                  child: Slider(
+                    divisions: 10,
+                    min: 0,
+                    max: 10,
+                    value: faderValue,
+                    onChanged: (newValue) {
+                      ref
+                          .read(audioStateProvider.notifier)
+                          .setFade(newValue);
+                      _currentVal = newValue;
+                    },
+                    onChangeEnd: (value) {
+                      setState(() {
+                        isPressed = false;
+                      });
+                    },
+                    onChangeStart: (value) {
+                      setState(() {
+                        isPressed = true;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 40),
+                child: InkWell(
+                    onTap: () {
+                      _increase();
+                    },
+                    child: Text(
+                      'FRONT',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: AGLDemoColors.periwinkleColor,
+                      ),
+                    )),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class CustomTrebleSlider extends ConsumerStatefulWidget {
   const CustomTrebleSlider({
     super.key,
@@ -21,7 +307,7 @@ class CustomTrebleSliderState extends ConsumerState<CustomTrebleSlider> {
     });
   }
 
-  void _dercrease() {
+  void _decrease() {
     setState(() {
       if (_currentVal > 0) {
         _currentVal--;
@@ -71,7 +357,7 @@ class CustomTrebleSliderState extends ConsumerState<CustomTrebleSlider> {
                 padding: const EdgeInsets.only(left: 40),
                 child: InkWell(
                   onTap: () {
-                    _dercrease();
+                    _decrease();
                   },
                   child: const Icon(
                     Icons.remove,
@@ -86,7 +372,7 @@ class CustomTrebleSliderState extends ConsumerState<CustomTrebleSlider> {
                   data: SliderThemeData(
                     showValueIndicator: ShowValueIndicator.always,
                     trackShape: CustomRoundedRectSliderTrackShape(
-                        silderVal: trebleValue),
+                        sliderVal: trebleValue),
                     activeTickMarkColor: Colors.transparent,
                     inactiveTickMarkColor: Colors.transparent,
                     inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
@@ -159,7 +445,7 @@ class CustomBassSliderState extends ConsumerState<CustomBassSlider> {
     });
   }
 
-  void _dercrease() {
+  void _decrease() {
     setState(() {
       if (_currentVal > 0) {
         _currentVal--;
@@ -210,7 +496,7 @@ class CustomBassSliderState extends ConsumerState<CustomBassSlider> {
                 padding: const EdgeInsets.only(left: 40),
                 child: InkWell(
                     onTap: () {
-                      _dercrease();
+                      _decrease();
                     },
                     child: const Icon(
                       Icons.remove,
@@ -224,7 +510,7 @@ class CustomBassSliderState extends ConsumerState<CustomBassSlider> {
                   data: SliderThemeData(
                     showValueIndicator: ShowValueIndicator.always,
                     trackShape:
-                        CustomRoundedRectSliderTrackShape(silderVal: bassValue),
+                        CustomRoundedRectSliderTrackShape(sliderVal: bassValue),
                     activeTickMarkColor: Colors.transparent,
                     inactiveTickMarkColor: Colors.transparent,
                     inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
@@ -262,143 +548,6 @@ class CustomBassSliderState extends ConsumerState<CustomBassSlider> {
                     },
                     child: const Icon(
                       Icons.add,
-                      color: AGLDemoColors.periwinkleColor,
-                      size: 48,
-                    )),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomRearFrontSlider extends ConsumerStatefulWidget {
-  const CustomRearFrontSlider({
-    super.key,
-  });
-
-  @override
-  CustomRearFrontState createState() => CustomRearFrontState();
-}
-
-class CustomRearFrontState extends ConsumerState<CustomRearFrontSlider> {
-  bool isPressed = false;
-
-  void _increase() {
-    setState(() {
-      if (_currentVal < 10) {
-        _currentVal++;
-        ref.read(audioStateProvider.notifier).setRearFront(_currentVal);
-      }
-    });
-  }
-
-  void _dercrease() {
-    setState(() {
-      if (_currentVal > 0) {
-        _currentVal--;
-        ref.read(audioStateProvider.notifier).setRearFront(_currentVal);
-      }
-    });
-  }
-
-  double _currentVal = 5;
-  @override
-  Widget build(BuildContext context) {
-    final rearFrontValue =
-        ref.watch(audioStateProvider.select((audio) => audio.rearFront));
-    return Column(
-      //crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            'Rear/Front',
-            style: TextStyle(fontSize: 40),
-          ),
-        ),
-        Container(
-          width: 792,
-          height: 160,
-          decoration: const ShapeDecoration(
-            gradient: LinearGradient(
-              colors: <Color>[
-                AGLDemoColors.neonBlueColor,
-                AGLDemoColors.resolutionBlueColor,
-                Color.fromARGB(127, 20, 31, 100),
-                Color(0xFF2962FF)
-              ],
-              stops: [0, 0, 1, 1],
-            ),
-            shape: StadiumBorder(
-                side: BorderSide(
-              color: Color(0xFF5477D4),
-              width: 1,
-            )),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: InkWell(
-                    onTap: () {
-                      _dercrease();
-                    },
-                    child: const Icon(
-                      CustomIcons.slider_rear,
-                      color: AGLDemoColors.periwinkleColor,
-                      size: 48,
-                    )),
-              ),
-              SizedBox(
-                width: 584,
-                child: SliderTheme(
-                  data: SliderThemeData(
-                    showValueIndicator: ShowValueIndicator.always,
-                    trackShape: CustomRoundedRectSliderTrackShape(
-                        silderVal: rearFrontValue, isFrontRear: true),
-                    activeTickMarkColor: Colors.transparent,
-                    inactiveTickMarkColor: Colors.transparent,
-                    inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
-                    thumbShape: PolygonSliderThumb(
-                        sliderValue: 3, thumbRadius: 23, isPressed: isPressed),
-                    trackHeight: 16,
-                  ),
-                  child: Slider(
-                    divisions: 10,
-                    min: 0,
-                    max: 10,
-                    value: rearFrontValue,
-                    onChanged: (newValue) {
-                      ref
-                          .read(audioStateProvider.notifier)
-                          .setRearFront(newValue);
-                      _currentVal = newValue;
-                    },
-                    onChangeEnd: (value) {
-                      setState(() {
-                        isPressed = false;
-                      });
-                    },
-                    onChangeStart: (value) {
-                      setState(() {
-                        isPressed = true;
-                      });
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 40),
-                child: InkWell(
-                    onTap: () {
-                      _increase();
-                    },
-                    child: const Icon(
-                      CustomIcons.slider_front,
                       color: AGLDemoColors.periwinkleColor,
                       size: 48,
                     )),
@@ -467,11 +616,11 @@ class PolygonSliderThumb extends SliderComponentShape {
 //TODO add border to custom track Shape
 class CustomRoundedRectSliderTrackShape extends SliderTrackShape
     with BaseSliderTrackShape {
-  final double silderVal;
+  final double sliderVal;
   final bool? isFrontRear;
 
   CustomRoundedRectSliderTrackShape({
-    required this.silderVal,
+    required this.sliderVal,
     this.isFrontRear = false,
   });
   @override
@@ -552,10 +701,10 @@ class CustomRoundedRectSliderTrackShape extends SliderTrackShape
             topRight: const Radius.circular(25),
             bottomLeft: const Radius.circular(25),
             bottomRight: const Radius.circular(25)),
-        //silderVal > 5 ? leftTrackPaint : rightTrackPaint);
+        //sliderVal > 5 ? leftTrackPaint : rightTrackPaint);
         isFrontRear!
             ? rightTrackPaint
-            : silderVal > 5
+            : sliderVal > 5
                 ? leftTrackPaint
                 : rightTrackPaint);
 //active
