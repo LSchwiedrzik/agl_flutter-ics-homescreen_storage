@@ -226,7 +226,7 @@ class NewProfilePageState extends ConsumerState<NewProfilePage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 350.0),
               child: GenericButton(
-                heigth: 130,
+                height: 130,
                 width: 493,
                 text: 'Save Profile',
                 onTap: () {

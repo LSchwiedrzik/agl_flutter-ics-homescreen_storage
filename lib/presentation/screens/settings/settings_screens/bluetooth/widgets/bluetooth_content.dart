@@ -204,7 +204,7 @@ class BluetoothContentState extends ConsumerState<BluetoothContent> {
         Padding(
           padding: const EdgeInsets.only(bottom: 150.0),
           child: GenericButton(
-            heigth: 130,
+            height: 130,
             width: 501,
             text: 'Scan for New Device',
             onTap: () {},

@@ -19,7 +19,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
       _currentVal = 100;
     }
     setState(() {
-      ref.read(vehicleProvider.notifier).setVolume(_currentVal);
+      ref.read(audioStateProvider.notifier).setVolume(_currentVal);
     });
   }
 
@@ -29,7 +29,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
       _currentVal = 0;
     }
     setState(() {
-      ref.read(vehicleProvider.notifier).setVolume(_currentVal);
+      ref.read(audioStateProvider.notifier).setVolume(_currentVal);
     });
   }
 
@@ -37,7 +37,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
   @override
   Widget build(BuildContext context) {
     final volumeValue =
-        ref.watch(vehicleProvider.select((audio) => audio.mediaVolume));
+        ref.watch(audioStateProvider.select((audio) => audio.volume));
 
     return Column(
       //crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +106,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                     max: 100,
                     value: volumeValue.toDouble(),
                     onChanged: (newValue) {
-                      ref.read(vehicleProvider.notifier).setVolume(newValue);
+                      ref.read(audioStateProvider.notifier).setVolume(newValue);
                       _currentVal = newValue;
                     },
                   ),

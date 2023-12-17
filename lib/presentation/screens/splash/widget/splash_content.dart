@@ -66,7 +66,7 @@ class SplashContentState extends ConsumerState<SplashContent>
 
   @override
   void didChangeDependencies() {
-    ref.read(vehicleProvider.notifier).startListen();
+    ref.read(valClientProvider).startListen();
     super.didChangeDependencies();
   }
 
@@ -113,16 +113,19 @@ class SplashContentState extends ConsumerState<SplashContent>
                 height: 488,
                 child: Text(
                   splashWarning,
-                  style: TextStyle(color: Colors.white, fontSize: 40, height: 1.7, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                      height: 1.7,
+                      fontWeight: FontWeight.w400),
                   textAlign: TextAlign.left,
-
                 ),
               ),
             ],
           ),
         ),
         GenericButton(
-          heigth: 122,
+          height: 122,
           width: 452,
           text: 'Continue',
           onTap: () {
@@ -132,7 +135,6 @@ class SplashContentState extends ConsumerState<SplashContent>
                 .update((state) => state = AppState.dashboard);
           },
         ),
-       
         const SizedBox(
           height: 72,
         )

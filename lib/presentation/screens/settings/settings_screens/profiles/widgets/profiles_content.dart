@@ -98,7 +98,7 @@ class ProfilesContentState extends ConsumerState<ProfilesContent> {
           child: Column(
             children: [
               GenericButton(
-                heigth: 122,
+                height: 122,
                 width: 317,
                 text: 'New Profile',
                 onTap: () {
@@ -110,7 +110,7 @@ class ProfilesContentState extends ConsumerState<ProfilesContent> {
            
               const SizedBox(height: 20),
               GenericButton(
-                heigth: 122,
+                height: 122,
                 width: 412,
                 text: 'Reset to Default',
                 onTap: () {},

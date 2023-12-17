@@ -22,7 +22,7 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
       val = 100;
     }
     setState(() {
-      ref.read(vehicleProvider.notifier).setVolume(val);
+      ref.read(audioStateProvider.notifier).setVolume(val);
     });
   }
 
@@ -32,14 +32,14 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
       val = 0;
     }
     setState(() {
-      ref.read(vehicleProvider.notifier).setVolume(val);
+      ref.read(audioStateProvider.notifier).setVolume(val);
     });
   }
 
   void setVolume(double newWalue) {
     setState(() {
       val = newWalue;
-      ref.read(vehicleProvider.notifier).setVolume(val);
+      ref.read(audioStateProvider.notifier).setVolume(val);
     });
   }
 
@@ -48,7 +48,7 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
   @override
   Widget build(BuildContext context) {
     final volumeValue =
-        ref.watch(vehicleProvider.select((vehicle) => vehicle.mediaVolume));
+        ref.watch(audioStateProvider.select((audio) => audio.volume));
     val = volumeValue.toDouble();
     return Column(
       // mainAxisAlignment: MainAxisAlignment.center,

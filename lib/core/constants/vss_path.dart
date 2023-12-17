@@ -11,6 +11,14 @@ class VSSPath {
       'Vehicle.Powertrain.FuelSystem.RelativeLevel';
   static const String vehicleMediaVolume =
       'Vehicle.Cabin.Infotainment.Media.Volume';
+  static const String vehicleMediaBalance =
+      'Vehicle.Cabin.Infotainment.Media.Audio.Balance';
+  static const String vehicleMediaFade =
+      'Vehicle.Cabin.Infotainment.Media.Audio.Fade';
+  static const String vehicleMediaBass =
+      'Vehicle.Cabin.Infotainment.Media.Audio.Bass';
+  static const String vehicleMediaTreble =
+      'Vehicle.Cabin.Infotainment.Media.Audio.Treble';
   static const String vehicleIsChildLockActiveLeft =
       'Vehicle.Cabin.Door.Row2.DriverSide.IsChildLockActive';
   static const String vehicleIsChildLockActiveRight =
@@ -47,6 +55,10 @@ class VSSPath {
       vehicleRange,
       vehicleFuelLevel,
       vehicleMediaVolume,
+      vehicleMediaBalance,
+      vehicleMediaFade,
+      vehicleMediaBass,
+      vehicleMediaTreble,
       vehicleIsChildLockActiveLeft,
       vehicleIsChildLockActiveRight,
       vehicleFrontLeftTire,

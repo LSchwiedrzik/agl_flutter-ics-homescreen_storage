@@ -11,6 +11,7 @@ class HybridModelState extends ConsumerState<HybridModel> {
 
   @override
   Widget build(BuildContext context) {
+    bool randomHybridAnimation = ref.watch(appConfigProvider).randomHybridAnimation;
     if (!randomHybridAnimation) {
       ref.listen<Vehicle>(vehicleProvider, (Vehicle? previous, Vehicle next) {
         ref.watch(hybridStateProvider.notifier).updateHybridState(
@@ -25,7 +26,7 @@ class HybridModelState extends ConsumerState<HybridModel> {
       height: 500,
       child: Stack(
         children: [
-          HybridBackround(),
+          HybridBackground(),
           TopArrow(),
           LeftArrow(),
           RightArrow(),

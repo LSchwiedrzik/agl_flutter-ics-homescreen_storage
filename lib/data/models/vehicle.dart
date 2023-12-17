@@ -10,7 +10,6 @@ class Vehicle {
   final double outsideTemperature;
   final int range;
   final int fuelLevel;
-  final int mediaVolume;
   final bool isChildLockActiveLeft;
   final bool isChildLockActiveRight;
   final int frontLeftTire;
@@ -27,27 +26,26 @@ class Vehicle {
   final bool temperatureSynced;
 
   const Vehicle(
-      this.speed,
-      this.engineSpeed,
-      this.insideTemperature,
-      this.outsideTemperature,
-      this.range,
-      this.fuelLevel,
-      this.mediaVolume,
-      this.isChildLockActiveLeft,
-      this.isChildLockActiveRight,
-      this.frontLeftTire,
-      this.frontRightTire,
-      this.rearLeftTire,
-      this.rearRightTire,
-      this.isAirConditioningActive,
-      this.isFrontDefrosterActive,
-      this.isRearDefrosterActive,
-      this.isRecirculationActive,
-      this.fanSpeed,
-      this.driverTemperature,
-      this.passengerTemperature,
-      this.temperatureSynced,
+    this.speed,
+    this.engineSpeed,
+    this.insideTemperature,
+    this.outsideTemperature,
+    this.range,
+    this.fuelLevel,
+    this.isChildLockActiveLeft,
+    this.isChildLockActiveRight,
+    this.frontLeftTire,
+    this.frontRightTire,
+    this.rearLeftTire,
+    this.rearRightTire,
+    this.isAirConditioningActive,
+    this.isFrontDefrosterActive,
+    this.isRearDefrosterActive,
+    this.isRecirculationActive,
+    this.fanSpeed,
+    this.driverTemperature,
+    this.passengerTemperature,
+    this.temperatureSynced,
   );
 
   const Vehicle.initial()
@@ -57,7 +55,6 @@ class Vehicle {
         outsideTemperature = 0,
         range = 0,
         fuelLevel = 0,
-        mediaVolume = 50,
         isChildLockActiveLeft = false,
         isChildLockActiveRight = true,
         frontLeftTire = 33,
@@ -80,7 +77,6 @@ class Vehicle {
         outsideTemperature = 32.0,
         range = 21,
         fuelLevel = 49,
-        mediaVolume = 50,
         isChildLockActiveLeft = false,
         isChildLockActiveRight = true,
         frontLeftTire = 33,
@@ -96,51 +92,49 @@ class Vehicle {
         passengerTemperature = 26,
         temperatureSynced = true;
 
-  Vehicle copyWith(
-      {double? speed,
-      double? engineSpeed,
-      double? insideTemperature,
-      double? outsideTemperature,
-      int? range,
-      int? fuelLevel,
-      int? mediaVolume,
-      bool? isChildLockActiveLeft,
-      bool? isChildLockActiveRight,
-      int? frontLeftTire,
-      int? frontRightTire,
-      int? rearLeftTire,
-      int? rearRightTire,
-      bool? isAirConditioningActive,
-      bool? isFrontDefrosterActive,
-      bool? isRearDefrosterActive,
-      bool? isRecirculationActive,
-      int? fanSpeed,
-      int? driverTemperature,
-      int? passengerTemperature,
-      bool? temperatureSynced,
+  Vehicle copyWith({
+    double? speed,
+    double? engineSpeed,
+    double? insideTemperature,
+    double? outsideTemperature,
+    int? range,
+    int? fuelLevel,
+    bool? isChildLockActiveLeft,
+    bool? isChildLockActiveRight,
+    int? frontLeftTire,
+    int? frontRightTire,
+    int? rearLeftTire,
+    int? rearRightTire,
+    bool? isAirConditioningActive,
+    bool? isFrontDefrosterActive,
+    bool? isRearDefrosterActive,
+    bool? isRecirculationActive,
+    int? fanSpeed,
+    int? driverTemperature,
+    int? passengerTemperature,
+    bool? temperatureSynced,
   }) {
     return Vehicle(
-        speed ?? this.speed,
-        engineSpeed ?? this.engineSpeed,
-        insideTemperature ?? this.insideTemperature,
-        outsideTemperature ?? this.outsideTemperature,
-        range ?? this.range,
-        fuelLevel ?? this.fuelLevel,
-        mediaVolume ?? this.mediaVolume,
-        isChildLockActiveLeft ?? this.isChildLockActiveLeft,
-        isChildLockActiveRight ?? this.isChildLockActiveRight,
-        frontLeftTire ?? this.frontLeftTire,
-        frontRightTire ?? this.frontRightTire,
-        rearLeftTire ?? this.rearLeftTire,
-        rearRightTire ?? this.rearRightTire,
-        isAirConditioningActive ?? this.isAirConditioningActive,
-        isFrontDefrosterActive ?? this.isFrontDefrosterActive,
-        isRearDefrosterActive ?? this.isRearDefrosterActive,
-        isRecirculationActive ?? this.isRecirculationActive,
-        fanSpeed ?? this.fanSpeed,
-        driverTemperature ?? this.driverTemperature,
-        passengerTemperature ?? this.passengerTemperature,
-        temperatureSynced ?? this.temperatureSynced,
+      speed ?? this.speed,
+      engineSpeed ?? this.engineSpeed,
+      insideTemperature ?? this.insideTemperature,
+      outsideTemperature ?? this.outsideTemperature,
+      range ?? this.range,
+      fuelLevel ?? this.fuelLevel,
+      isChildLockActiveLeft ?? this.isChildLockActiveLeft,
+      isChildLockActiveRight ?? this.isChildLockActiveRight,
+      frontLeftTire ?? this.frontLeftTire,
+      frontRightTire ?? this.frontRightTire,
+      rearLeftTire ?? this.rearLeftTire,
+      rearRightTire ?? this.rearRightTire,
+      isAirConditioningActive ?? this.isAirConditioningActive,
+      isFrontDefrosterActive ?? this.isFrontDefrosterActive,
+      isRearDefrosterActive ?? this.isRearDefrosterActive,
+      isRecirculationActive ?? this.isRecirculationActive,
+      fanSpeed ?? this.fanSpeed,
+      driverTemperature ?? this.driverTemperature,
+      passengerTemperature ?? this.passengerTemperature,
+      temperatureSynced ?? this.temperatureSynced,
     );
   }
 
@@ -152,7 +146,6 @@ class Vehicle {
       'outsideTemperature': outsideTemperature,
       'range': range,
       'fuelLevel': fuelLevel,
-      'mediaVolume': mediaVolume,
       'isChildLockActiveLeft': isChildLockActiveLeft,
       'isChildLockActiveRight': isChildLockActiveRight,
       'frontLeftTire': frontLeftTire,
@@ -178,7 +171,6 @@ class Vehicle {
       map['outsideTemperature']?.toDouble() ?? 0.0,
       map['range']?.toInt() ?? 0,
       map['fuelLevel']?.toDouble() ?? 0.0,
-      map['mediaVolume']?.toInt() ?? 0,
       map['isChildLockActiveLeft'] ?? false,
       map['isChildLockActiveRight'] ?? false,
       map['frontLeftTire']?.toInt() ?? 0,
@@ -203,7 +195,7 @@ class Vehicle {
 
   @override
   String toString() {
-    return 'Vehicle(speed: $speed, insideTemperature: $insideTemperature, outsideTemperature: $outsideTemperature, range: $range, fuelLevel: $fuelLevel, mediaVolume: $mediaVolume, isChildLockActiveLeft: $isChildLockActiveLeft, isChildLockActiveRight: $isChildLockActiveRight, engineSpeed: $engineSpeed, frontLeftTire: $frontLeftTire, frontRightTire: $frontRightTire, rearLeftTire: $rearLeftTire, rearRightTire: $rearRightTire, isAirConditioningActive: $isAirConditioningActive, isFrontDefrosterActive: $isFrontDefrosterActive, isRearDefrosterActive: $isRearDefrosterActive, isRecirculationActive: $isRecirculationActive,fanSpeed:$fanSpeed,driverTemperature:$driverTemperature, passengerTemperature:$passengerTemperature)';
+    return 'Vehicle(speed: $speed, insideTemperature: $insideTemperature, outsideTemperature: $outsideTemperature, range: $range, fuelLevel: $fuelLevel, isChildLockActiveLeft: $isChildLockActiveLeft, isChildLockActiveRight: $isChildLockActiveRight, engineSpeed: $engineSpeed, frontLeftTire: $frontLeftTire, frontRightTire: $frontRightTire, rearLeftTire: $rearLeftTire, rearRightTire: $rearRightTire, isAirConditioningActive: $isAirConditioningActive, isFrontDefrosterActive: $isFrontDefrosterActive, isRearDefrosterActive: $isRearDefrosterActive, isRecirculationActive: $isRecirculationActive,fanSpeed:$fanSpeed,driverTemperature:$driverTemperature, passengerTemperature:$passengerTemperature)';
   }
 
   @override
@@ -216,7 +208,6 @@ class Vehicle {
         other.outsideTemperature == outsideTemperature &&
         other.range == range &&
         other.fuelLevel == fuelLevel &&
-        other.mediaVolume == mediaVolume &&
         other.isChildLockActiveLeft == isChildLockActiveLeft &&
         other.isChildLockActiveRight == isChildLockActiveRight &&
         other.engineSpeed == engineSpeed &&
@@ -241,7 +232,6 @@ class Vehicle {
         outsideTemperature.hashCode ^
         range.hashCode ^
         fuelLevel.hashCode ^
-        mediaVolume.hashCode ^
         isChildLockActiveLeft.hashCode ^
         isChildLockActiveRight.hashCode ^
         engineSpeed.hashCode ^
@@ -258,9 +248,4 @@ class Vehicle {
         passengerTemperature.hashCode ^
         temperatureSynced.hashCode;
   }
-// }
-// /  class VehicleNotifier extends StateNotifier<Vehicle> {
-// //    VehicleNotifier() : super(Vehicle());
-
-// //  }
 }
