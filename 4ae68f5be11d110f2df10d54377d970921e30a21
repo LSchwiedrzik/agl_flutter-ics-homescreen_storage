@@ -1,0 +1,8 @@
+Code-Review+1: Jan-Simon Moeller <jsmoeller@linuxfoundation.org>
+Code-Review+2: Scott Murray <scott.murray@konsulko.com>
+Verified+1: Scott Murray <scott.murray@konsulko.com>
+Submitted-by: Scott Murray <scott.murray@konsulko.com>
+Submitted-at: Wed, 20 Dec 2023 00:54:31 +0000
+Reviewed-on: https://gerrit.automotivelinux.org/gerrit/c/apps/flutter-ics-homescreen/+/29542
+Project: apps/flutter-ics-homescreen
+Branch: refs/heads/master
