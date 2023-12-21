@@ -1,48 +1,54 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter_ics_homescreen/presentation/screens/apps/widgets/app_button.dart';
 
-class Apps extends StatefulWidget {
+class Apps extends ConsumerStatefulWidget {
   const Apps({super.key});
 
   @override
-  State<Apps> createState() => _AppsState();
+  ConsumerState<Apps> createState() => _AppsState();
 }
 
-class _AppsState extends State<Apps> {
-  onPressed({required String type}) {
-    if (type == "weather") {
-      context.flow<AppState>().update((next) => AppState.weather);
-    } else if (type == "clock") {
-      context.flow<AppState>().update((next) => AppState.clock);
+class _AppsState extends ConsumerState<Apps> {
+  onPressed({required bool internal, required String id}) {
+    if (internal) {
+      if (id == "weather") {
+        context.flow<AppState>().update((next) => AppState.weather);
+      } else if (id == "clock") {
+        context.flow<AppState>().update((next) => AppState.clock);
+      }
+    } else {
+      ref.read(appLauncherProvider).startApp(id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    var apps = ref.watch(appLauncherListProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const CommonTitle(title: "Applications"),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 148),
-          child: Wrap(
-            children: [
-              AppButton(
-                image: "weather.svg",
-                title: "Weather",
-                onPressed: () {
-                  onPressed(type: "weather");
-                },
-              ),
-              AppButton(
-                image: "clock.svg",
-                title: "Clock",
-                onPressed: () {
-                  onPressed(type: "clock");
-                },
-              )
-            ],
-          ),
+          child: GridView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: apps.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3),
+            itemBuilder: (context, index) {
+              return GridTile(
+                  child: Container(
+                      alignment: Alignment.center,
+                      child: AppButton(
+                        title: apps[index].name,
+                        image: apps[index].icon.isNotEmpty ? apps[index].icon : "app-generic.svg",
+                        onPressed: () {
+                          onPressed(internal: apps[index].internal, id: apps[index].id);
+                        },
+                      )));
+            })
         ),
         // Center(
         //   child: SizedBox(

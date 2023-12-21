@@ -5,6 +5,7 @@ import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/val_client.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/app_launcher.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import '../models/users.dart';
@@ -42,6 +43,12 @@ final valClientProvider = Provider((ref) {
   KuksaConfig config = ref.watch(appConfigProvider).kuksaConfig;
   return ValClient(config: config, ref: ref);
 });
+
+final appLauncherProvider = Provider((ref) {
+  return AppLauncher(ref: ref);
+});
+
+final appLauncherListProvider = NotifierProvider<AppLauncherList, List<AppLauncherInfo>>(AppLauncherList.new);
 
 final vehicleProvider =
     NotifierProvider<VehicleNotifier, Vehicle>(VehicleNotifier.new);

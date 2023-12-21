@@ -19,25 +19,14 @@ export 'src/generated/kuksa/val/v1/val.pbenum.dart';
 export 'src/generated/kuksa/val/v1/val.pbjson.dart';
 export 'src/generated/kuksa/val/v1/val.pbgrpc.dart';
 
-export 'src/generated/sdv/databroker/v1/collector.pb.dart';
-export 'src/generated/sdv/databroker/v1/collector.pbenum.dart';
-export 'src/generated/sdv/databroker/v1/collector.pbgrpc.dart';
-export 'src/generated/sdv/databroker/v1/collector.pbjson.dart';
+export 'src/generated/agl_shell.pb.dart';
+export 'src/generated/agl_shell.pbenum.dart';
+export 'src/generated/agl_shell.pbgrpc.dart';
+export 'src/generated/agl_shell.pbjson.dart';
 
-// export 'src/generated/sdv/databroker/v1/broker.pb.dart';
-// export 'src/generated/sdv/databroker/v1/broker.pbenum.dart';
-// export 'src/generated/sdv/databroker/v1/broker.pbgrpc.dart';
-// export 'src/generated/sdv/databroker/v1/broker.pbjson.dart';
-
-// export 'src/generated/sdv/databroker/v1/types.pb.dart';
-// export 'src/generated/sdv/databroker/v1/types.pbenum.dart';
-// export 'src/generated/sdv/databroker/v1/types.pbjson.dart';
-
-
-
-
-
-
-
+export 'src/generated/applauncher.pb.dart';
+export 'src/generated/applauncher.pbenum.dart';
+export 'src/generated/applauncher.pbgrpc.dart';
+export 'src/generated/applauncher.pbjson.dart';
 
 export 'package:grpc/grpc.dart';

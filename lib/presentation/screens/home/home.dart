@@ -13,6 +13,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 class HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
+    ref.read(appLauncherProvider).run();
     super.initState();
   }
 
