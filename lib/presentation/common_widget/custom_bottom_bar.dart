@@ -44,6 +44,7 @@ class CustomBottomBarState extends ConsumerState<CustomBottomBar> {
     setState(() {
       selectedNav = title;
     });
+    ref.read(appLauncherProvider).activateApp("homescreen");
     ref.read(currentTimeProvider.notifier).isYearChanged = false;
     ref.read(appProvider.notifier).update((state) => state = status);
   }
