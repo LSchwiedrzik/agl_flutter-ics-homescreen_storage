@@ -15,7 +15,7 @@ class DashBoardState extends ConsumerState<DashBoard>
   late AnimationController _animationController;
   late Animation<double> _animation;
   static bool _isAnimationPlayed = false;
-  late Timer timer;
+  Timer? timer = null;
 
   @override
   void initState() {
@@ -53,7 +53,8 @@ class DashBoardState extends ConsumerState<DashBoard>
   @override
   void dispose() {
     _animationController.dispose();
-    timer.cancel();
+    if (timer != null)
+      timer?.cancel();
     super.dispose();
   }
 
