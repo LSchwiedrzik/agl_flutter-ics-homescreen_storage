@@ -1,4 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
+import 'media_player_controls.dart';
+import 'play_list_table.dart';
+import 'segmented_buttons.dart';
 
 class MediaPlayer extends StatefulWidget {
   const MediaPlayer({super.key});
@@ -31,7 +34,7 @@ class _MediaPlayerState extends State<MediaPlayer> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        //    const PlayerNavigation(),
+        //const PlayerNavigation(),
         SegmentedButtons(
           navItems: navItems,
           selectedNav: selectedNav,
@@ -55,12 +58,10 @@ class _MediaPlayerState extends State<MediaPlayer> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MediaControls(
-              songName: songName,
-              songLengthStart: "-1:23",
-              songLengthStop: "5:03",
-              type: "media",
-            ),
+            MediaPlayerControls(
+                songName: songName,
+                songLengthStart: "-1:23",
+                songLengthStop: "5:03"),
             const SizedBox(
               height: 72,
             ),

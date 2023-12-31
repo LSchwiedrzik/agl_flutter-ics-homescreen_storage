@@ -23,7 +23,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
     });
   }
 
-  void _dercrease() {
+  void _decrease() {
     _currentVal -= 10;
     if (_currentVal < 0) {
       _currentVal = 0;
@@ -34,6 +34,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
   }
 
   double _currentVal = 50;
+
   @override
   Widget build(BuildContext context) {
     final volumeValue =
@@ -61,7 +62,7 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                   child: InkWell(
                       customBorder: const CircleBorder(),
                       onTap: () {
-                        _dercrease();
+                        _decrease();
                       },
                       child: const Padding(
                           padding: EdgeInsets.all(8.0),
@@ -72,22 +73,6 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                           ))),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 10.0),
-              //   child: SizedBox(
-              //     width: 50,
-              //     child: IconButton(
-              //         padding: EdgeInsets.zero,
-              //         onPressed: () {
-              //           _dercrease();
-              //         },
-              //         icon: const Icon(
-              //           CustomIcons.vol_min,
-              //           color: AGLDemoColors.periwinkleColor,
-              //           size: 48,
-              //         )),
-              //   ),
-              // ),
               Expanded(
                 child: SliderTheme(
                   data: SliderThemeData(
@@ -130,22 +115,6 @@ class CustomVolumeSliderState extends ConsumerState<CustomVolumeSlider> {
                           ))),
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(right: 10.0),
-              //   child: SizedBox(
-              //     width: 60,
-              //     child: IconButton(
-              //         padding: EdgeInsets.zero,
-              //         onPressed: () {
-              //           _increase();
-              //         },
-              //         icon: const Icon(
-              //           CustomIcons.vol_max,
-              //           color: AGLDemoColors.periwinkleColor,
-              //           size: 48,
-              //         )),
-              //   ),
-              // ),
             ],
           ),
         ),

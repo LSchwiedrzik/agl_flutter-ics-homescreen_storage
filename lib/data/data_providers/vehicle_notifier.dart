@@ -3,7 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/protos.dart';
+import 'package:protos/val-api.dart';
 
 class VehicleNotifier extends Notifier<Vehicle> {
   @override

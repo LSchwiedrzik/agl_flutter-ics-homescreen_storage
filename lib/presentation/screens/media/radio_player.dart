@@ -1,25 +1,37 @@
+import 'package:flutter_ics_homescreen/data/data_providers/radio_presets_provider.dart';
 import 'package:flutter_ics_homescreen/export.dart';
+import 'radio_player_controls.dart';
+import 'radio_preset_table.dart';
+import 'segmented_buttons.dart';
 
-class FMPlayer extends StatefulWidget {
-  const FMPlayer({super.key});
+class RadioPlayer extends ConsumerStatefulWidget {
+  const RadioPlayer({super.key});
 
   @override
-  State<FMPlayer> createState() => _FMPlayerState();
+  ConsumerState<RadioPlayer> createState() => _RadioPlayerState();
 }
 
-class _FMPlayerState extends State<FMPlayer> {
+class _RadioPlayerState extends ConsumerState<RadioPlayer> {
   String selectedNav = "Standard";
   List<String> navItems = [
     "Standard",
     "HD",
   ];
   String tableName = "Presets";
-  List<PlayListModel> playList = [
-    PlayListModel(songName: "93.1 The Mountain", albumName: "93.1"),
-    PlayListModel(songName: "Mix 94.1", albumName: "94.1 MHz"),
-    PlayListModel(songName: "96.3 KKLZ", albumName: "96.3 MHz"),
-  ];
-  String selectedPlayListSongName = "93.1 The Mountain";
+  late List<RadioPreset> presets;
+  late String selectedPreset;
+
+  @override
+  void initState() {
+    presets = ref.read(radioPresetsProvider).fmPresets;
+    if (presets.isNotEmpty) {
+      selectedPreset = presets.first.name;
+    } else {
+      selectedPreset = "";
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double fmSignalHeight = 460;
@@ -52,21 +64,14 @@ class _FMPlayerState extends State<FMPlayer> {
           ),
           Column(
             children: [
-              const MediaControls(
-                songName: "87.9",
-                songLengthStart: "87.9 MHz",
-                songLengthStop: "87.9 MHz",
-                type: "fm",
-              ),
+              const RadioPlayerControls(),
               const SizedBox(
                 height: 70,
               ),
-              PlayListTable(
-                playList: playList,
-                selectedPlayListSongName: selectedPlayListSongName,
-                tableName: tableName,
-                type: "fm",
-              ),
+              RadioPresetTable(
+                  presets: presets,
+                  selectedPreset: selectedPreset,
+                  tableName: tableName),
             ],
           )
         ],

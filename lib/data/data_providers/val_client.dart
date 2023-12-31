@@ -1,5 +1,5 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/protos.dart';
+import 'package:protos/val-api.dart';
 
 class ValClient {
   final KuksaConfig config;
@@ -9,7 +9,7 @@ class ValClient {
   late String authorization;
 
   ValClient({required this.config, required this.ref}) {
-    debugPrint("Using ${config.hostname}:${config.port}");
+    debugPrint("Connecting to KUKSA.val at ${config.hostname}:${config.port}");
     ChannelCredentials creds;
     if (config.use_tls && config.ca_certificate.isNotEmpty) {
       print("Using TLS");
@@ -25,11 +25,10 @@ class ValClient {
     }
     channel = ClientChannel(config.hostname,
         port: config.port, options: ChannelOptions(credentials: creds));
-    debugPrint('Start Listen on port: ${config.port}');
     stub = VALClient(channel);
   }
 
-  void startListen() async {
+  void run() async {
     List<String> fewSignals = VSSPath().getSignalsList();
     var request = SubscribeRequest();
     Map<String, String> metadata = {};

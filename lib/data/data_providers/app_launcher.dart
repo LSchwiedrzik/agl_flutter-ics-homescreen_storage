@@ -1,5 +1,6 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/protos.dart';
+import 'package:protos/applauncher-api.dart';
+import 'package:protos/agl-shell-api.dart';
 
 class AppLauncher {
   final Ref ref;
@@ -9,20 +10,18 @@ class AppLauncher {
   late ClientChannel appLauncherChannel;
   late AppLauncherClient appLauncher;
 
-  List<String> appStack = [ 'homescreen' ];
+  List<String> appStack = ['homescreen'];
 
   AppLauncher({required this.ref}) {
-    aglShellChannel =
-      ClientChannel('localhost',
-                    port: 14005,
-                    options: ChannelOptions(credentials: ChannelCredentials.insecure()));
+    aglShellChannel = ClientChannel('localhost',
+        port: 14005,
+        options: ChannelOptions(credentials: ChannelCredentials.insecure()));
 
     aglShell = AglShellManagerServiceClient(aglShellChannel);
 
-    appLauncherChannel =
-      ClientChannel('localhost',
-                    port: 50052,
-                    options: ChannelOptions(credentials: ChannelCredentials.insecure()));
+    appLauncherChannel = ClientChannel('localhost',
+        port: 50052,
+        options: ChannelOptions(credentials: ChannelCredentials.insecure()));
     appLauncher = AppLauncherClient(appLauncherChannel);
   }
 
@@ -58,13 +57,23 @@ class AppLauncher {
         debugPrint("Got app:");
         debugPrint("$info");
         // Existing icons are currently not usable, so leave blank for now
-        apps.add(AppLauncherInfo(id: info.id, name: info.name, icon: "", internal: false));
+        apps.add(AppLauncherInfo(
+            id: info.id, name: info.name, icon: "", internal: false));
       }
       apps.sort((a, b) => a.name.compareTo(b.name));
 
       // Add built-in app widgets
-      apps.insert(0, AppLauncherInfo(id: "clock", name: "Clock", icon: "clock.svg", internal: true));
-      apps.insert(0, AppLauncherInfo(id: "weather", name: "Weather", icon: "weather.svg", internal: true));
+      apps.insert(
+          0,
+          AppLauncherInfo(
+              id: "clock", name: "Clock", icon: "clock.svg", internal: true));
+      apps.insert(
+          0,
+          AppLauncherInfo(
+              id: "weather",
+              name: "Weather",
+              icon: "weather.svg",
+              internal: true));
 
       ref.read(appLauncherListProvider.notifier).update(apps);
     } catch (e) {
@@ -104,5 +113,4 @@ class AppLauncher {
       }
     }
   }
-
 }

@@ -1,13 +1,14 @@
-import 'package:flutter_ics_homescreen/presentation/screens/media_player/fm_player.dart';
-
-import '/export.dart';
+import 'package:flutter_ics_homescreen/export.dart';
+import 'package:flutter_ics_homescreen/presentation/screens/media/media_player.dart';
+import 'package:flutter_ics_homescreen/presentation/screens/media/radio_player.dart';
 import 'widgets/media_volume_bar.dart';
+import 'media_nav_notifier.dart';
+import 'player_navigation.dart';
 
-class MediaPlayerPage extends StatelessWidget {
-  const MediaPlayerPage({super.key});
+class MediaPage extends StatelessWidget {
+  const MediaPage({super.key});
 
-  static Page<void> page() =>
-      const MaterialPage<void>(child: MediaPlayerPage());
+  static Page<void> page() => const MaterialPage<void>(child: MediaPage());
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.sizeOf(context);
@@ -21,7 +22,7 @@ class MediaPlayerPage extends StatelessWidget {
         //   // decoration:
         //   //   BoxDecoration(gradient: AGLDemoColors.gradientBackgroundColor),
         //   child: SvgPicture.asset(
-        //     'assets/MediaPlayerBackground.svg',
+        //     'assets/Media.svg',
         //     alignment: Alignment.center,
         //     fit: BoxFit.cover,
         //     //width: 200,
@@ -42,31 +43,45 @@ class MediaPlayerPage extends StatelessWidget {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(vertical: 50, horizontal: 50),
-          child: MediaPlayerBackground(),
+          child: Media(),
         )
-        //const MediaPlayer(),
       ],
     );
   }
 }
 
-class MediaPlayerBackground extends StatefulWidget {
-  const MediaPlayerBackground({super.key});
+class Media extends ConsumerStatefulWidget {
+  const Media({super.key});
 
   @override
-  State<MediaPlayerBackground> createState() => _MediaPlayerBackgroundState();
+  ConsumerState<Media> createState() => _MediaState();
 }
 
-class _MediaPlayerBackgroundState extends State<MediaPlayerBackground> {
-  String selectedNav = "My Media";
-  onPressed(type) {
+class _MediaState extends ConsumerState<Media> {
+  //late MediaNavState selectedNav;
+
+  //@override
+  //initState() {
+  //  selectedNav = ref.read(mediaNavStateProvider);
+  //  super.initState();
+  //}
+
+  onPressed(MediaNavState type) {
     setState(() {
-      selectedNav = type;
+      if (type == MediaNavState.fm) {
+        ref.read(mediaNavStateProvider.notifier).set(MediaNavState.fm);
+        ref.read(radioClientProvider).start();
+      } else if (type == MediaNavState.media) {
+        ref.read(mediaNavStateProvider.notifier).set(MediaNavState.media);
+        ref.read(radioClientProvider).stop();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    var navState = ref.watch(mediaNavStateProvider);
+
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -81,14 +96,14 @@ class _MediaPlayerBackgroundState extends State<MediaPlayerBackground> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 80),
             child: SingleChildScrollView(
-              child: selectedNav == "My Media"
+              child: navState == MediaNavState.media
                   ? const MediaPlayer()
-                  : selectedNav == "FM"
-                      ? const FMPlayer()
+                  : navState == MediaNavState.fm
+                      ? const RadioPlayer()
                       : Container(),
             ),
           ),
-          if (selectedNav == "My Media" || selectedNav == "FM")
+          if (navState == MediaNavState.media || navState == MediaNavState.fm)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 144, vertical: 23.5),
               child: CustomVolumeSlider(),

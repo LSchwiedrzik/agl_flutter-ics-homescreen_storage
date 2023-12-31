@@ -35,14 +35,40 @@ class KuksaConfig {
   }
 }
 
+class RadioConfig {
+  final String hostname;
+  final int port;
+  final String presets;
+
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 50053;
+  static String defaultPresets =
+      '/etc/xdg/AGL/ics-homescreen/radio-presets.yaml';
+
+  RadioConfig(
+      {required this.hostname, required this.port, required this.presets});
+
+  static RadioConfig defaultConfig() {
+    return RadioConfig(
+        hostname: RadioConfig.defaultHostname,
+        port: RadioConfig.defaultPort,
+        presets: RadioConfig.defaultPresets);
+  }
+}
+
 class AppConfig {
   final bool disableBkgAnimation;
   final bool randomHybridAnimation;
   final KuksaConfig kuksaConfig;
+  final RadioConfig radioConfig;
 
   static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
 
-  AppConfig({required this.disableBkgAnimation, required this.randomHybridAnimation, required this.kuksaConfig});
+  AppConfig(
+      {required this.disableBkgAnimation,
+      required this.randomHybridAnimation,
+      required this.kuksaConfig,
+      required this.radioConfig});
 
   static KuksaConfig parseKuksaConfig(YamlMap kuksaMap) {
     try {
@@ -64,7 +90,7 @@ class AppConfig {
             debugPrint("Reading authorization token $s");
             try {
               token = File(s).readAsStringSync();
-            } on Exception catch (_) {
+            } catch (_) {
               print("ERROR: Could not read authorization token file $token");
               token = "";
             }
@@ -89,7 +115,7 @@ class AppConfig {
       }
       try {
         ca_cert = File(ca_path).readAsBytesSync();
-      } on Exception catch (_) {
+      } catch (_) {
         print("ERROR: Could not read CA certificate file $ca_path");
         ca_cert = [];
       }
@@ -107,8 +133,31 @@ class AppConfig {
           use_tls: use_tls,
           ca_certificate: ca_cert,
           tls_server_name: tls_server_name);
-    } on Exception catch (_) {
+    } catch (_) {
       return KuksaConfig.defaultConfig();
+    }
+  }
+
+  static RadioConfig parseRadioConfig(YamlMap radioMap) {
+    try {
+      String hostname = RadioConfig.defaultHostname;
+      if (radioMap.containsKey('hostname')) {
+        hostname = radioMap['hostname'];
+      }
+
+      int port = RadioConfig.defaultPort;
+      if (radioMap.containsKey('port')) {
+        port = radioMap['port'];
+      }
+
+      String presets = RadioConfig.defaultPresets;
+      if (radioMap.containsKey('presets')) {
+        hostname = radioMap['presets'];
+      }
+
+      return RadioConfig(hostname: hostname, port: port, presets: presets);
+    } catch (_) {
+      return RadioConfig.defaultConfig();
     }
   }
 }
@@ -133,6 +182,13 @@ final appConfigProvider = Provider((ref) {
           tls_server_name: "");
     }
 
+    RadioConfig radioConfig;
+    if (yamlMap.containsKey('radio')) {
+      radioConfig = AppConfig.parseRadioConfig(yamlMap['radio']);
+    } else {
+      radioConfig = RadioConfig.defaultConfig();
+    }
+
     bool disableBkgAnimation = disableBkgAnimationDefault;
     if (yamlMap.containsKey('disable-bg-animation')) {
       var value = yamlMap['disable-bg-animation'];
@@ -152,11 +208,13 @@ final appConfigProvider = Provider((ref) {
     return AppConfig(
         disableBkgAnimation: disableBkgAnimation,
         randomHybridAnimation: randomHybridAnimation,
-        kuksaConfig: kuksaConfig);
-  } on Exception catch (_) {
+        kuksaConfig: kuksaConfig,
+        radioConfig: radioConfig);
+  } catch (_) {
     return AppConfig(
         disableBkgAnimation: false,
         randomHybridAnimation: false,
-        kuksaConfig: KuksaConfig.defaultConfig());
+        kuksaConfig: KuksaConfig.defaultConfig(),
+        radioConfig: RadioConfig.defaultConfig());
   }
 });

@@ -4,8 +4,10 @@ import 'package:flutter_ics_homescreen/data/data_providers/time_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/radio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/val_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/app_launcher.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/radio_client.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import '../models/users.dart';
@@ -16,7 +18,7 @@ enum AppState {
   dashboard,
   hvac,
   apps,
-  mediaPlayer,
+  media,
   settings,
   splash,
   dateTime,
@@ -48,7 +50,14 @@ final appLauncherProvider = Provider((ref) {
   return AppLauncher(ref: ref);
 });
 
-final appLauncherListProvider = NotifierProvider<AppLauncherList, List<AppLauncherInfo>>(AppLauncherList.new);
+final appLauncherListProvider =
+    NotifierProvider<AppLauncherList, List<AppLauncherInfo>>(
+        AppLauncherList.new);
+
+final radioClientProvider = Provider((ref) {
+  RadioConfig config = ref.watch(appConfigProvider).radioConfig;
+  return RadioClient(config: config, ref: ref);
+});
 
 final vehicleProvider =
     NotifierProvider<VehicleNotifier, Vehicle>(VehicleNotifier.new);
@@ -62,7 +71,10 @@ final unitStateProvider = StateNotifierProvider<UnitsNotifier, Units>((ref) {
 });
 
 final audioStateProvider =
-    NotifierProvider<AudioNotifier, Audio>(AudioNotifier.new);
+    NotifierProvider<AudioStateNotifier, AudioState>(AudioStateNotifier.new);
+
+final radioStateProvider =
+    NotifierProvider<RadioStateNotifier, RadioState>(RadioStateNotifier.new);
 
 final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
   return UsersNotifier(Users.initial());
@@ -77,4 +89,3 @@ final currentTimeProvider =
     StateNotifierProvider<CurrentTimeNotifier, DateTime>((ref) {
   return CurrentTimeNotifier();
 });
-

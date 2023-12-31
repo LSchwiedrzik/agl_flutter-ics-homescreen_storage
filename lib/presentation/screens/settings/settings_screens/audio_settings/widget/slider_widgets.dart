@@ -74,7 +74,7 @@ class CustomBalanceState extends ConsumerState<CustomBalanceSlider> {
                     onTap: () {
                       _decrease();
                     },
-                    child: Text(
+                    child: const Text(
                       'LEFT',
                       style: TextStyle(
                         fontSize: 18,
@@ -127,7 +127,7 @@ class CustomBalanceState extends ConsumerState<CustomBalanceSlider> {
                     onTap: () {
                       _increase();
                     },
-                    child: Text(
+                    child: const Text(
                       'RIGHT',
                       style: TextStyle(
                         fontSize: 18,
@@ -217,14 +217,14 @@ class CustomFaderState extends ConsumerState<CustomFaderSlider> {
                     onTap: () {
                       _decrease();
                     },
-                    child: Text(
+                    child: const Text(
                       'REAR',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: AGLDemoColors.periwinkleColor,
                       ),
-                  )),
+                    )),
               ),
               SizedBox(
                 width: 584,
@@ -246,9 +246,7 @@ class CustomFaderState extends ConsumerState<CustomFaderSlider> {
                     max: 10,
                     value: faderValue,
                     onChanged: (newValue) {
-                      ref
-                          .read(audioStateProvider.notifier)
-                          .setFade(newValue);
+                      ref.read(audioStateProvider.notifier).setFade(newValue);
                       _currentVal = newValue;
                     },
                     onChangeEnd: (value) {
@@ -270,7 +268,7 @@ class CustomFaderState extends ConsumerState<CustomFaderSlider> {
                     onTap: () {
                       _increase();
                     },
-                    child: Text(
+                    child: const Text(
                       'FRONT',
                       style: TextStyle(
                         fontSize: 18,

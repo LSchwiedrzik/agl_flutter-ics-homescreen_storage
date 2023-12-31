@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter_ics_homescreen/export.dart';
 
 @immutable
-class Audio {
+class AudioState {
   final double volume;
   final double balance;
   final double fade;
   final double treble;
   final double bass;
-  const Audio({
+  const AudioState({
     required this.volume,
     required this.balance,
     required this.fade,
@@ -17,22 +17,21 @@ class Audio {
     required this.bass,
   });
 
-  const Audio.initial()
+  const AudioState.initial()
       : volume = 5.0,
         balance = 5.0,
         fade = 5.0,
         treble = 5.0,
         bass = 5.0;
-  
 
-  Audio copyWith({
+  AudioState copyWith({
     double? volume,
     double? balance,
     double? fade,
     double? treble,
     double? bass,
   }) {
-    return Audio(
+    return AudioState(
       volume: volume ?? this.volume,
       balance: balance ?? this.balance,
       fade: fade ?? this.fade,
@@ -51,8 +50,8 @@ class Audio {
     };
   }
 
-  factory Audio.fromMap(Map<String, dynamic> map) {
-    return Audio(
+  factory AudioState.fromMap(Map<String, dynamic> map) {
+    return AudioState(
       volume: map['volume']?.toDouble() ?? 0.0,
       balance: map['balance']?.toDouble() ?? 0.0,
       fade: map['fade']?.toDouble() ?? 0.0,
@@ -63,18 +62,19 @@ class Audio {
 
   String toJson() => json.encode(toMap());
 
-  factory Audio.fromJson(String source) => Audio.fromMap(json.decode(source));
+  factory AudioState.fromJson(String source) =>
+      AudioState.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'Audio(volume: $volume, balance: $balance, fade: $fade, treble: $treble, bass: $bass)';
+    return 'AudioState(volume: $volume, balance: $balance, fade: $fade, treble: $treble, bass: $bass)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is Audio &&
+
+    return other is AudioState &&
         other.volume == volume &&
         other.balance == balance &&
         other.fade == fade &&

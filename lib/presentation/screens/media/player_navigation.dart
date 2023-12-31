@@ -1,19 +1,30 @@
 import 'package:flutter_ics_homescreen/core/utils/helpers.dart';
 import 'package:flutter_ics_homescreen/export.dart';
+import 'media_nav_notifier.dart';
 
-class PlayerNavigation extends StatefulWidget {
+class PlayerNavigation extends ConsumerStatefulWidget {
   const PlayerNavigation({super.key, required this.onPressed});
   final Function onPressed;
 
   @override
-  State<PlayerNavigation> createState() => _PlayerNavigationState();
+  ConsumerState<PlayerNavigation> createState() => _PlayerNavigationState();
 }
 
-class _PlayerNavigationState extends State<PlayerNavigation> {
+class _PlayerNavigationState extends ConsumerState<PlayerNavigation> {
   List<String> navItems = ["My Media", "FM", "AM", "XM"];
-  String selectedNav = "My Media";
+  Map<MediaNavState, String> navStateMap = {
+    MediaNavState.media: "My Media",
+    MediaNavState.fm: "FM",
+    MediaNavState.am: "AM",
+    MediaNavState.xm: "XM"
+  };
+  //String selectedNav = "My Media";
+
   @override
   Widget build(BuildContext context) {
+    var navState = ref.watch(mediaNavStateProvider);
+    var selectedNav = navStateMap[navState];
+
     return Row(
         children: navItems
             .map((e) => Expanded(
@@ -35,9 +46,16 @@ class _PlayerNavigationState extends State<PlayerNavigation> {
                     child: InkWell(
                       onTap: () {
                         setState(() {
-                          selectedNav = e;
+                          if (e == "My Media" || e == "FM") {
+                            selectedNav = e;
+                          }
                         });
-                        widget.onPressed(selectedNav);
+                        if (e == "My Media" || e == "FM") {
+                          for (MapEntry<MediaNavState, String> me
+                              in navStateMap.entries) {
+                            if (me.value == e) widget.onPressed(me.key);
+                          }
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 7),

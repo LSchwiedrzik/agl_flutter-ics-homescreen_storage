@@ -17,8 +17,8 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [HvacPage.page()];
     case AppState.apps:
       return [AppsPage.page()];
-    case AppState.mediaPlayer:
-      return [MediaPlayerPage.page()];
+    case AppState.media:
+      return [MediaPage.page()];
     case AppState.settings:
       return [SettingsPage.page()];
     case AppState.splash:

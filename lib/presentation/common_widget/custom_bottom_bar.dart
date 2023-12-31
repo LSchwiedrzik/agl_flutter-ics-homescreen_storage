@@ -35,7 +35,7 @@ class CustomBottomBarState extends ConsumerState<CustomBottomBar> {
       case "HVAC":
         status = AppState.hvac;
       case "Media":
-        status = AppState.mediaPlayer;
+        status = AppState.media;
       case "Settings":
         status = AppState.settings;
       case "Apps":

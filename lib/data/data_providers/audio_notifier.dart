@@ -1,10 +1,10 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/protos.dart';
+import 'package:protos/val-api.dart';
 
-class AudioNotifier extends Notifier<Audio> {
+class AudioStateNotifier extends Notifier<AudioState> {
   @override
-  Audio build() {
-    return Audio.initial();
+  AudioState build() {
+    return AudioState.initial();
   }
 
   void resetToDefaults() {
