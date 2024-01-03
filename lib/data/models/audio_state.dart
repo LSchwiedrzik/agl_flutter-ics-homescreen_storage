@@ -40,36 +40,6 @@ class AudioState {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'volume': volume,
-      'balance': balance,
-      'fade': fade,
-      'treble': treble,
-      'bass': bass,
-    };
-  }
-
-  factory AudioState.fromMap(Map<String, dynamic> map) {
-    return AudioState(
-      volume: map['volume']?.toDouble() ?? 0.0,
-      balance: map['balance']?.toDouble() ?? 0.0,
-      fade: map['fade']?.toDouble() ?? 0.0,
-      treble: map['treble']?.toDouble() ?? 0.0,
-      bass: map['bass']?.toDouble() ?? 0.0,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory AudioState.fromJson(String source) =>
-      AudioState.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'AudioState(volume: $volume, balance: $balance, fade: $fade, treble: $treble, bass: $bass)';
-  }
-
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

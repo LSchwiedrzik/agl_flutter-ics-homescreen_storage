@@ -38,6 +38,8 @@ class _RadioPresetTableState extends ConsumerState<RadioPresetTable> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+
     return Material(
         color: Colors.transparent,
         child: Column(
@@ -72,72 +74,112 @@ class _RadioPresetTableState extends ConsumerState<RadioPresetTable> {
                         )))
               ],
             ),
-            SizedBox(
-              height: 325,
-              child: SingleChildScrollView(
-                child: Column(
-                    children: presets.map((index) {
-                  return Container(
-                    height: 100,
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: selectedPreset == index.name
-                                ? const BorderSide(
-                                    color: Colors.white, width: 4)
-                                : BorderSide.none),
-                        gradient: LinearGradient(
-                            colors: selectedPreset == index.name
-                                ? [
-                                    AGLDemoColors.neonBlueColor,
-                                    AGLDemoColors.neonBlueColor
-                                        .withOpacity(0.15)
-                                  ]
-                                : [
-                                    Colors.black,
-                                    Colors.black.withOpacity(0.20)
-                                  ])),
-                    child: InkWell(
-                      onTap: () {
-                        ref
-                            .read(radioClientProvider)
-                            .setFrequency(index.frequency);
-                        setState(() {
-                          selectedPreset = index.name;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 17, horizontal: 24),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 6,
-                                child: AutoSizeText(
-                                  index.name,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 40,
-                                      shadows: [Helpers.dropShadowRegular]),
-                                )),
-                            Expanded(
-                                flex: 4,
-                                child: Text(
-                                  frequencyToString(index.frequency),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 26,
-                                      shadows: [Helpers.dropShadowRegular]),
-                                ))
-                          ],
+            Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: SizedBox(
+                  height: 500,
+                  child: RawScrollbar(
+                    controller: controller,
+                    thickness: 32,
+                    thumbVisibility: true,
+                    radius: const Radius.circular(10),
+                    thumbColor: AGLDemoColors.periwinkleColor,
+                    minThumbLength: 60,
+                    interactive: true,
+                    child: ScrollConfiguration(
+                        behavior: ScrollConfiguration.of(context).copyWith(
+                          scrollbars: false,
+                          overscroll: false,
                         ),
-                      ),
-                    ),
-                  );
-                }).toList()),
-              ),
-            ),
+                        child: CustomScrollView(
+                            controller: controller,
+                            physics: const ClampingScrollPhysics(),
+                            slivers: <Widget>[
+                              SliverList.separated(
+                                itemCount: presets.length,
+                                itemBuilder: (_, int index) {
+                                  return Container(
+                                    height: 92,
+                                    margin: const EdgeInsets.only(right: 44),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            left: selectedPreset ==
+                                                    presets[index].name
+                                                ? const BorderSide(
+                                                    color: Colors.white,
+                                                    width: 4)
+                                                : BorderSide.none),
+                                        gradient: LinearGradient(
+                                            colors: selectedPreset ==
+                                                    presets[index].name
+                                                ? [
+                                                    AGLDemoColors.neonBlueColor,
+                                                    AGLDemoColors.neonBlueColor
+                                                        .withOpacity(0.15)
+                                                  ]
+                                                : [
+                                                    Colors.black,
+                                                    Colors.black
+                                                        .withOpacity(0.20)
+                                                  ])),
+                                    child: InkWell(
+                                      onTap: () {
+                                        ref
+                                            .read(radioClientProvider)
+                                            .setFrequency(
+                                                presets[index].frequency);
+                                        setState(() {
+                                          selectedPreset = presets[index].name;
+                                        });
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 17, horizontal: 24),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                                flex: 6,
+                                                child: AutoSizeText(
+                                                  presets[index].name,
+                                                  maxLines: 1,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 32,
+                                                      shadows: [
+                                                        Helpers
+                                                            .dropShadowRegular
+                                                      ]),
+                                                )),
+                                            Expanded(
+                                                flex: 4,
+                                                child: Align(
+                                                    alignment:
+                                                        Alignment.centerRight,
+                                                    child: Text(
+                                                      frequencyToString(
+                                                          presets[index]
+                                                              .frequency),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 24,
+                                                          shadows: [
+                                                            Helpers
+                                                                .dropShadowRegular
+                                                          ]),
+                                                    )))
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (_, __) {
+                                  return SizedBox(height: 8);
+                                },
+                              ),
+                            ])),
+                  ),
+                )),
           ],
         ));
   }

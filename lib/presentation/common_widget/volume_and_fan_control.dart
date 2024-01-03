@@ -19,9 +19,7 @@ class VolumeFanControl extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Visibility.maintain(
-              visible: state == AppState.media ? false : true,
-              child: const VolumeBar()),
+          VolumeBar(),
           SizedBox(
             height: gapSize,
           ),

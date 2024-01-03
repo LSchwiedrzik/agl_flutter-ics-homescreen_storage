@@ -10,6 +10,7 @@ export 'data/models/vehicle.dart';
 export 'data/models/units.dart';
 export 'data/models/audio_state.dart';
 export 'data/models/radio_state.dart';
+export 'data/models/mediaplayer_state.dart';
 export 'data/models/connections_signals.dart';
 export 'data/models/hybrid.dart';
 

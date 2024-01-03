@@ -1,7 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter_ics_homescreen/presentation/screens/media/media_player.dart';
 import 'package:flutter_ics_homescreen/presentation/screens/media/radio_player.dart';
-import 'widgets/media_volume_bar.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/play_controller.dart';
 import 'media_nav_notifier.dart';
 import 'player_navigation.dart';
 
@@ -50,6 +50,21 @@ class MediaPage extends StatelessWidget {
   }
 }
 
+class MediaPlayingStateNotifier extends Notifier<bool> {
+  @override
+  bool build() {
+    return false;
+  }
+
+  set(bool value) {
+    state = value;
+  }
+}
+
+final mediaPlayingStateProvider =
+    NotifierProvider<MediaPlayingStateNotifier, bool>(
+        MediaPlayingStateNotifier.new);
+
 class Media extends ConsumerStatefulWidget {
   const Media({super.key});
 
@@ -58,22 +73,44 @@ class Media extends ConsumerStatefulWidget {
 }
 
 class _MediaState extends ConsumerState<Media> {
-  //late MediaNavState selectedNav;
-
-  //@override
-  //initState() {
-  //  selectedNav = ref.read(mediaNavStateProvider);
-  //  super.initState();
-  //}
+  @override
+  void initState() {
+    // Set initial source so external control (like the volume bar button)
+    // will work from the start.
+    var navState = ref.read(mediaNavStateProvider);
+    switch (navState) {
+      case MediaNavState.fm:
+        ref.read(playControllerProvider).setSource(PlaySource.radio);
+        break;
+      case MediaNavState.media:
+      default:
+        ref.read(playControllerProvider).setSource(PlaySource.media);
+        break;
+    }
+    super.initState();
+  }
 
   onPressed(MediaNavState type) {
     setState(() {
       if (type == MediaNavState.fm) {
         ref.read(mediaNavStateProvider.notifier).set(MediaNavState.fm);
+        ref.read(playControllerProvider).setSource(PlaySource.radio);
+
+        bool mediaPlaying = false;
+        if (ref.read(mediaPlayerStateProvider).playState == PlayState.playing) {
+          ref.read(mpdClientProvider).pause();
+          mediaPlaying = true;
+        }
+        ref.read(mediaPlayingStateProvider.notifier).set(mediaPlaying);
         ref.read(radioClientProvider).start();
       } else if (type == MediaNavState.media) {
         ref.read(mediaNavStateProvider.notifier).set(MediaNavState.media);
+        ref.read(playControllerProvider).setSource(PlaySource.media);
+
         ref.read(radioClientProvider).stop();
+        if (ref.read(mediaPlayingStateProvider)) {
+          ref.read(mpdClientProvider).play();
+        }
       }
     });
   }
@@ -103,11 +140,13 @@ class _MediaState extends ConsumerState<Media> {
                       : Container(),
             ),
           ),
+          /*
           if (navState == MediaNavState.media || navState == MediaNavState.fm)
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 144, vertical: 23.5),
               child: CustomVolumeSlider(),
             ),
+          */
         ],
       ),
     );

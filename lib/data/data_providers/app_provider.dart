@@ -2,16 +2,23 @@ import 'package:flutter_ics_homescreen/data/data_providers/hybrid_notifier.dart'
 import 'package:flutter_ics_homescreen/data/data_providers/signal_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/time_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/units_notifier.dart';
-import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/users_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/vehicle_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/audio_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/radio_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/mediaplayer_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/mediaplayer_position_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/playlist_notifier.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/playlist_art_notifier.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/val_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/app_launcher.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/radio_client.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/mpd_client.dart';
+import 'package:flutter_ics_homescreen/data/data_providers/play_controller.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
-import '../models/users.dart';
-import 'vehicle_notifier.dart';
+import 'package:flutter_ics_homescreen/data/models/users.dart';
+import 'package:flutter_ics_homescreen/data/models/mediaplayer_state.dart';
 
 enum AppState {
   home,
@@ -59,6 +66,11 @@ final radioClientProvider = Provider((ref) {
   return RadioClient(config: config, ref: ref);
 });
 
+final mpdClientProvider = Provider((ref) {
+  MpdConfig config = ref.watch(appConfigProvider).mpdConfig;
+  return MpdClient(config: config, ref: ref);
+});
+
 final vehicleProvider =
     NotifierProvider<VehicleNotifier, Vehicle>(VehicleNotifier.new);
 
@@ -75,6 +87,34 @@ final audioStateProvider =
 
 final radioStateProvider =
     NotifierProvider<RadioStateNotifier, RadioState>(RadioStateNotifier.new);
+
+final mediaPlayerStateProvider =
+    NotifierProvider<MediaPlayerStateNotifier, MediaPlayerState>(
+        MediaPlayerStateNotifier.new);
+
+final mediaPlayerPositionProvider =
+    NotifierProvider<MediaPlayerPositionNotifier, Duration>(
+        MediaPlayerPositionNotifier.new);
+
+final playlistProvider =
+    NotifierProvider<PlaylistNotifier, List<PlaylistEntry>>(
+        PlaylistNotifier.new);
+
+final playlistArtProvider =
+    NotifierProvider<PlaylistArtNotifier, Map<int, Uint8List>>(
+        PlaylistArtNotifier.new);
+
+final playStateProvider = StateProvider<bool>((ref) {
+  final mediaPlayState = ref.watch(
+      mediaPlayerStateProvider.select((mediaplayer) => mediaplayer.playState));
+  final radioPlaying =
+      ref.watch(radioStateProvider.select((radio) => radio.playing));
+  return (mediaPlayState == PlayState.playing || radioPlaying);
+});
+
+final playControllerProvider = Provider((ref) {
+  return PlayController(ref: ref);
+});
 
 final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
   return UsersNotifier(Users.initial());

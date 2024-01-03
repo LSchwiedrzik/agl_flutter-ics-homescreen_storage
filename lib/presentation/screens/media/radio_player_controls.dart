@@ -10,6 +10,12 @@ class RadioPlayerControls extends ConsumerWidget {
     var freqCurrent =
         ref.watch(radioStateProvider.select((radio) => radio.freqCurrent));
     String currentString = (freqCurrent / 1000000.0).toStringAsFixed(1);
+    var freqMin =
+        ref.watch(radioStateProvider.select((radio) => radio.freqMin));
+    String freqMinString = (freqMin / 1000000.0).toStringAsFixed(1);
+    var freqMax =
+        ref.watch(radioStateProvider.select((radio) => radio.freqMax));
+    String freqMaxString = (freqMax / 1000000.0).toStringAsFixed(1);
 
     return Material(
       color: Colors.transparent,
@@ -24,16 +30,40 @@ class RadioPlayerControls extends ConsumerWidget {
                 shadows: [Helpers.dropShadowRegular],
                 fontSize: 44),
           ),
-          const RadioPlayerControlsSubDetails(),
-          const RadioPlayerControlsSlider(),
+          const RadioPlayerControlsActions(),
+          Column(children: [
+            const RadioPlayerControlsSlider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    freqMinString,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        shadows: [Helpers.dropShadowRegular]),
+                  ),
+                  Text(
+                    freqMaxString,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        shadows: [Helpers.dropShadowRegular]),
+                  )
+                ],
+              ),
+            ),
+          ]),
         ],
       ),
     );
   }
 }
 
-class RadioPlayerControlsSubDetails extends ConsumerWidget {
-  const RadioPlayerControlsSubDetails({super.key});
+class RadioPlayerControlsActions extends ConsumerWidget {
+  const RadioPlayerControlsActions({super.key});
 
   onPressed({required WidgetRef ref, required String type}) {
     if (type == "tuneLeft") {
@@ -174,78 +204,40 @@ class RadioPlayerControlsSliderState
         ref.watch(radioStateProvider.select((radio) => radio.freqCurrent)) /
             1000000.0;
 
-    String minString = (freqMin / 1000000.0).toStringAsFixed(1);
-    String maxString = (freqMax / 1000000.0).toStringAsFixed(1);
-
-    return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 64),
-        child: Container(
-          decoration: const ShapeDecoration(
-            color: AGLDemoColors.buttonFillEnabledColor,
-            shape: StadiumBorder(
-                side: BorderSide(
-              color: Color(0xFF5477D4),
-              width: 0.5,
-            )),
-          ),
-          height: 160,
-          child: Row(
-            children: [
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    minString,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        shadows: [Helpers.dropShadowRegular]),
-                  )),
-              Expanded(
-                child: SliderTheme(
-                  data: SliderThemeData(
-                    overlayShape: SliderComponentShape.noOverlay,
-                    valueIndicatorShape: SliderComponentShape.noOverlay,
-                    activeTickMarkColor: Colors.transparent,
-                    inactiveTickMarkColor: Colors.transparent,
-                    inactiveTrackColor: AGLDemoColors.backgroundInsetColor,
-                    thumbShape: const PolygonSliderThumb(
-                        sliderValue: 3, thumbRadius: 23),
-                    //trackHeight: 5,
-                  ),
-                  child: Slider(
-                    divisions: (freqMax - freqMin) ~/ freqStep,
-                    min: freqMin / 1000000.0,
-                    max: freqMax / 1000000.0,
-                    value: currentFreq,
-                    onChangeStart: (double value) {
-                      ref.read(radioClientProvider).scanStop();
-                    },
-                    onChanged: (double value) {
-                      setState(() {
-                        ref
-                            .read(radioStateProvider.notifier)
-                            .updateFrequency((value * 1000000.0).toInt());
-                      });
-                    },
-                    onChangeEnd: (double value) {
-                      ref
-                          .read(radioStateProvider.notifier)
-                          .setFrequency((value * 1000000.0).toInt());
-                    },
-                  ),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    maxString,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        shadows: [Helpers.dropShadowRegular]),
-                  )),
-            ],
-          ),
-        ));
+    return Container(
+      height: 80,
+      child: SliderTheme(
+        data: SliderThemeData(
+          overlayShape: SliderComponentShape.noOverlay,
+          valueIndicatorShape: SliderComponentShape.noOverlay,
+          activeTickMarkColor: Colors.transparent,
+          inactiveTickMarkColor: Colors.transparent,
+          inactiveTrackColor: AGLDemoColors.periwinkleColor,
+          thumbShape: const PolygonSliderThumb(sliderValue: 3, thumbRadius: 23),
+          //trackHeight: 5,
+        ),
+        child: Slider(
+          divisions: (freqMax - freqMin) ~/ freqStep,
+          min: freqMin / 1000000.0,
+          max: freqMax / 1000000.0,
+          value: currentFreq,
+          onChangeStart: (double value) {
+            ref.read(radioClientProvider).scanStop();
+          },
+          onChanged: (double value) {
+            setState(() {
+              ref
+                  .read(radioStateProvider.notifier)
+                  .updateFrequency((value * 1000000.0).toInt());
+            });
+          },
+          onChangeEnd: (double value) {
+            ref
+                .read(radioStateProvider.notifier)
+                .setFrequency((value * 1000000.0).toInt());
+          },
+        ),
+      ),
+    );
   }
 }

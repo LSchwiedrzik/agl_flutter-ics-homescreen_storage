@@ -56,11 +56,27 @@ class RadioConfig {
   }
 }
 
+class MpdConfig {
+  final String hostname;
+  final int port;
+
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 6600;
+
+  MpdConfig({required this.hostname, required this.port});
+
+  static MpdConfig defaultConfig() {
+    return MpdConfig(
+        hostname: MpdConfig.defaultHostname, port: MpdConfig.defaultPort);
+  }
+}
+
 class AppConfig {
   final bool disableBkgAnimation;
   final bool randomHybridAnimation;
   final KuksaConfig kuksaConfig;
   final RadioConfig radioConfig;
+  final MpdConfig mpdConfig;
 
   static String configFilePath = '/etc/xdg/AGL/ics-homescreen.yaml';
 
@@ -68,7 +84,8 @@ class AppConfig {
       {required this.disableBkgAnimation,
       required this.randomHybridAnimation,
       required this.kuksaConfig,
-      required this.radioConfig});
+      required this.radioConfig,
+      required this.mpdConfig});
 
   static KuksaConfig parseKuksaConfig(YamlMap kuksaMap) {
     try {
@@ -160,6 +177,24 @@ class AppConfig {
       return RadioConfig.defaultConfig();
     }
   }
+
+  static MpdConfig parseMpdConfig(YamlMap mpdMap) {
+    try {
+      String hostname = MpdConfig.defaultHostname;
+      if (mpdMap.containsKey('hostname')) {
+        hostname = mpdMap['hostname'];
+      }
+
+      int port = MpdConfig.defaultPort;
+      if (mpdMap.containsKey('port')) {
+        port = mpdMap['port'];
+      }
+
+      return MpdConfig(hostname: hostname, port: port);
+    } catch (_) {
+      return MpdConfig.defaultConfig();
+    }
+  }
 }
 
 final appConfigProvider = Provider((ref) {
@@ -189,6 +224,13 @@ final appConfigProvider = Provider((ref) {
       radioConfig = RadioConfig.defaultConfig();
     }
 
+    MpdConfig mpdConfig;
+    if (yamlMap.containsKey('mpd')) {
+      mpdConfig = AppConfig.parseMpdConfig(yamlMap['mpd']);
+    } else {
+      mpdConfig = MpdConfig.defaultConfig();
+    }
+
     bool disableBkgAnimation = disableBkgAnimationDefault;
     if (yamlMap.containsKey('disable-bg-animation')) {
       var value = yamlMap['disable-bg-animation'];
@@ -209,12 +251,14 @@ final appConfigProvider = Provider((ref) {
         disableBkgAnimation: disableBkgAnimation,
         randomHybridAnimation: randomHybridAnimation,
         kuksaConfig: kuksaConfig,
-        radioConfig: radioConfig);
+        radioConfig: radioConfig,
+        mpdConfig: mpdConfig);
   } catch (_) {
     return AppConfig(
         disableBkgAnimation: false,
         randomHybridAnimation: false,
         kuksaConfig: KuksaConfig.defaultConfig(),
-        radioConfig: RadioConfig.defaultConfig());
+        radioConfig: RadioConfig.defaultConfig(),
+        mpdConfig: MpdConfig.defaultConfig());
   }
 });

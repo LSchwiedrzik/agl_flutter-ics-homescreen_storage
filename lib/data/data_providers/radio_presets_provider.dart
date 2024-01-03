@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:yaml/yaml.dart';
 
 class RadioPreset {
   final int frequency;

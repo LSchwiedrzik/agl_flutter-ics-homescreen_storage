@@ -34,8 +34,8 @@ class _RadioPlayerState extends ConsumerState<RadioPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    double fmSignalHeight = 460;
-    double fmSignalWidth = 460;
+    double fmSignalHeight = 400;
+    double fmSignalWidth = 400;
 
     return Container(
       padding: const EdgeInsets.only(left: 7, right: 7),

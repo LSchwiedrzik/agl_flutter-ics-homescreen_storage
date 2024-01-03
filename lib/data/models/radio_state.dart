@@ -43,38 +43,6 @@ class RadioState {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return {
-      'freqMin': freqMin,
-      'freqMax': freqMax,
-      'freqStep': freqStep,
-      'freqCurrent': freqCurrent,
-      'playing': playing,
-      'scanning': scanning,
-    };
-  }
-
-  factory RadioState.fromMap(Map<String, dynamic> map) {
-    return RadioState(
-      freqMin: map['freqMin']?.toInt().toUnsigned() ?? 0,
-      freqMax: map['freqMax']?.toInt().toUnsigned() ?? 0,
-      freqStep: map['freqStep']?.toInt().toUnsigned() ?? 0,
-      freqCurrent: map['freqCurrent']?.toInt().toUnsigned() ?? 0,
-      playing: map['playing']?.toBool() ?? false,
-      scanning: map['scanning']?.toBool() ?? false,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory RadioState.fromJson(String source) =>
-      RadioState.fromMap(json.decode(source));
-
-  @override
-  String toString() {
-    return 'RadioState(freqMin: $freqMin, freqMax: $freqMax, freqStep: $freqStep, freqCurrent: $freqCurrent, playing: $playing, scanning: $scanning)';
-  }
-
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

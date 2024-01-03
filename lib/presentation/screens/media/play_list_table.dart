@@ -2,38 +2,29 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_ics_homescreen/core/utils/helpers.dart';
 import 'package:flutter_ics_homescreen/export.dart';
 
-class PlayListTable extends StatefulWidget {
-  const PlayListTable(
-      {super.key,
-      required this.type,
-      required this.tableName,
-      required this.playList,
-      required this.selectedPlayListSongName});
-  final String type;
-  final String tableName;
-  final List<PlayListModel> playList;
-  final String selectedPlayListSongName;
+class PlayListTable extends ConsumerStatefulWidget {
+  PlayListTable({super.key});
 
   @override
-  State<PlayListTable> createState() => _PlayListTableState();
+  ConsumerState<PlayListTable> createState() => _PlayListTableState();
 }
 
-class _PlayListTableState extends State<PlayListTable> {
+class _PlayListTableState extends ConsumerState<PlayListTable> {
   bool isAudioSettingsEnabled = false;
-  late String tableName;
-  late List<PlayListModel> playList;
-  late String selectedPlayListSongName;
 
-  @override
-  void initState() {
-    tableName = widget.tableName;
-    playList = widget.playList;
-    selectedPlayListSongName = widget.selectedPlayListSongName;
-    super.initState();
-  }
+  //@override
+  //void initState() {
+  //  super.initState();
+  //}
 
   @override
   Widget build(BuildContext context) {
+    final controller = ScrollController();
+    var playlist = ref.watch(playlistProvider);
+    var selectedPosition = ref.watch(mediaPlayerStateProvider
+        .select((mediaplayer) => mediaplayer.playlistPosition));
+    late String tableName = "USB";
+
     return Material(
         color: Colors.transparent,
         child: Column(
@@ -51,19 +42,18 @@ class _PlayListTableState extends State<PlayListTable> {
                           fontWeight: FontWeight.w400,
                           fontSize: 40),
                     ),
-                    if (widget.type == "media")
-                      InkWell(
-                          customBorder: const CircleBorder(),
-                          onTap: () {},
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: SvgPicture.asset(
-                                  "assets/AppleMusic.svg",
-                                  width: 32,
-                                )),
-                          )),
+                    InkWell(
+                        customBorder: const CircleBorder(),
+                        onTap: () {},
+                        child: Opacity(
+                          opacity: 0.5,
+                          child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SvgPicture.asset(
+                                "assets/AppleMusic.svg",
+                                width: 32,
+                              )),
+                        )),
                   ],
                 ),
                 InkWell(
@@ -81,77 +71,119 @@ class _PlayListTableState extends State<PlayListTable> {
                         )))
               ],
             ),
-            SizedBox(
-              height: 325,
-              child: SingleChildScrollView(
-                child: Column(
-                    children: playList.map((index) {
-                  return Container(
-                    height: 100,
-                    margin: const EdgeInsets.symmetric(vertical: 4),
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: selectedPlayListSongName == index.songName
-                                ? const BorderSide(
-                                    color: Colors.white, width: 4)
-                                : BorderSide.none),
-                        gradient: LinearGradient(
-                            colors: selectedPlayListSongName == index.songName
-                                ? [
-                                    AGLDemoColors.neonBlueColor,
-                                    AGLDemoColors.neonBlueColor
-                                        .withOpacity(0.15)
-                                  ]
-                                : [
-                                    Colors.black,
-                                    Colors.black.withOpacity(0.20)
-                                  ])),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          selectedPlayListSongName = index.songName;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 17, horizontal: 24),
-                        child: Row(
-                          children: [
-                            Expanded(
-                                flex: 6,
-                                child: AutoSizeText(
-                                  index.songName,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 40,
-                                      shadows: [Helpers.dropShadowRegular]),
-                                )),
-                            Expanded(
-                                flex: 4,
-                                child: Text(
-                                  index.albumName,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 26,
-                                      shadows: [Helpers.dropShadowRegular]),
-                                ))
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList()),
-              ),
-            ),
+            Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: SizedBox(
+                    height: 500,
+                    child: RawScrollbar(
+                        controller: controller,
+                        thickness: 32,
+                        thumbVisibility: true,
+                        radius: const Radius.circular(10),
+                        thumbColor: AGLDemoColors.periwinkleColor,
+                        minThumbLength: 60,
+                        interactive: true,
+                        child: ScrollConfiguration(
+                            behavior: ScrollConfiguration.of(context).copyWith(
+                              scrollbars: false,
+                              overscroll: false,
+                            ),
+                            child: CustomScrollView(
+                                controller: controller,
+                                physics: const ClampingScrollPhysics(),
+                                slivers: <Widget>[
+                                  SliverList.separated(
+                                    itemCount: playlist.length,
+                                    itemBuilder: (_, int index) {
+                                      return Container(
+                                        height: 92,
+                                        margin:
+                                            const EdgeInsets.only(right: 44),
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                                left: selectedPosition ==
+                                                        playlist[index].position
+                                                    ? const BorderSide(
+                                                        color: Colors.white,
+                                                        width: 4)
+                                                    : BorderSide.none),
+                                            gradient: LinearGradient(
+                                                colors: selectedPosition ==
+                                                        playlist[index].position
+                                                    ? [
+                                                        AGLDemoColors
+                                                            .neonBlueColor,
+                                                        AGLDemoColors
+                                                            .neonBlueColor
+                                                            .withOpacity(0.15)
+                                                      ]
+                                                    : [
+                                                        Colors.black,
+                                                        Colors.black
+                                                            .withOpacity(0.20)
+                                                      ])),
+                                        child: InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedPosition =
+                                                  playlist[index].position;
+                                              ref
+                                                  .read(mpdClientProvider)
+                                                  .pickTrack(
+                                                      playlist[index].position);
+                                            });
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 17, horizontal: 24),
+                                            child: Column(
+                                              children: [
+                                                Expanded(
+                                                    flex: 6,
+                                                    child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: AutoSizeText(
+                                                          playlist[index].title,
+                                                          maxLines: 1,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 40,
+                                                              shadows: [
+                                                                Helpers
+                                                                    .dropShadowRegular
+                                                              ]),
+                                                        ))),
+                                                Expanded(
+                                                    flex: 4,
+                                                    child: Align(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                          playlist[index]
+                                                              .artist,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 22,
+                                                              shadows: [
+                                                                Helpers
+                                                                    .dropShadowRegular
+                                                              ]),
+                                                        )))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (_, __) {
+                                      return SizedBox(height: 8);
+                                    },
+                                  ),
+                                ]))))),
           ],
         ));
   }
-}
-
-class PlayListModel {
-  final String songName;
-  final String albumName;
-
-  PlayListModel({required this.songName, required this.albumName});
 }

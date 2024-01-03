@@ -3,38 +3,31 @@ import 'media_player_controls.dart';
 import 'play_list_table.dart';
 import 'segmented_buttons.dart';
 
-class MediaPlayer extends StatefulWidget {
+class MediaPlayer extends ConsumerStatefulWidget {
   const MediaPlayer({super.key});
 
   @override
-  State<MediaPlayer> createState() => _MediaPlayerState();
+  ConsumerState<MediaPlayer> createState() => _MediaPlayerState();
 }
 
-class _MediaPlayerState extends State<MediaPlayer> {
-  String selectedNav = "Bluetooth";
-  List<String> navItems = ["Bluetooth", "SD", "USB"];
-
-  late String songName = "Feel Good Inc.";
-
-  String tableName = "2000’s Dance Hits";
-  List<PlayListModel> playList = [
-    PlayListModel(songName: "Feel Good Inc.", albumName: "Gorillaz"),
-    PlayListModel(
-        songName: "Hips Don’t Lie", albumName: "Shakira, Wyclef Jean"),
-    PlayListModel(songName: "AG1", albumName: "Paid Advertisement"),
-    PlayListModel(songName: "Hey Ya!", albumName: "Outkast"),
-    PlayListModel(songName: "One, Two, Step", albumName: "Ciara, Missy Elliot"),
-    PlayListModel(songName: "Don’t Trust Me", albumName: "3OH!3"),
-  ];
-  String selectedPlayListSongName = "Feel Good Inc.";
+class _MediaPlayerState extends ConsumerState<MediaPlayer> {
+  String selectedNav = "USB";
+  List<String> navItems = ["USB", "SD", "Bluetooth"];
 
   @override
   Widget build(BuildContext context) {
-    double albumArtSize = 460;
+    double albumArtSize = 400;
+    final playlistPosition = ref.watch(mediaPlayerStateProvider
+        .select((mediaplayer) => mediaplayer.playlistPosition));
+    final playlistArt = ref.watch(playlistArtProvider);
+    Uint8List art = Uint8List(0);
+    if (playlistArt.containsKey(playlistPosition)) {
+      art = playlistArt[playlistPosition]!;
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        //const PlayerNavigation(),
         SegmentedButtons(
           navItems: navItems,
           selectedNav: selectedNav,
@@ -45,11 +38,20 @@ class _MediaPlayerState extends State<MediaPlayer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              "assets/AlbumArtMedia.png",
-              width: albumArtSize,
-              height: albumArtSize,
-            )
+            art.isNotEmpty
+                ? Image.memory(art,
+                    width: albumArtSize,
+                    height: albumArtSize,
+                    fit: BoxFit.contain)
+                : Container(
+                    width: albumArtSize,
+                    height: albumArtSize,
+                    color: AGLDemoColors.jordyBlueColor.withOpacity(0.2),
+                    child: Icon(
+                      Icons.music_note,
+                      size: albumArtSize,
+                      color: AGLDemoColors.jordyBlueColor,
+                    ))
           ],
         ),
         const SizedBox(
@@ -58,19 +60,11 @@ class _MediaPlayerState extends State<MediaPlayer> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MediaPlayerControls(
-                songName: songName,
-                songLengthStart: "-1:23",
-                songLengthStop: "5:03"),
+            MediaPlayerControls(),
             const SizedBox(
-              height: 72,
+              height: 12,
             ),
-            PlayListTable(
-              playList: playList,
-              selectedPlayListSongName: selectedPlayListSongName,
-              tableName: tableName,
-              type: "media",
-            ),
+            PlayListTable(),
           ],
         )
       ],

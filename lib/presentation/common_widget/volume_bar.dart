@@ -43,13 +43,21 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
     });
   }
 
-  void pause() {}
+  void play() {
+    ref.read(playControllerProvider).play();
+  }
+
+  void pause() {
+    ref.read(playControllerProvider).pause();
+  }
 
   @override
   Widget build(BuildContext context) {
     final volumeValue =
         ref.watch(audioStateProvider.select((audio) => audio.volume));
     val = volumeValue.toDouble();
+    final isPlaying = ref.watch(playStateProvider);
+
     return Column(
       // mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,12 +174,15 @@ class VolumeBarState extends ConsumerState<VolumeBar> {
               padding: EdgeInsets.zero,
               color: AGLDemoColors.periwinkleColor,
               onPressed: () {
-                pause();
+                if (isPlaying) {
+                  pause();
+                } else {
+                  play();
+                }
               },
-              icon: const Icon(
-                Icons.pause,
-                size: 30,
-              )),
+              icon: isPlaying
+                  ? const Icon(Icons.pause, size: 40)
+                  : const Icon(Icons.play_arrow, size: 40)),
         ),
       ],
     );
