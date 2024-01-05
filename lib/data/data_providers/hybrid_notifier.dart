@@ -9,20 +9,20 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     switch (hybridState) {
       case HybridState.idle:
         state = state.copyWith(
-            hybridState: hybridState,
-            topArrowState: ArrowState.blue,
-            leftArrowState: ArrowState.blue,
-            rightArrowState: ArrowState.blue,
-            batteryState: BatteryState.white,
+          hybridState: hybridState,
+          topArrowState: ArrowState.blue,
+          leftArrowState: ArrowState.blue,
+          rightArrowState: ArrowState.blue,
+          batteryState: BatteryState.white,
         );
         break;
       case HybridState.engineOutput:
         state = state.copyWith(
-            hybridState: hybridState,
-            topArrowState: ArrowState.red,
-            leftArrowState: ArrowState.red,
-            rightArrowState: ArrowState.blue,
-            batteryState: BatteryState.red,
+          hybridState: hybridState,
+          topArrowState: ArrowState.red,
+          leftArrowState: ArrowState.red,
+          rightArrowState: ArrowState.blue,
+          batteryState: BatteryState.red,
         );
         break;
       case HybridState.regenerativeBreaking:
@@ -31,8 +31,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
             topArrowState: ArrowState.blue,
             leftArrowState: ArrowState.blue,
             rightArrowState: ArrowState.green,
-            batteryState: BatteryState.green
-        );
+            batteryState: BatteryState.green);
         break;
       case HybridState.batteryOutput:
         state = state.copyWith(
@@ -40,8 +39,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
             topArrowState: ArrowState.blue,
             leftArrowState: ArrowState.blue,
             rightArrowState: ArrowState.yellow,
-            batteryState: BatteryState.yellow
-        );
+            batteryState: BatteryState.yellow);
         break;
       default:
         state = state.copyWith(hybridState: hybridState);
@@ -61,11 +59,11 @@ class HybridNotifier extends StateNotifier<Hybrid> {
 
     // Variable for storing the average value of RPM
     double avgRpm = 0.0;
- 
-    if (speed == 0 && engineSpeed == 0) {
+
+    if (speed == 0 && engineSpeed <= 600) {
       // Set idle state.
       currentState = HybridState.idle;
-    } else if (engineSpeed > 0 && speed > 0) {
+    } else if (engineSpeed > 600 && speed > 0) {
       // Set engine output state..
       currentState = HybridState.engineOutput;
     } else if (speed < 0 && brake) {
