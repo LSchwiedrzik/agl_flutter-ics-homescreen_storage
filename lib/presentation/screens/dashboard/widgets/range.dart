@@ -10,8 +10,12 @@ class RangeWidget extends ConsumerWidget {
     final range = ref.watch(vehicleProvider.select((vehicle) => vehicle.range));
     final unit =
         ref.watch(unitStateProvider.select((unit) => unit.distanceUnit));
+    final rangeString = (unit == DistanceUnit.kilometers)
+        ? (range / 1000.0).toStringAsFixed(0)
+        : (range / 1609.0).toStringAsFixed(0);
+
     return Container(
-      height:130,
+      height: 130,
       width: 306,
       // padding: const EdgeInsets.all(10),
       decoration: const ShapeDecoration(
@@ -54,24 +58,19 @@ class RangeWidget extends ConsumerWidget {
               ),
               RichText(
                 text: TextSpan(
-                  
-                    text: '$range',
+                    text: rangeString,
                     style: GoogleFonts.brunoAce(
-                      
-                      textStyle:
-                           const TextStyle(
+                      textStyle: const TextStyle(
                         color: Colors.white,
                         fontSize: 44,
                       ),
                     ),
                     children: <TextSpan>[
                       TextSpan(
-                        text:
-                            unit == DistanceUnit.kilometers ? ' Km' : ' Mi',
+                        text: unit == DistanceUnit.kilometers ? ' km' : ' mi',
                         style: GoogleFonts.brunoAce(
                           textStyle: const TextStyle(
-                              color: Color(0xFFC1D8FF),
-                              fontSize: 38),
+                              color: Color(0xFFC1D8FF), fontSize: 38),
                         ),
                       ),
                     ]),

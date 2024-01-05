@@ -45,6 +45,12 @@ class VSSPath {
       'Vehicle.Cabin.HVAC.Station.Row1.Driver.Temperature';
   static const String vehiclePassengerTemperature =
       'Vehicle.Cabin.HVAC.Station.Row1.Passenger.Temperature';
+  static const String vehicleHmiDistanceUnit =
+      'Vehicle.Cabin.Infotainment.HMI.DistanceUnit';
+  static const String vehicleHmiTemperatureUnit =
+      'Vehicle.Cabin.Infotainment.HMI.TemperatureUnit';
+  static const String vehicleHmiPressureUnit =
+      'Vehicle.Cabin.Infotainment.HMI.TirePressureUnit';
 
   List<String> getSignalsList() {
     return const [
@@ -72,6 +78,9 @@ class VSSPath {
       vehicleFanSpeed,
       vehicleDriverTemperature,
       vehiclePassengerTemperature,
+      vehicleHmiDistanceUnit,
+      vehicleHmiTemperatureUnit,
+      vehicleHmiPressureUnit,
     ];
   }
 }

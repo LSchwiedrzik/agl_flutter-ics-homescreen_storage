@@ -15,99 +15,93 @@ class VehicleNotifier extends Notifier<Vehicle> {
     state = state.copyWith(speed: newValue);
   }
 
-  bool handleSignalsUpdate(EntryUpdate update) {
+  bool handleSignalUpdate(DataEntry entry) {
     bool handled = true;
-    switch (update.entry.path) {
+    switch (entry.path) {
       case VSSPath.vehicleSpeed:
-        if (update.entry.value.hasFloat()) {
-          state = state.copyWith(speed: update.entry.value.float);
+        if (entry.value.hasFloat()) {
+          state = state.copyWith(speed: entry.value.float);
         }
         break;
       case VSSPath.vehicleInsideTemperature:
-        if (update.entry.value.hasFloat()) {
-          state = state.copyWith(insideTemperature: update.entry.value.float);
+        if (entry.value.hasFloat()) {
+          state = state.copyWith(insideTemperature: entry.value.float);
         }
         break;
       case VSSPath.vehicleOutsideTemperature:
-        if (update.entry.value.hasFloat()) {
-          state = state.copyWith(outsideTemperature: update.entry.value.float);
+        if (entry.value.hasFloat()) {
+          state = state.copyWith(outsideTemperature: entry.value.float);
         }
         break;
       case VSSPath.vehicleRange:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(range: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(range: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleFuelLevel:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(fuelLevel: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(fuelLevel: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleIsChildLockActiveLeft:
-        if (update.entry.value.hasBool_12()) {
-          state =
-              state.copyWith(isChildLockActiveLeft: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isChildLockActiveLeft: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleIsChildLockActiveRight:
-        if (update.entry.value.hasBool_12()) {
-          state = state.copyWith(
-              isChildLockActiveRight: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isChildLockActiveRight: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleEngineSpeed:
-        if (update.entry.value.hasFloat()) {
-          state = state.copyWith(engineSpeed: update.entry.value.float);
+        if (entry.value.hasFloat()) {
+          state = state.copyWith(engineSpeed: entry.value.float);
         }
         break;
       case VSSPath.vehicleFrontLeftTire:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(frontLeftTire: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(frontLeftTire: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleFrontRightTire:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(frontRightTire: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(frontRightTire: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleRearLeftTire:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(rearLeftTire: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(rearLeftTire: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleRearRightTire:
-        if (update.entry.value.hasUint32()) {
-          state = state.copyWith(rearRightTire: update.entry.value.uint32);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(rearRightTire: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleIsAirConditioningActive:
-        if (update.entry.value.hasBool_12()) {
-          state = state.copyWith(
-              isAirConditioningActive: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isAirConditioningActive: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleIsFrontDefrosterActive:
-        if (update.entry.value.hasBool_12()) {
-          state = state.copyWith(
-              isFrontDefrosterActive: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isFrontDefrosterActive: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleIsRearDefrosterActive:
-        if (update.entry.value.hasBool_12()) {
-          state =
-              state.copyWith(isRearDefrosterActive: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isRearDefrosterActive: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleIsRecirculationActive:
-        if (update.entry.value.hasBool_12()) {
-          state =
-              state.copyWith(isRecirculationActive: update.entry.value.bool_12);
+        if (entry.value.hasBool_12()) {
+          state = state.copyWith(isRecirculationActive: entry.value.bool_12);
         }
         break;
       case VSSPath.vehicleFanSpeed:
-        if (update.entry.value.hasUint32()) {
+        if (entry.value.hasUint32()) {
           // Convert 0-100 to local 0-3 setting
-          var value = update.entry.value.uint32;
+          var value = entry.value.uint32;
           var fanSpeed = 0;
           if (value > 66)
             fanSpeed = 3;
@@ -118,14 +112,13 @@ class VehicleNotifier extends Notifier<Vehicle> {
         }
         break;
       case VSSPath.vehicleDriverTemperature:
-        if (update.entry.value.hasInt32()) {
-          state = state.copyWith(driverTemperature: update.entry.value.int32);
+        if (entry.value.hasInt32()) {
+          state = state.copyWith(driverTemperature: entry.value.int32);
         }
         break;
       case VSSPath.vehiclePassengerTemperature:
-        if (update.entry.value.hasInt32()) {
-          state =
-              state.copyWith(passengerTemperature: update.entry.value.int32);
+        if (entry.value.hasInt32()) {
+          state = state.copyWith(passengerTemperature: entry.value.int32);
         }
         break;
       default:

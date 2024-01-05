@@ -30,8 +30,8 @@ class UnitsPage extends ConsumerWidget {
                       icon: Icons.calendar_month_outlined,
                       title: 'Distance',
                       unitName: unit.distanceUnit == DistanceUnit.kilometers
-                          ? 'Kilometers'
-                          : 'Miles',
+                          ? 'kilometers'
+                          : 'miles',
                       hasSwich: false,
                       voidCallback: () async {
                         context
@@ -49,6 +49,18 @@ class UnitsPage extends ConsumerWidget {
                         context
                             .flow<AppState>()
                             .update((next) => AppState.tempUnit);
+                      }),
+                  UnitsTile(
+                      icon: Icons.straighten,
+                      title: 'Pressure',
+                      unitName: unit.pressureUnit == PressureUnit.kilopascals
+                          ? 'kilopascals'
+                          : 'PSI',
+                      hasSwich: true,
+                      voidCallback: () {
+                        context
+                            .flow<AppState>()
+                            .update((next) => AppState.pressureUnit);
                       }),
                 ],
               ),

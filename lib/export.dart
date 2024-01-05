@@ -41,6 +41,7 @@ export 'presentation/screens/settings/settings_screens/units/units_screen.dart';
 export 'presentation/screens/settings/settings_screens/version_info/version_info_screend.dart';
 export 'presentation/screens/settings/settings_screens/units/distance/distance_unit_screen.dart';
 export 'presentation/screens/settings/settings_screens/units/temperature/temperature_unit_screen.dart';
+export 'presentation/screens/settings/settings_screens/units/pressure/pressure_unit_screen.dart';
 export 'package:flutter_ics_homescreen/presentation/screens/settings/settings_screens/profiles/widgets/new_profile_screen.dart';
 
 export 'presentation/screens/apps/apps.dart';

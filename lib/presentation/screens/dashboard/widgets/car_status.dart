@@ -4,25 +4,13 @@ import 'package:gradient_borders/gradient_borders.dart';
 
 import '../../../../export.dart';
 
-class CarStatus extends ConsumerStatefulWidget {
+class CarStatus extends ConsumerWidget {
   const CarStatus({super.key});
 
   @override
-  CarStatusState createState() => CarStatusState();
-}
-
-class CarStatusState extends ConsumerState<CarStatus> {
-  @override
-  void initState() {
-    super.initState();
-    // "ref" can be used in all life-cycles of a StatefulWidget.
-    //ref.read(counterProvider);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef Ref) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0,0,0,84),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 84),
       child: SizedBox(
         height: 440,
         width: 652,
@@ -59,6 +47,18 @@ class LeftCarStatus extends ConsumerWidget {
         ref.watch(vehicleProvider.select((vehicle) => vehicle.frontLeftTire));
     final rearLeftTire =
         ref.watch(vehicleProvider.select((vehicle) => vehicle.rearLeftTire));
+    final unit =
+        ref.watch(unitStateProvider.select((unit) => unit.pressureUnit));
+
+    String frontLeftTireString = "";
+    String rearLeftTireString = "";
+    if (unit == PressureUnit.psi) {
+      frontLeftTireString = (frontLeftTire * 0.145038).toStringAsFixed(1);
+      rearLeftTireString = (rearLeftTire * 0.145038).toStringAsFixed(1);
+    } else {
+      frontLeftTireString = frontLeftTire.toString();
+      rearLeftTireString = rearLeftTire.toString();
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -67,22 +67,21 @@ class LeftCarStatus extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            PSIProgressIndicator(value: frontLeftTire.toDouble()),
+            TirePressureProgressIndicator(value: frontLeftTire.toDouble()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  frontLeftTire.toStringAsFixed(1),
+                  frontLeftTireString,
                   style: GoogleFonts.brunoAce(
-                    textStyle: TextStyle(
-                        color: Colors.white, fontSize: 44),
+                    textStyle: TextStyle(color: Colors.white, fontSize: 44),
                   ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                PSIWidget(),
+                TirePressureUnitWidget(),
               ],
             ),
           ],
@@ -91,22 +90,21 @@ class LeftCarStatus extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            PSIProgressIndicator(value: rearLeftTire.toDouble()),
+            TirePressureProgressIndicator(value: rearLeftTire.toDouble()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  rearLeftTire.toStringAsFixed(1),
+                  rearLeftTireString,
                   style: GoogleFonts.brunoAce(
-                    textStyle: TextStyle(
-                        color: Colors.white, fontSize: 44),
+                    textStyle: TextStyle(color: Colors.white, fontSize: 44),
                   ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                PSIWidget(),
+                TirePressureUnitWidget(),
               ],
             ),
           ],
@@ -127,6 +125,18 @@ class RightCarStatus extends ConsumerWidget {
         ref.watch(vehicleProvider.select((vehicle) => vehicle.frontRightTire));
     final rearRightTire =
         ref.watch(vehicleProvider.select((vehicle) => vehicle.rearRightTire));
+    final unit =
+        ref.watch(unitStateProvider.select((unit) => unit.pressureUnit));
+
+    String frontRightTireString = "";
+    String rearRightTireString = "";
+    if (unit == PressureUnit.psi) {
+      frontRightTireString = (frontRightTire * 0.145038).toStringAsFixed(1);
+      rearRightTireString = (rearRightTire * 0.145038).toStringAsFixed(1);
+    } else {
+      frontRightTireString = frontRightTire.toString();
+      rearRightTireString = rearRightTire.toString();
+    }
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -134,23 +144,21 @@ class RightCarStatus extends ConsumerWidget {
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          
           children: [
-            PSIProgressIndicator(value: frontRightTire.toDouble()),
+            TirePressureProgressIndicator(value: frontRightTire.toDouble()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  frontRightTire.toStringAsFixed(1),
+                  frontRightTireString,
                   style: GoogleFonts.brunoAce(
-                    textStyle: TextStyle(
-                        color: Colors.white, fontSize: 44),
+                    textStyle: TextStyle(color: Colors.white, fontSize: 44),
                   ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                PSIWidget(),
+                TirePressureUnitWidget(),
               ],
             ),
           ],
@@ -159,22 +167,21 @@ class RightCarStatus extends ConsumerWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            PSIProgressIndicator(value: rearRightTire.toDouble()),
+            TirePressureProgressIndicator(value: rearRightTire.toDouble()),
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  rearRightTire.toStringAsFixed(1),
+                  rearRightTireString,
                   style: GoogleFonts.brunoAce(
-                    textStyle: TextStyle(
-                        color: Colors.white, fontSize: 44),
+                    textStyle: TextStyle(color: Colors.white, fontSize: 44),
                   ),
                 ),
                 SizedBox(
                   width: 5,
                 ),
-                PSIWidget(),
+                TirePressureUnitWidget(),
               ],
             ),
           ],
@@ -184,9 +191,9 @@ class RightCarStatus extends ConsumerWidget {
   }
 }
 
-class PSIProgressIndicator extends StatelessWidget {
+class TirePressureProgressIndicator extends StatelessWidget {
   final double value;
-  const PSIProgressIndicator({
+  const TirePressureProgressIndicator({
     Key? key,
     required this.value, // Require the value to be passed
   }) : super(key: key);
@@ -208,7 +215,6 @@ class PSIProgressIndicator extends StatelessWidget {
                   LinearGradient(colors: const [Colors.white30, Colors.white]),
             ),
           ),
-          
         ),
         Positioned(
           left: 3,
@@ -231,17 +237,20 @@ class PSIProgressIndicator extends StatelessWidget {
   }
 }
 
-class PSIWidget extends StatelessWidget {
-  const PSIWidget({
+class TirePressureUnitWidget extends ConsumerWidget {
+  const TirePressureUnitWidget({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unit =
+        ref.watch(unitStateProvider.select((unit) => unit.pressureUnit));
+
     return Padding(
       padding: const EdgeInsets.only(left: 4.0, right: 1.0, bottom: 2.0),
       child: Text(
-        'PSI',
+        unit == PressureUnit.kilopascals ? 'kPa' : 'PSI',
         style: TextStyle(
           fontSize: 26,
         ),

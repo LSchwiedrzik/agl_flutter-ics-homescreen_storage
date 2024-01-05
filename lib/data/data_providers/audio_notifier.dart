@@ -36,36 +36,36 @@ class AudioStateNotifier extends Notifier<AudioState> {
     );
   }
 
-  bool handleSignalsUpdate(EntryUpdate update) {
+  bool handleSignalUpdate(DataEntry entry) {
     bool handled = true;
-    switch (update.entry.path) {
+    switch (entry.path) {
       case VSSPath.vehicleMediaVolume:
-        if (update.entry.value.hasUint32()) {
-          double value = update.entry.value.uint32.toDouble();
+        if (entry.value.hasUint32()) {
+          double value = entry.value.uint32.toDouble();
           state = state.copyWith(volume: value);
         }
         break;
       case VSSPath.vehicleMediaBalance:
-        if (update.entry.value.hasInt32()) {
-          double value = (update.entry.value.int32 + 100) / 20.0;
+        if (entry.value.hasInt32()) {
+          double value = (entry.value.int32 + 100) / 20.0;
           state = state.copyWith(balance: value);
         }
         break;
       case VSSPath.vehicleMediaFade:
-        if (update.entry.value.hasInt32()) {
-          double value = (update.entry.value.int32 + 100) / 20.0;
+        if (entry.value.hasInt32()) {
+          double value = (entry.value.int32 + 100) / 20.0;
           state = state.copyWith(fade: value);
         }
         break;
       case VSSPath.vehicleMediaTreble:
-        if (update.entry.value.hasInt32()) {
-          double value = (update.entry.value.int32 + 100) / 20.0;
+        if (entry.value.hasInt32()) {
+          double value = (entry.value.int32 + 100) / 20.0;
           state = state.copyWith(treble: value);
         }
         break;
       case VSSPath.vehicleMediaBass:
-        if (update.entry.value.hasInt32()) {
-          double value = (update.entry.value.int32 + 100) / 20.0;
+        if (entry.value.hasInt32()) {
+          double value = (entry.value.int32 + 100) / 20.0;
           state = state.copyWith(bass: value);
         }
         break;

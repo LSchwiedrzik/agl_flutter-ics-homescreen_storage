@@ -1,20 +1,20 @@
 import 'package:flutter_ics_homescreen/export.dart';
 
-class DistanceUnitPage extends ConsumerWidget {
-  const DistanceUnitPage({super.key});
+class PressureUnitPage extends ConsumerWidget {
+  const PressureUnitPage({super.key});
 
   static Page<void> page() =>
-      const MaterialPage<void>(child: DistanceUnitPage());
+      const MaterialPage<void>(child: PressureUnitPage());
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final unit =
-        ref.watch(unitStateProvider.select((unit) => unit.distanceUnit));
+        ref.watch(unitStateProvider.select((unit) => unit.pressureUnit));
 
     return Scaffold(
       body: Column(
         children: [
           CommonTitle(
-            title: 'Distance',
+            title: 'Pressure',
             hasBackButton: true,
             onPressed: () {
               context.flow<AppState>().update((state) => AppState.units);
@@ -31,10 +31,10 @@ class DistanceUnitPage extends ConsumerWidget {
                       gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
-                          stops: unit == DistanceUnit.kilometers
+                          stops: unit == PressureUnit.kilopascals
                               ? [0, 0.01, 0.8]
                               : [0.1, 1],
-                          colors: unit == DistanceUnit.kilometers
+                          colors: unit == PressureUnit.kilopascals
                               ? <Color>[
                                   Colors.white,
                                   Colors.blue,
@@ -47,12 +47,12 @@ class DistanceUnitPage extends ConsumerWidget {
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 40.0),
                         leading: Text(
-                          'kilometers',
+                          'kilopascals',
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                         //title: Text(widget.title),
                         //enabled: isSwitchOn,
-                        trailing: unit == DistanceUnit.kilometers
+                        trailing: unit == PressureUnit.kilopascals
                             ? const Icon(
                                 Icons.done,
                                 color: AGLDemoColors.periwinkleColor,
@@ -62,11 +62,11 @@ class DistanceUnitPage extends ConsumerWidget {
                         onTap: () {
                           ref
                               .read(unitStateProvider.notifier)
-                              .setDistanceUnit(DistanceUnit.kilometers);
+                              .setPressureUnit(PressureUnit.kilopascals);
                         }),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 5,
                   ),
                   Container(
                     height: 130,
@@ -74,10 +74,10 @@ class DistanceUnitPage extends ConsumerWidget {
                       gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
-                          stops: unit == DistanceUnit.miles
+                          stops: unit == PressureUnit.psi
                               ? [0, 0.01, 0.8]
                               : [0.1, 1],
-                          colors: unit == DistanceUnit.miles
+                          colors: unit == PressureUnit.psi
                               ? <Color>[
                                   Colors.white,
                                   Colors.blue,
@@ -90,23 +90,23 @@ class DistanceUnitPage extends ConsumerWidget {
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 40.0),
                       leading: Text(
-                        'miles',
+                        'PSI',
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
                       //title: Text(widget.title),
                       //enabled: isSwitchOn,
-                      trailing: unit == DistanceUnit.miles
+                      trailing: unit == PressureUnit.psi
                           ? const Icon(
                               Icons.done,
                               color: AGLDemoColors.periwinkleColor,
-                              size: 48,
+                              size: 38,
                             )
                           : null,
 
                       onTap: () {
                         ref
                             .read(unitStateProvider.notifier)
-                            .setDistanceUnit(DistanceUnit.miles);
+                            .setPressureUnit(PressureUnit.psi);
                       },
                     ),
                   ),

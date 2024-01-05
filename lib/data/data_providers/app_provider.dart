@@ -40,6 +40,7 @@ enum AppState {
   weather,
   distanceUnit,
   tempUnit,
+  pressureUnit,
   clock,
   date,
   time,
@@ -78,9 +79,8 @@ final signalsProvider = StateNotifierProvider<SignalNotifier, Signals>((ref) {
   return SignalNotifier(const Signals.initial());
 });
 
-final unitStateProvider = StateNotifierProvider<UnitsNotifier, Units>((ref) {
-  return UnitsNotifier(const Units.initial());
-});
+final unitStateProvider =
+    NotifierProvider<UnitsNotifier, Units>(UnitsNotifier.new);
 
 final audioStateProvider =
     NotifierProvider<AudioStateNotifier, AudioState>(AudioStateNotifier.new);

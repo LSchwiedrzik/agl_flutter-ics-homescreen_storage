@@ -45,6 +45,8 @@ List<Page<dynamic>> onGenerateAppViewPages(
       return [DistanceUnitPage.page()];
     case AppState.tempUnit:
       return [TemperatureUnitPage.page()];
+    case AppState.pressureUnit:
+      return [PressureUnitPage.page()];
     case AppState.clock:
       return [ClockPage.page()];
     case AppState.newProfile:

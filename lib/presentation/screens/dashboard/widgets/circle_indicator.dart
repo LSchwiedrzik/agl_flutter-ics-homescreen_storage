@@ -189,7 +189,7 @@ class SpeedProgressIndicatorState extends ConsumerState<SpeedProgressIndicator>
           
         ),
         Text(
-          unit == DistanceUnit.kilometers ? 'Km/h' : 'Mph',
+          unit == DistanceUnit.kilometers ? 'km/h' : 'mph',
           style: const TextStyle(color: Colors.white, fontSize: 40),
         ),
       ],

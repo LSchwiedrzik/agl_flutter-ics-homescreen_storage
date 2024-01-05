@@ -29,15 +29,21 @@ class ValClient {
   }
 
   void run() async {
-    List<String> fewSignals = VSSPath().getSignalsList();
-    var request = SubscribeRequest();
+    List<String> signals = VSSPath().getSignalsList();
     Map<String, String> metadata = {};
     if (config.authorization.isNotEmpty) {
       metadata = {'authorization': "Bearer ${config.authorization}"};
     }
-    for (int i = 0; i < fewSignals.length; i++) {
+
+    // Initialize signal states
+    for (int i = 0; i < signals.length; i++) {
+      get(signals[i]);
+    }
+
+    var request = SubscribeRequest();
+    for (int i = 0; i < signals.length; i++) {
       var entry = SubscribeEntry();
-      entry.path = fewSignals[i];
+      entry.path = signals[i];
       entry.fields.add(Field.FIELD_PATH);
       entry.fields.add(Field.FIELD_VALUE);
       request.entries.add(entry);
@@ -48,7 +54,7 @@ class ValClient {
       responseStream.listen((value) async {
         for (var update in value.updates) {
           if (!(update.hasEntry() && update.entry.hasPath())) continue;
-          handleSignalsUpdate(update);
+          handleSignalUpdate(update.entry);
         }
       }, onError: (stacktrace, errorDescriptor) {
         debugPrint(stacktrace.toString());
@@ -58,11 +64,14 @@ class ValClient {
     }
   }
 
-  bool handleSignalsUpdate(EntryUpdate update) {
-    if (ref.read(vehicleProvider.notifier).handleSignalsUpdate(update)) {
+  bool handleSignalUpdate(DataEntry entry) {
+    if (ref.read(vehicleProvider.notifier).handleSignalUpdate(entry)) {
       return true;
     }
-    return ref.read(audioStateProvider.notifier).handleSignalsUpdate(update);
+    if (ref.read(audioStateProvider.notifier).handleSignalUpdate(entry)) {
+      return true;
+    }
+    return ref.read(unitStateProvider.notifier).handleSignalUpdate(entry);
   }
 
   void setUint32(String path, int value, [bool actuator = true]) async {
@@ -113,5 +122,27 @@ class ValClient {
       metadata = {'authorization': "Bearer ${config.authorization}"};
     }
     await stub.set(request, options: CallOptions(metadata: metadata));
+  }
+
+  void get(String path) async {
+    var entry = EntryRequest()..path = path;
+    entry.fields.add(Field.FIELD_VALUE);
+    var request = GetRequest();
+    request.entries.add(entry);
+    Map<String, String> metadata = {};
+    if (config.authorization.isNotEmpty) {
+      metadata = {'authorization': "Bearer ${config.authorization}"};
+    }
+    debugPrint("Getting {path} value");
+    var response =
+        await stub.get(request, options: CallOptions(metadata: metadata));
+    if (response.hasError()) {
+      debugPrint("Get request had error {response.error().reason}");
+      return;
+    }
+    for (var entry in response.entries) {
+      if (!entry.hasPath()) continue;
+      handleSignalUpdate(entry);
+    }
   }
 }
