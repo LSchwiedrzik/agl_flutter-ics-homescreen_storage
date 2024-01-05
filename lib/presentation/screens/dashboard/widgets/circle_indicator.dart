@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter_ics_homescreen/export.dart';
 
 import 'custom_circle.dart';
@@ -44,55 +45,58 @@ class RPMProgressIndicatorState extends ConsumerState<RPMProgressIndicator>
           child: Stack(
             alignment: Alignment.center,
             children: [
-            
               Text(
                 rpm.toStringAsFixed(0),
                 style: GoogleFonts.brunoAce(
                   textStyle: const TextStyle(color: Colors.white, fontSize: 44),
                 ),
               ),
-              Stack(
-                children: [
-                  if (rpm > 6500)
-                    SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 12,
-                        backgroundColor: Colors.transparent,
-                        //value: controller.value,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                            AGLDemoColors.redProgressStrokeColor),
-                        value: rpm * (1 / maxRpm),
+              Transform.rotate(
+                  angle: pi,
+                  child: Stack(
+                    children: [
+                      if (rpm > 6500)
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 12,
+                            backgroundColor: Colors.transparent,
+                            //value: controller.value,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                AGLDemoColors.redProgressStrokeColor),
+                            value: rpm * (1 / maxRpm),
+                          ),
+                        ),
+                      SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 12,
+                          backgroundColor: Colors.transparent,
+                          //value: controller.value,
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                              AGLDemoColors.jordyBlueColor),
+                          value: rpm >= 6500
+                              ? 6500 * (1 / maxRpm)
+                              : rpm * (1 / maxRpm),
+                        ),
+                      ),
+                    ],
+                  )),
+              Transform.rotate(
+                  angle: pi,
+                  child: SizedBox(
+                    height: 220,
+                    width: 220,
+                    child: CustomPaint(
+                      foregroundPainter: CirclePainter(
+                        value: rpm,
+                        maxValue: maxRpm.toDouble(),
+                        isRPM: true,
                       ),
                     ),
-                  SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 12,
-                      backgroundColor: Colors.transparent,
-                      //value: controller.value,
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          AGLDemoColors.jordyBlueColor),
-                      value: rpm >= 6500
-                          ? 6500 * (1 / maxRpm)
-                          : rpm * (1 / maxRpm),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 220,
-                width: 220,
-                child: CustomPaint(
-                  foregroundPainter: CirclePainter(
-                    value: rpm,
-                    maxValue: maxRpm.toDouble(),
-                    isRPM: true,
-                  ),
-                ),
-              ),
+                  )),
             ],
           ),
         ),
@@ -104,8 +108,6 @@ class RPMProgressIndicatorState extends ConsumerState<RPMProgressIndicator>
     );
   }
 }
-
-
 
 class SpeedProgressIndicator extends ConsumerStatefulWidget {
   const SpeedProgressIndicator({super.key});
@@ -145,13 +147,11 @@ class SpeedProgressIndicatorState extends ConsumerState<SpeedProgressIndicator>
         ref.watch(unitStateProvider.select((unit) => unit.distanceUnit));
     return Column(
       children: [
-        
         SizedBox(
           height: 252,
           child: Stack(
             alignment: Alignment.center,
             children: [
-              
               Text(
                 unit == DistanceUnit.kilometers
                     ? speed.toStringAsFixed(0)
@@ -163,30 +163,33 @@ class SpeedProgressIndicatorState extends ConsumerState<SpeedProgressIndicator>
                   ),
                 ),
               ),
-              SizedBox(
-                height: 200,
-                width: 200,
-                child: CircularProgressIndicator(
-                  strokeWidth: 12,
-                  //backgroundColor: const Color(0xFF2962FF),
-                  //value: controller.value,
-                  value: unit == DistanceUnit.kilometers
-                      ? speed * (1 / maxSpeed)
-                      : (speed * (1 / maxSpeed) * 1.609), 
-                  semanticsLabel: 'Speed progress indicator',
-                ),
-              ),
-              SizedBox(
-                height: 220,
-                width: 220,
-                child: CustomPaint(
-                  foregroundPainter:
-                      CirclePainter(value: speed, maxValue: maxSpeed),
-                ),
-              ),
+              Transform.rotate(
+                  angle: pi,
+                  child: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 12,
+                      //backgroundColor: const Color(0xFF2962FF),
+                      //value: controller.value,
+                      value: unit == DistanceUnit.kilometers
+                          ? speed * (1 / maxSpeed)
+                          : (speed * (1 / maxSpeed) * 1.609),
+                      semanticsLabel: 'Speed progress indicator',
+                    ),
+                  )),
+              Transform.rotate(
+                  angle: pi,
+                  child: SizedBox(
+                    height: 220,
+                    width: 220,
+                    child: CustomPaint(
+                      foregroundPainter:
+                          CirclePainter(value: speed, maxValue: maxSpeed),
+                    ),
+                  )),
             ],
           ),
-          
         ),
         Text(
           unit == DistanceUnit.kilometers ? 'km/h' : 'mph',
@@ -239,7 +242,6 @@ class FuelProgressIndicatorState extends ConsumerState<FuelProgressIndicator>
           child: Stack(
             alignment: Alignment.center,
             children: [
-            
               Text(
                 '${(fuelLevel * (1 / maxFuelLevel) * 100).toStringAsFixed(0)}%',
                 style: GoogleFonts.brunoAce(
@@ -249,48 +251,51 @@ class FuelProgressIndicatorState extends ConsumerState<FuelProgressIndicator>
                   ),
                 ),
               ),
-              Stack(
-                children: [
-                  SizedBox(
-                    height: 200,
-                    width: 200,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 12,
-                      backgroundColor: Colors.transparent,
-                      value: fuelLevel >= 12
-                          ? 12 * (1 / maxFuelLevel)
-                          : fuelLevel * (1 / maxFuelLevel),
-                      valueColor: const AlwaysStoppedAnimation<Color>(
-                          AGLDemoColors.redProgressStrokeColor),
-                    ),
-                  ),
-                  if (fuelLevel > 12)
-                    SizedBox(
-                      height: 200,
-                      width: 200,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 12,
-                        backgroundColor: Colors.transparent,
-                        //value: controller.value,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
-                            AGLDemoColors.jordyBlueColor),
-                        value: fuelLevel * (1 / maxFuelLevel),
+              Transform.rotate(
+                  angle: pi,
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        width: 200,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 12,
+                          backgroundColor: Colors.transparent,
+                          value: fuelLevel >= 12
+                              ? 12 * (1 / maxFuelLevel)
+                              : fuelLevel * (1 / maxFuelLevel),
+                          valueColor: const AlwaysStoppedAnimation<Color>(
+                              AGLDemoColors.redProgressStrokeColor),
+                        ),
                       ),
+                      if (fuelLevel > 12)
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 12,
+                            backgroundColor: Colors.transparent,
+                            //value: controller.value,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                                AGLDemoColors.jordyBlueColor),
+                            value: fuelLevel * (1 / maxFuelLevel),
+                          ),
+                        ),
+                    ],
+                  )),
+              Transform.rotate(
+                  angle: pi,
+                  child: SizedBox(
+                    height: 220,
+                    width: 220,
+                    child: CustomPaint(
+                      foregroundPainter: CirclePainter(
+                          value: fuelLevel.toDouble(),
+                          maxValue: maxFuelLevel,
+                          isFuel: true,
+                          isRPM: false),
                     ),
-                    
-                ],
-              ),
-              SizedBox(
-                height: 220,
-                width: 220,
-                child: CustomPaint(
-                  foregroundPainter: CirclePainter(
-                      value: fuelLevel.toDouble(),
-                      maxValue: maxFuelLevel,
-                      isFuel: true,
-                      isRPM: false),
-                ),
-              ),
+                  )),
             ],
           ),
         ),
@@ -302,4 +307,3 @@ class FuelProgressIndicatorState extends ConsumerState<FuelProgressIndicator>
     );
   }
 }
-
