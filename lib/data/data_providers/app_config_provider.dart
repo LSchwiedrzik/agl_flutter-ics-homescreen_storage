@@ -140,7 +140,7 @@ class AppConfig {
 
       String tls_server_name = "";
       if (kuksaMap.containsKey('tls-server-name')) {
-        tls_server_name = kuksaMap['tls_server_name'];
+        tls_server_name = kuksaMap['tls-server-name'];
       }
 
       return KuksaConfig(
