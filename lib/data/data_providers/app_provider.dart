@@ -47,7 +47,26 @@ enum AppState {
   year
 }
 
-final appProvider = StateProvider<AppState>((ref) => AppState.splash);
+class AppStateNotifier extends Notifier<AppState> {
+  AppState previous = AppState.home;
+
+  @override
+  AppState build() {
+    return AppState.splash;
+  }
+
+  void update(AppState newState) {
+    previous = state;
+    state = newState;
+  }
+
+  void back() {
+    state = previous;
+  }
+}
+
+final appProvider =
+    NotifierProvider<AppStateNotifier, AppState>(AppStateNotifier.new);
 
 final valClientProvider = Provider((ref) {
   KuksaConfig config = ref.watch(appConfigProvider).kuksaConfig;

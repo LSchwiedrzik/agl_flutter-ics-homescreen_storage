@@ -46,7 +46,7 @@ class CustomBottomBarState extends ConsumerState<CustomBottomBar> {
     });
     ref.read(appLauncherProvider).activateApp("homescreen");
     ref.read(currentTimeProvider.notifier).isYearChanged = false;
-    ref.read(appProvider.notifier).update((state) => state = status);
+    ref.read(appProvider.notifier).update(status);
   }
 
   @override

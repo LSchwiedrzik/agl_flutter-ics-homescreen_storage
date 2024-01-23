@@ -61,6 +61,9 @@ class _PlayListTableState extends ConsumerState<PlayListTable> {
                     onTap: () {
                       setState(() {
                         isAudioSettingsEnabled = !isAudioSettingsEnabled;
+                        ref
+                            .read(appProvider.notifier)
+                            .update(AppState.audioSettings);
                       });
                     },
                     child: Padding(

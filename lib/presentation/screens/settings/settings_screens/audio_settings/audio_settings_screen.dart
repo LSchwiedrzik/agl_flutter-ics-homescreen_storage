@@ -2,7 +2,6 @@ import 'package:flutter_ics_homescreen/export.dart';
 
 import 'widget/audio_content.dart';
 
-
 class AudioSettingsPage extends ConsumerWidget {
   const AudioSettingsPage({super.key});
 
@@ -17,14 +16,12 @@ class AudioSettingsPage extends ConsumerWidget {
             title: 'Audio Settings',
             hasBackButton: true,
             onPressed: () {
-              context.flow<AppState>().update((state) => AppState.settings);
+              ref.read(appProvider.notifier).back();
             },
           ),
-          const Expanded(
-              child: AudioContent()),
+          const Expanded(child: AudioContent()),
         ],
       ),
     );
   }
 }
-

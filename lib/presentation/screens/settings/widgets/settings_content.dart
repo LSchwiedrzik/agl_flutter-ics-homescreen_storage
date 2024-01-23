@@ -2,13 +2,13 @@ import 'package:flutter_ics_homescreen/export.dart';
 
 import '../../../custom_icons/custom_icons.dart';
 
-class Settings extends StatelessWidget {
+class Settings extends ConsumerWidget {
   const Settings({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       //crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,66 +25,56 @@ class Settings extends StatelessWidget {
                   title: 'Date & Time',
                   hasSwich: false,
                   voidCallback: () async {
-                    context
-                        .flow<AppState>()
-                        .update((next) => AppState.dateTime);
+                    ref.read(appProvider.notifier).update(AppState.dateTime);
                   }),
               SettingsTile(
                   icon: Icons.bluetooth,
                   title: 'Bluetooth',
                   hasSwich: true,
                   voidCallback: () {
-                    context
-                        .flow<AppState>()
-                        .update((next) => AppState.bluetooth);
+                    ref.read(appProvider.notifier).update(AppState.bluetooth);
                   }),
               SettingsTile(
                   icon: Icons.wifi,
                   title: 'Wifi',
                   hasSwich: true,
                   voidCallback: () {
-                    context.flow<AppState>().update((next) => AppState.wifi);
+                    ref.read(appProvider.notifier).update(AppState.wifi);
                   }),
               SettingsTile(
                   icon: CustomIcons.wiredicon,
                   title: 'Wired',
                   hasSwich: false,
                   voidCallback: () {
-                    context.flow<AppState>().update((next) => AppState.wired);
+                    ref.read(appProvider.notifier).update(AppState.wired);
                   }),
               SettingsTile(
                   icon: Icons.tune,
                   title: 'Audio Settings',
                   hasSwich: false,
                   voidCallback: () {
-                    context
-                        .flow<AppState>()
-                        .update((next) => AppState.audioSettings);
+                    ref.read(appProvider.notifier).update(AppState.audioSettings);
                   }),
               SettingsTile(
                   icon: Icons.person_2_outlined,
                   title: 'Profiles',
                   hasSwich: false,
                   voidCallback: () {
-                    context
-                        .flow<AppState>()
-                        .update((next) => AppState.profiles);
+                    ref.read(appProvider.notifier).update(AppState.profiles);
                   }),
               SettingsTile(
                   icon: Icons.straighten,
                   title: 'Units',
                   hasSwich: false,
                   voidCallback: () {
-                    context.flow<AppState>().update((next) => AppState.units);
+                    ref.read(appProvider.notifier).update(AppState.units);
                   }),
               SettingsTile(
                   icon: Icons.help_sharp,
                   title: 'Version Info',
                   hasSwich: false,
                   voidCallback: () {
-                    context
-                        .flow<AppState>()
-                        .update((next) => AppState.versionInfo);
+                    ref.read(appProvider.notifier).update(AppState.versionInfo);
                   }),
             ],
           ),

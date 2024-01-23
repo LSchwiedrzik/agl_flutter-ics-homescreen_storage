@@ -28,7 +28,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
     BuildContext context,
   ) {
     return Consumer(builder: (context, ref, child) {
-      final state = ref.read(appProvider);
+      final appState = ref.watch(appProvider);
       final bool disableBkgAnimation =
           ref.read(appConfigProvider).disableBkgAnimation;
       if (disableBkgAnimation) {
@@ -48,13 +48,13 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
                 repeat: true,
               ),
             FlowBuilder<AppState>(
-              state: ref.watch(appProvider),
+              state: appState,
               onGeneratePages: onGenerateAppViewPages,
               observers: [
                 HeroController(),
               ],
             ),
-            if (state != AppState.splash)
+            if (appState != AppState.splash)
               Positioned(
                 top: 0,
                 bottom: 0,
@@ -66,7 +66,7 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
           ],
         ),
         bottomNavigationBar:
-            state == AppState.splash ? null : const CustomBottomBar(),
+            appState == AppState.splash ? null : const CustomBottomBar(),
       );
     });
   }

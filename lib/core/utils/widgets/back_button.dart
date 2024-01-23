@@ -7,9 +7,7 @@ class CustomBackButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BackButton(
       onPressed: () {
-        ref.read(appProvider.notifier).update(
-              (state) => state = AppState.home,
-            );
+        ref.read(appProvider.notifier).update(AppState.home);
       },
     );
   }

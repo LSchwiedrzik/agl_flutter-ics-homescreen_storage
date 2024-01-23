@@ -64,6 +64,9 @@ class _RadioPresetTableState extends ConsumerState<RadioPresetTable> {
                     onTap: () {
                       setState(() {
                         isAudioSettingsEnabled = !isAudioSettingsEnabled;
+                        ref
+                            .read(appProvider.notifier)
+                            .update(AppState.audioSettings);
                       });
                     },
                     child: Padding(

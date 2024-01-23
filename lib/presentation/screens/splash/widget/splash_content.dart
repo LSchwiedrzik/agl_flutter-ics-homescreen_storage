@@ -131,10 +131,7 @@ class SplashContentState extends ConsumerState<SplashContent>
           width: 452,
           text: 'Continue',
           onTap: () {
-            // ref.read(vehicleProvider.notifier).setInitialState();
-            ref
-                .read(appProvider.notifier)
-                .update((state) => state = AppState.dashboard);
+            ref.read(appProvider.notifier).update(AppState.dashboard);
           },
         ),
         const SizedBox(
