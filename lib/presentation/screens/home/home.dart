@@ -1,6 +1,25 @@
 import 'package:flutter_ics_homescreen/export.dart';
 // import 'package:media_kit_video/media_kit_video.dart';
 
+final bkgImageProvider = Provider((ref) {
+  return Container(
+      width: 1080,
+      height: 1920,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/BG_Sequence_00000.png"),
+        ),
+      ));
+});
+
+final bkgAnimationProvider = Provider((ref) {
+  return Lottie.asset(
+    'animations/BG-dotwaveform.json',
+    fit: BoxFit.cover,
+    repeat: true,
+  );
+});
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({
     super.key,
@@ -24,16 +43,12 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, child) {
       final appState = ref.watch(appProvider);
       final bool disableBkgAnimation =
-          ref.read(appConfigProvider).disableBkgAnimation;
-      if (disableBkgAnimation) {
-        print('Background animation: disabled');
-      }
+          ref.watch(appConfigProvider).disableBkgAnimation;
+      final bool plainBackground = ref.watch(appConfigProvider).plainBackground;
       return Scaffold(
         key: homeScaffoldKey,
         extendBody: true,
@@ -42,11 +57,9 @@ class HomeScreenState extends ConsumerState<HomeScreen> {
         body: Stack(
           children: [
             if (!disableBkgAnimation)
-              Lottie.asset(
-                'animations/BG-dotwaveform.json',
-                fit: BoxFit.cover,
-                repeat: true,
-              ),
+              ref.watch(bkgAnimationProvider)
+            else if (!plainBackground)
+              ref.watch(bkgImageProvider),
             FlowBuilder<AppState>(
               state: appState,
               onGeneratePages: onGenerateAppViewPages,

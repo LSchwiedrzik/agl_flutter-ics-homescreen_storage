@@ -73,6 +73,7 @@ class MpdConfig {
 
 class AppConfig {
   final bool disableBkgAnimation;
+  final bool plainBackground;
   final bool randomHybridAnimation;
   final KuksaConfig kuksaConfig;
   final RadioConfig radioConfig;
@@ -82,6 +83,7 @@ class AppConfig {
 
   AppConfig(
       {required this.disableBkgAnimation,
+      required this.plainBackground,
       required this.randomHybridAnimation,
       required this.kuksaConfig,
       required this.radioConfig,
@@ -151,6 +153,7 @@ class AppConfig {
           ca_certificate: ca_cert,
           tls_server_name: tls_server_name);
     } catch (_) {
+      debugPrint("Invalid KUKSA.val configuration, using defaults");
       return KuksaConfig.defaultConfig();
     }
   }
@@ -174,6 +177,7 @@ class AppConfig {
 
       return RadioConfig(hostname: hostname, port: port, presets: presets);
     } catch (_) {
+      debugPrint("Invalid radio configuration, using defaults");
       return RadioConfig.defaultConfig();
     }
   }
@@ -192,6 +196,7 @@ class AppConfig {
 
       return MpdConfig(hostname: hostname, port: port);
     } catch (_) {
+      debugPrint("Invalid MPD configuration, using defaults");
       return MpdConfig.defaultConfig();
     }
   }
@@ -239,6 +244,14 @@ final appConfigProvider = Provider((ref) {
       }
     }
 
+    bool plainBackground = false;
+    if (yamlMap.containsKey('plain-bg')) {
+      var value = yamlMap['plain-bg'];
+      if (value is bool) {
+        plainBackground = value;
+      }
+    }
+
     bool randomHybridAnimation = randomHybridAnimationDefault;
     if (yamlMap.containsKey('random-hybrid-animation')) {
       var value = yamlMap['random-hybrid-animation'];
@@ -249,6 +262,7 @@ final appConfigProvider = Provider((ref) {
 
     return AppConfig(
         disableBkgAnimation: disableBkgAnimation,
+        plainBackground: plainBackground,
         randomHybridAnimation: randomHybridAnimation,
         kuksaConfig: kuksaConfig,
         radioConfig: radioConfig,
@@ -256,6 +270,7 @@ final appConfigProvider = Provider((ref) {
   } catch (_) {
     return AppConfig(
         disableBkgAnimation: false,
+        plainBackground: false,
         randomHybridAnimation: false,
         kuksaConfig: KuksaConfig.defaultConfig(),
         radioConfig: RadioConfig.defaultConfig(),
