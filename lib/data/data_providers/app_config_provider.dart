@@ -56,6 +56,23 @@ class RadioConfig {
   }
 }
 
+class StorageConfig {
+  final String hostname;
+  final int port;
+
+  static String defaultHostname = 'localhost';
+  static int defaultPort = 50054;
+
+  StorageConfig(
+      {required this.hostname, required this.port}); 
+
+  static StorageConfig defaultConfig() {
+    return StorageConfig(
+        hostname: StorageConfig.defaultHostname,
+        port: StorageConfig.defaultPort);
+  }
+}
+
 class MpdConfig {
   final String hostname;
   final int port;
