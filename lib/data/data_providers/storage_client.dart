@@ -1,5 +1,3 @@
-//import 'dart:js_interop_unsafe';
-
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:protos/storage-api.dart' as storage_api; 
 
@@ -11,7 +9,7 @@ class StorageClient{
 
  StorageClient({required this.config, required this.ref}) {
     debugPrint(
-        "Connecting to radio service at ${config.hostname}:${config.port}");
+        "Connecting to storage service at ${config.hostname}:${config.port}");
     storage_api.ChannelCredentials creds = const storage_api.ChannelCredentials.insecure();
     channel = storage_api.ClientChannel(config.hostname,
         port: config.port, options: storage_api.ChannelOptions(credentials: creds));
