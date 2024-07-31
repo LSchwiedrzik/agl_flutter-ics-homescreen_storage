@@ -124,39 +124,3 @@ final $typed_data.Uint8List listResponseDescriptor = $convert.base64Decode(
     'CgxMaXN0UmVzcG9uc2USGAoHc3VjY2VzcxgBIAEoCFIHc3VjY2VzcxIYCgdtZXNzYWdlGAIgAS'
     'gJUgdtZXNzYWdlEhYKBnJlc3VsdBgDIAMoCVIGcmVzdWx0');
 
-const $core.Map<$core.String, $core.dynamic> DatabaseServiceBase$json = {
-  '1': 'Database',
-  '2': [
-    {'1': 'DestroyDB', '2': '.storage_api.DestroyArguments', '3': '.storage_api.StandardResponse'},
-    {'1': 'Write', '2': '.storage_api.KeyValue', '3': '.storage_api.StandardResponse'},
-    {'1': 'Read', '2': '.storage_api.Key', '3': '.storage_api.ReadResponse'},
-    {'1': 'Delete', '2': '.storage_api.Key', '3': '.storage_api.StandardResponse'},
-    {'1': 'Search', '2': '.storage_api.Key', '3': '.storage_api.ListResponse'},
-    {'1': 'DeleteNodes', '2': '.storage_api.Key', '3': '.storage_api.StandardResponse'},
-    {'1': 'ListNodes', '2': '.storage_api.SubtreeInfo', '3': '.storage_api.ListResponse'},
-  ],
-};
-
-@$core.Deprecated('Use databaseServiceDescriptor instead')
-const $core.Map<$core.String, $core.Map<$core.String, $core.dynamic>> DatabaseServiceBase$messageJson = {
-  '.storage_api.DestroyArguments': DestroyArguments$json,
-  '.storage_api.StandardResponse': StandardResponse$json,
-  '.storage_api.KeyValue': KeyValue$json,
-  '.storage_api.Key': Key$json,
-  '.storage_api.ReadResponse': ReadResponse$json,
-  '.storage_api.ListResponse': ListResponse$json,
-  '.storage_api.SubtreeInfo': SubtreeInfo$json,
-};
-
-/// Descriptor for `Database`. Decode as a `google.protobuf.ServiceDescriptorProto`.
-final $typed_data.Uint8List databaseServiceDescriptor = $convert.base64Decode(
-    'CghEYXRhYmFzZRJJCglEZXN0cm95REISHS5zdG9yYWdlX2FwaS5EZXN0cm95QXJndW1lbnRzGh'
-    '0uc3RvcmFnZV9hcGkuU3RhbmRhcmRSZXNwb25zZRI9CgVXcml0ZRIVLnN0b3JhZ2VfYXBpLktl'
-    'eVZhbHVlGh0uc3RvcmFnZV9hcGkuU3RhbmRhcmRSZXNwb25zZRIzCgRSZWFkEhAuc3RvcmFnZV'
-    '9hcGkuS2V5Ghkuc3RvcmFnZV9hcGkuUmVhZFJlc3BvbnNlEjkKBkRlbGV0ZRIQLnN0b3JhZ2Vf'
-    'YXBpLktleRodLnN0b3JhZ2VfYXBpLlN0YW5kYXJkUmVzcG9uc2USNQoGU2VhcmNoEhAuc3Rvcm'
-    'FnZV9hcGkuS2V5Ghkuc3RvcmFnZV9hcGkuTGlzdFJlc3BvbnNlEj4KC0RlbGV0ZU5vZGVzEhAu'
-    'c3RvcmFnZV9hcGkuS2V5Gh0uc3RvcmFnZV9hcGkuU3RhbmRhcmRSZXNwb25zZRJACglMaXN0Tm'
-    '9kZXMSGC5zdG9yYWdlX2FwaS5TdWJ0cmVlSW5mbxoZLnN0b3JhZ2VfYXBpLkxpc3RSZXNwb25z'
-    'ZQ==');
-

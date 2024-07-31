@@ -9,7 +9,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_final_fields
 // ignore_for_file: unnecessary_import, unnecessary_this, unused_import
 
-import 'dart:async' as $async;
 import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
@@ -528,33 +527,6 @@ class ListResponse extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(3)
   $core.List<$core.String> get result => $_getList(2);
-}
-
-class DatabaseApi {
-  $pb.RpcClient _client;
-  DatabaseApi(this._client);
-
-  $async.Future<StandardResponse> destroyDB($pb.ClientContext? ctx, DestroyArguments request) =>
-    _client.invoke<StandardResponse>(ctx, 'Database', 'DestroyDB', request, StandardResponse())
-  ;
-  $async.Future<StandardResponse> write($pb.ClientContext? ctx, KeyValue request) =>
-    _client.invoke<StandardResponse>(ctx, 'Database', 'Write', request, StandardResponse())
-  ;
-  $async.Future<ReadResponse> read($pb.ClientContext? ctx, Key request) =>
-    _client.invoke<ReadResponse>(ctx, 'Database', 'Read', request, ReadResponse())
-  ;
-  $async.Future<StandardResponse> delete($pb.ClientContext? ctx, Key request) =>
-    _client.invoke<StandardResponse>(ctx, 'Database', 'Delete', request, StandardResponse())
-  ;
-  $async.Future<ListResponse> search($pb.ClientContext? ctx, Key request) =>
-    _client.invoke<ListResponse>(ctx, 'Database', 'Search', request, ListResponse())
-  ;
-  $async.Future<StandardResponse> deleteNodes($pb.ClientContext? ctx, Key request) =>
-    _client.invoke<StandardResponse>(ctx, 'Database', 'DeleteNodes', request, StandardResponse())
-  ;
-  $async.Future<ListResponse> listNodes($pb.ClientContext? ctx, SubtreeInfo request) =>
-    _client.invoke<ListResponse>(ctx, 'Database', 'ListNodes', request, ListResponse())
-  ;
 }
 
 
