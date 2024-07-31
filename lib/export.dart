@@ -16,6 +16,7 @@ export 'data/models/hybrid.dart';
 
 //Screens
 export 'presentation/screens/home/home.dart';
+export 'presentation/screens/home/home_ci.dart';
 export 'presentation/screens/home/widgets/custom_tile.dart';
 export 'presentation/screens/dashboard/dashboard.dart';
 export 'presentation/screens/dashboard/widgets/hybrid/hybrid.dart';
