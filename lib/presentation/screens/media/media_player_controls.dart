@@ -107,13 +107,18 @@ class _MediaPlayerControlsDetailsState
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          widget.songDetail,
-          style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-              fontSize: 40,
-              shadows: [Helpers.dropShadowRegular]),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Text(
+              widget.songDetail,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 40,
+                  shadows: [Helpers.dropShadowRegular]),
+            ),
+          ),
         ),
         Row(
           children: [
