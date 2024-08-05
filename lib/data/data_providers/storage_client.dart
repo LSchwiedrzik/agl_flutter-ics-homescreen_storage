@@ -17,59 +17,73 @@ class StorageClient{
   }
 
 
-  Future<void> destroyDB() async {
+  Future<storage_api.StandardResponse> destroyDB() async {
     try {
       var response = await stub.destroyDB(storage_api.DestroyArguments());
+      return response;
     } catch (e) {
       print(e);
+      rethrow;
     }
   }
 
-
-  Future<void> write(storage_api.KeyValue keyValue) async { 
+  Future<storage_api.StandardResponse> write(storage_api.KeyValue keyValue) async { 
     try {
       var response = await stub.write(keyValue);
+      return response;
     } catch (e) {
       print(e);
+      rethrow;
     }
   }
-  Future<void> read(storage_api.Key key) async{
+  
+  Future<storage_api.ReadResponse> read(storage_api.Key key) async{
     try{
       var response = await stub.read(key);
+      return response;
     } catch(e) {
       print(e);
+      rethrow;
     }
   } 
 
-  Future<void> delete(storage_api.Key key) async{
+  Future<storage_api.StandardResponse> delete(storage_api.Key key) async{
     try{
       var response = await stub.delete(key);
+      return response;
     } catch(e) {
       print(e);
+      rethrow;
     }
   } 
 
-    Future<void> search(storage_api.Key key) async{
+    Future<storage_api.ListResponse> search(storage_api.Key key) async{ //!!!
     try{
-      var response = await stub.search(key);
+      var response =  await stub.search(key);
+      return response;
     } catch(e) {
       print(e);
+      rethrow;
     }
   } 
 
-    Future<void> deleteNodes(storage_api.Key key) async{
+    Future<storage_api.StandardResponse> deleteNodes(storage_api.Key key) async{
     try{
       var response = await stub.deleteNodes(key);
+      return response;
     } catch(e) {
       print(e);
+      rethrow;
     }
   } 
 
-    Future<void> listNodes(storage_api.SubtreeInfo subtreeInfo) async{
+    Future<storage_api.ListResponse> listNodes(storage_api.SubtreeInfo subtreeInfo) async{ //!!!
     try{
       var response = await stub.listNodes(subtreeInfo);
+      return response;
     } catch(e) {
       print(e);
+      rethrow;
     }
   } 
 }
