@@ -57,9 +57,9 @@ class StorageClient{
     }
   } 
 
-    Future<storage_api.ListResponse> search(storage_api.Key key) async{ //!!!
+    Future<storage_api.ListResponse> search(storage_api.Key key) async{ 
     try{
-      var response =  await stub.search(key);
+      var response = await stub.search(key);
       return response;
     } catch(e) {
       print(e);
@@ -77,7 +77,7 @@ class StorageClient{
     }
   } 
 
-    Future<storage_api.ListResponse> listNodes(storage_api.SubtreeInfo subtreeInfo) async{ //!!!
+    Future<storage_api.ListResponse> listNodes(storage_api.SubtreeInfo subtreeInfo) async{
     try{
       var response = await stub.listNodes(subtreeInfo);
       return response;
