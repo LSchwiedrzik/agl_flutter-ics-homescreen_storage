@@ -232,6 +232,14 @@ void main() {
       await storageClient.destroyDB();
     });
 
+    test('read non-existent key', () async{
+      await storageClient.destroyDB();
+      final writeResponse = await storageClient.read(storage_api.Key(key: 'Key.Absent'));
+      expect(writeResponse.success, isFalse);
+      expect(writeResponse.result, '');
+      await storageClient.destroyDB();
+    });
+
     //Search
     test('search substring: Vehicle.Infotainment.Radio', () async {
     await prepareTree();

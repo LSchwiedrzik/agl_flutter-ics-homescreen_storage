@@ -143,9 +143,9 @@ final playControllerProvider = Provider((ref) {
   return PlayController(ref: ref);
 });
 
-final usersProvider = StateNotifierProvider<UsersNotifier, Users>((ref) {
-  return UsersNotifier(Users.initial());
-});
+//new userProvider (makes it easier to access other providers)
+final usersProvider =
+    NotifierProvider<UsersNotifier, Users>(UsersNotifier.new);
 
 final hybridStateProvider =
     StateNotifierProvider<HybridNotifier, Hybrid>((ref) {
