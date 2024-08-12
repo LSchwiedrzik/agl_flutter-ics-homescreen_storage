@@ -118,7 +118,7 @@ Future <void> loadSettingsUsers() async{
     }
     }
     if (state.users.isEmpty) {
-      state = state.copyWith(selectedUser: const User(id: '', name: ''));
+      state = state.copyWith(selectedUser: const User(id: '0', name: ''));
     }
   }
 
