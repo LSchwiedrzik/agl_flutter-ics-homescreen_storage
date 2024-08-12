@@ -82,7 +82,7 @@ void main() {
 
     final readResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleCurrentUser));
     expect(readResponse.success, isFalse);
-    expect(selectedId, '');
+    expect(selectedId, '0');
     await storageClient.destroyDB();
   });
 
@@ -138,7 +138,7 @@ void main() {
     //check that state is killed
     userState = container.read(usersProvider);
     unitState = container.read(unitStateProvider);
-    expect(userState.selectedUser.id, '');
+    expect(userState.selectedUser.id, '0');
     expect(unitState.distanceUnit, DistanceUnit.kilometers);
 
     //load state
@@ -187,7 +187,7 @@ void main() {
     //check that state is killed
     userState = container.read(usersProvider);
     unitState = container.read(unitStateProvider);
-    expect(userState.selectedUser.id, '');
+    expect(userState.selectedUser.id, '0');
     expect(unitState.distanceUnit, DistanceUnit.kilometers);
 
     //load state
@@ -235,7 +235,7 @@ void main() {
     //check that state is killed
     userState = container.read(usersProvider);
     unitState = container.read(unitStateProvider);
-    expect(userState.selectedUser.id, '');
+    expect(userState.selectedUser.id, '0');
     expect(unitState.distanceUnit, DistanceUnit.kilometers);
 
     //load state
