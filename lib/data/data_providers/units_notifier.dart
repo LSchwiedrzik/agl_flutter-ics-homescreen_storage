@@ -9,15 +9,17 @@ class UnitsNotifier extends Notifier<Units> {
     return const Units.initial();
   }
 
+//loads Units state of the selected user from the storage API 
 Future <void> loadSettingsUnits() async{ 
     final storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
+      //read unit values from the selected user namespace
       final distanceResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiDistanceUnit, namespace: userClient.selectedUser.id));
       final temperatureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiTemperatureUnit, namespace: userClient.selectedUser.id));
       final pressureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiPressureUnit, namespace: userClient.selectedUser.id));
 
-      // Default values
+      // prepare state declaration and fall back to default values if the key isnt present in the storage API
       final distanceUnit = distanceResponse.result == 'MILES'
           ? DistanceUnit.miles
           : DistanceUnit.kilometers;
@@ -33,7 +35,7 @@ Future <void> loadSettingsUnits() async{
       state =  Units(distanceUnit, temperatureUnit, pressureUnit);
     } catch (e) {
       print('Error loading settings for units: $e');
-      state =  const Units.initial(); // Fallback to initial defaults if error
+      state =  const Units.initial(); // Fallback to initial defaults if error occurs
     }
   }
 
@@ -78,7 +80,7 @@ Future <void> loadSettingsUnits() async{
       unit == DistanceUnit.kilometers ? "KILOMETERS" : "MILES",
       true,
     );
-    //write to storage API
+    //write to storage API (selected user namespace)
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
@@ -100,7 +102,7 @@ Future <void> loadSettingsUnits() async{
       unit == TemperatureUnit.celsius ? "C" : "F",
       true,
     );
-    //write to storage API
+    //write to storage API (selected user namespace)
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
@@ -122,7 +124,7 @@ Future <void> loadSettingsUnits() async{
       unit == PressureUnit.kilopascals ? "KPA" : "PSI",
       true,
     );
-    //write to storage API
+    //write to storage API (selected user namespace)
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
