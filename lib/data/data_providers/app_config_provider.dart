@@ -64,7 +64,7 @@ class StorageConfig {
   static int defaultPort = 50054;
 
   StorageConfig(
-      {required this.hostname, required this.port}); 
+      {required this.hostname, required this.port});
 
   static StorageConfig defaultConfig() {
     return StorageConfig(
