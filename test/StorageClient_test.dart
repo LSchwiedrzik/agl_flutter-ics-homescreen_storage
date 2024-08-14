@@ -109,7 +109,7 @@ void main() {
   Future prepareTree() async{
     await storageClient.destroyDB();
 
-    //default namespace 
+    //default namespace
     await storageClient.write(keyValue1);
     await storageClient.write(keyValue2);
     await storageClient.write(keyValue3);
@@ -123,7 +123,7 @@ void main() {
   }
   test('prepareTree ', () async{
     await prepareTree();
-    //default namespace 
+    //default namespace
     final readResponse1 = await storageClient.read(key1);
     final readResponse2 = await storageClient.read(key2);
     final readResponse3 = await storageClient.read(key3);
@@ -136,38 +136,38 @@ void main() {
     final readResponse4TS = await storageClient.read(key4TS);
     
     //default namespace
-    expect(readResponse1, isA<storage_api.ReadResponse>()); 
-    expect(readResponse1.success, isTrue); 
+    expect(readResponse1, isA<storage_api.ReadResponse>());
+    expect(readResponse1.success, isTrue);
     expect(readResponse1.result, equals(keyValue1.value));
 
-    expect(readResponse2, isA<storage_api.ReadResponse>()); 
-    expect(readResponse2.success, isTrue); 
+    expect(readResponse2, isA<storage_api.ReadResponse>());
+    expect(readResponse2.success, isTrue);
     expect(readResponse2.result, equals(keyValue2.value));
 
-    expect(readResponse3, isA<storage_api.ReadResponse>()); 
-    expect(readResponse3.success, isTrue); 
+    expect(readResponse3, isA<storage_api.ReadResponse>());
+    expect(readResponse3.success, isTrue);
     expect(readResponse3.result, equals(keyValue3.value));
 
-    expect(readResponse4, isA<storage_api.ReadResponse>()); 
-    expect(readResponse4.success, isTrue); 
-    expect(readResponse4.result, equals(keyValue4.value)); 
+    expect(readResponse4, isA<storage_api.ReadResponse>());
+    expect(readResponse4.success, isTrue);
+    expect(readResponse4.result, equals(keyValue4.value));
 
     //testSpace namespace (non-default)
-    expect(readResponse1TS, isA<storage_api.ReadResponse>()); 
-    expect(readResponse1TS.success, isTrue); 
+    expect(readResponse1TS, isA<storage_api.ReadResponse>());
+    expect(readResponse1TS.success, isTrue);
     expect(readResponse1TS.result, equals(keyValue1TS.value));
 
-    expect(readResponse2TS, isA<storage_api.ReadResponse>()); 
-    expect(readResponse2TS.success, isTrue); 
+    expect(readResponse2TS, isA<storage_api.ReadResponse>());
+    expect(readResponse2TS.success, isTrue);
     expect(readResponse2TS.result, equals(keyValue2TS.value));
 
-    expect(readResponse3TS, isA<storage_api.ReadResponse>()); 
-    expect(readResponse3TS.success, isTrue); 
+    expect(readResponse3TS, isA<storage_api.ReadResponse>());
+    expect(readResponse3TS.success, isTrue);
     expect(readResponse3TS.result, equals(keyValue3TS.value));
 
-    expect(readResponse4TS, isA<storage_api.ReadResponse>()); 
-    expect(readResponse4TS.success, isTrue); 
-    expect(readResponse4TS.result, equals(keyValue4TS.value)); 
+    expect(readResponse4TS, isA<storage_api.ReadResponse>());
+    expect(readResponse4TS.success, isTrue);
+    expect(readResponse4TS.result, equals(keyValue4TS.value));
     await storageClient.destroyDB();
   });
 
@@ -204,9 +204,9 @@ void main() {
     await storageClient.write(keyValueRoot);
     final readResponse = await storageClient.read(keyRoot);
 
-    expect(readResponse, isA<storage_api.ReadResponse>()); 
-    expect(readResponse.success, isTrue); 
-    expect(readResponse.result, equals(keyValueRoot.value)); 
+    expect(readResponse, isA<storage_api.ReadResponse>());
+    expect(readResponse.success, isTrue);
+    expect(readResponse.result, equals(keyValueRoot.value));
     await storageClient.destroyDB();
   });
 
@@ -218,9 +218,9 @@ void main() {
     await storageClient.write(keyValueSpace);
     final readResponse = await storageClient.read(keySpace);
 
-    expect(readResponse, isA<storage_api.ReadResponse>()); 
-    expect(readResponse.success, isTrue); 
-    expect(readResponse.result, equals(keyValueSpace.value)); 
+    expect(readResponse, isA<storage_api.ReadResponse>());
+    expect(readResponse.success, isTrue);
+    expect(readResponse.result, equals(keyValueSpace.value));
     await storageClient.destroyDB();
   });
   
@@ -309,7 +309,7 @@ void main() {
   //delete
   test('delete verification of a single key with search ', () async {
     await storageClient.destroyDB();
-    await storageClient.write(keyValue1); 
+    await storageClient.write(keyValue1);
     
     //Check before deletion
     final searchResponseBeforeDelete = await storageClient.search(storage_api.Key(key: 'Vehicle.Infotainment.Radio.CurrentStation'));
@@ -319,7 +319,7 @@ void main() {
     final keyListBeforeDelete = searchResponseBeforeDelete.result;
     expect(keyListBeforeDelete, contains('Vehicle.Infotainment.Radio.CurrentStation'));
 
-    //Deleteion
+    //Deletion
     await storageClient.delete(storage_api.Key(key: 'Vehicle.Infotainment.Radio.CurrentStation'));
 
     //Check after deletion
@@ -333,7 +333,7 @@ void main() {
 
   test('delete verification of a single key with search (non-default namespace)', () async {
     await storageClient.destroyDB();
-    await storageClient.write(keyValue1TS); 
+    await storageClient.write(keyValue1TS);
     
     //Check before deletion
     final searchResponseBeforeDelete = await storageClient.search(storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace'));
@@ -343,7 +343,7 @@ void main() {
     final keyListBeforeDelete = searchResponseBeforeDelete.result;
     expect(keyListBeforeDelete, contains('VehicleTS.Infotainment.Radio.CurrentStation'));
 
-    //Deleteion
+    //Deletion
     await storageClient.delete(storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace'));
 
     //Check after deletion
@@ -369,7 +369,7 @@ void main() {
       await prepareTree();
       await storageClient.destroyDB();
       final searchResponse = await storageClient.search(keyPartialVehicle);
-      expect(searchResponse, isA<storage_api.ListResponse>()); 
+      expect(searchResponse, isA<storage_api.ListResponse>());
       expect(searchResponse.success, isTrue);
       expect(searchResponse.result, []);
       await storageClient.destroyDB();
@@ -379,60 +379,60 @@ void main() {
     test('Delete Infotainment node ', () async{
       await prepareTree();
       final deleteNodesResponse = await storageClient.deleteNodes(keyPartialInfotainment);
-      expect(deleteNodesResponse, isA<storage_api.StandardResponse>()); 
-      expect(deleteNodesResponse.success, isTrue); 
+      expect(deleteNodesResponse, isA<storage_api.StandardResponse>());
+      expect(deleteNodesResponse.success, isTrue);
 
       final searchResponse = await storageClient.search(keyPartialVehicle);
-      expect(searchResponse, isA<storage_api.ListResponse>()); 
-      expect(searchResponse.success, isTrue); 
+      expect(searchResponse, isA<storage_api.ListResponse>());
+      expect(searchResponse.success, isTrue);
       expect(searchResponse.result, [
         'Vehicle.Communication.Radio.Volume']);
-        await storageClient.destroyDB(); 
+        await storageClient.destroyDB();
     });
 
     test('Delete Infotainment node (non-default namespace)', () async{
       await prepareTree();
       final deleteNodesResponse = await storageClient.deleteNodes(key4PartialInfotainmentTS);
-      expect(deleteNodesResponse, isA<storage_api.StandardResponse>()); 
-      expect(deleteNodesResponse.success, isTrue); 
+      expect(deleteNodesResponse, isA<storage_api.StandardResponse>());
+      expect(deleteNodesResponse.success, isTrue);
 
       final searchResponse = await storageClient.search(keyPartialVehicleTS);
-      expect(searchResponse, isA<storage_api.ListResponse>()); 
-      expect(searchResponse.success, isTrue); 
+      expect(searchResponse, isA<storage_api.ListResponse>());
+      expect(searchResponse.success, isTrue);
       expect(searchResponse.result, [
         'VehicleTS.Communication.Radio.Volume']);
-        await storageClient.destroyDB(); 
+        await storageClient.destroyDB();
     });
 
     test('Delete Vehicle node ', () async{
       await prepareTree();
       final deleteNodesResponse = await storageClient.deleteNodes(keyPartialVehicle);
-      expect(deleteNodesResponse, isA<storage_api.StandardResponse>()); 
-      expect(deleteNodesResponse.success, isTrue); 
+      expect(deleteNodesResponse, isA<storage_api.StandardResponse>());
+      expect(deleteNodesResponse.success, isTrue);
 
       final searchResponse = await storageClient.search(keyPartialVehicle);
-      expect(searchResponse, isA<storage_api.ListResponse>()); 
-      expect(searchResponse.success, isTrue); 
+      expect(searchResponse, isA<storage_api.ListResponse>());
+      expect(searchResponse.success, isTrue);
       expect(searchResponse.result, []);
-      await storageClient.destroyDB(); 
+      await storageClient.destroyDB();
     });
 
     test('Delete node with empty key ', () async{
       await prepareTree();
       final deleteNodesResponse = await storageClient.deleteNodes(keyEmpty);
-      expect(deleteNodesResponse, isA<storage_api.StandardResponse>()); 
-      expect(deleteNodesResponse.success, isFalse); 
+      expect(deleteNodesResponse, isA<storage_api.StandardResponse>());
+      expect(deleteNodesResponse.success, isFalse);
 
       final searchResponse = await storageClient.search(keyPartialVehicle);
-      expect(searchResponse, isA<storage_api.ListResponse>()); 
-      expect(searchResponse.success, isTrue); 
+      expect(searchResponse, isA<storage_api.ListResponse>());
+      expect(searchResponse.success, isTrue);
       expect(searchResponse.result, [
         'Vehicle.Communication.Radio.Volume',
         'Vehicle.Infotainment.HVAC.OutdoorTemperature',
         'Vehicle.Infotainment.Radio.CurrentStation',
         'Vehicle.Infotainment.Radio.Volume'
           ]);
-      await storageClient.destroyDB(); 
+      await storageClient.destroyDB();
     });
 
     //listNodes
@@ -440,10 +440,10 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(node:'Vehicle');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result, [
-        'Vehicle.Communication', 
+        'Vehicle.Communication',
         'Vehicle.Infotainment']);
       await storageClient.destroyDB();
     });
@@ -452,10 +452,10 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(node: 'VehicleTS', namespace: 'testSpace');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result, [
-        'VehicleTS.Communication', 
+        'VehicleTS.Communication',
         'VehicleTS.Infotainment']);
       await storageClient.destroyDB();
     });
@@ -464,8 +464,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(layers: 2, node: 'Vehicle');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  [
         'Vehicle.Communication.Radio',
         'Vehicle.Infotainment.HVAC',
@@ -477,8 +477,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(node: 'Vehicle.Infotainment');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  [
         'Vehicle.Infotainment.HVAC',
         'Vehicle.Infotainment.Radio']);
@@ -489,8 +489,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(layers: -1, node: 'Vehicle.Infotainment');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isFalse); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isFalse);
       expect(listNodesResponse.result,  []);
       await storageClient.destroyDB();
     });
@@ -499,8 +499,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(node: 'Vehicle.ADAS');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isFalse); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isFalse);
       expect(listNodesResponse.result,  []);
       await storageClient.destroyDB();
     });
@@ -509,8 +509,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(layers: 3, node: 'Vehicle.Infotainment');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  []);
       await storageClient.destroyDB();
     });
@@ -519,8 +519,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo( node: '');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  ['Vehicle']);
       await storageClient.destroyDB();
     });
@@ -529,8 +529,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(layers: 0, node: 'Vehicle');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  [
             'Vehicle.Communication.Radio.Volume',
             'Vehicle.Infotainment.HVAC.OutdoorTemperature',
@@ -544,8 +544,8 @@ void main() {
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(layers: 0, node: 'Vehicle.Infotainment');
       final listNodesResponse = await storageClient.listNodes(subtreeInfo);
-      expect(listNodesResponse, isA<storage_api.ListResponse>()); 
-      expect(listNodesResponse.success, isTrue); 
+      expect(listNodesResponse, isA<storage_api.ListResponse>());
+      expect(listNodesResponse.success, isTrue);
       expect(listNodesResponse.result,  [
             'Vehicle.Infotainment.HVAC.OutdoorTemperature',
             'Vehicle.Infotainment.Radio.CurrentStation',
@@ -554,6 +554,3 @@ void main() {
       await storageClient.destroyDB();
     });
 }
-
-
-
