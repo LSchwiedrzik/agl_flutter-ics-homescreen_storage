@@ -1,7 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:protos/val-api.dart';
 
-import 'package:protos/storage-api.dart' as storage_api; 
+import 'package:protos/storage-api.dart' as storage_api;
 
 class UnitsNotifier extends Notifier<Units> {
   @override
@@ -9,8 +9,8 @@ class UnitsNotifier extends Notifier<Units> {
     return const Units.initial();
   }
 
-//loads Units state of the selected user from the storage API 
-Future <void> loadSettingsUnits() async{ 
+  //loads Units state of the selected user from the storage API
+  Future <void> loadSettingsUnits() async {
     final storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
@@ -19,7 +19,7 @@ Future <void> loadSettingsUnits() async{
       final temperatureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiTemperatureUnit, namespace: userClient.selectedUser.id));
       final pressureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiPressureUnit, namespace: userClient.selectedUser.id));
 
-      // prepare state declaration and fall back to default values if the key isnt present in the storage API
+      //prepare state declaration and fall back to default values if the key isnt present in the storage API
       final distanceUnit = distanceResponse.result == 'MILES'
           ? DistanceUnit.miles
           : DistanceUnit.kilometers;
@@ -35,7 +35,7 @@ Future <void> loadSettingsUnits() async{
       state =  Units(distanceUnit, temperatureUnit, pressureUnit);
     } catch (e) {
       print('Error loading settings for units: $e');
-      state =  const Units.initial(); // Fallback to initial defaults if error occurs
+      state = const Units.initial(); //Fallback to initial defaults if error occurs
     }
   }
 
@@ -94,7 +94,7 @@ Future <void> loadSettingsUnits() async{
     }
   }
 
-  Future <void> setTemperatureUnit(TemperatureUnit unit) async{
+  Future <void> setTemperatureUnit(TemperatureUnit unit) async {
     state = state.copyWith(temperatureUnit: unit);
     var valClient = ref.read(valClientProvider);
     valClient.setString(
@@ -116,7 +116,7 @@ Future <void> loadSettingsUnits() async{
     }
   }
 
-  Future <void> setPressureUnit(PressureUnit unit) async{
+  Future <void> setPressureUnit(PressureUnit unit) async {
     state = state.copyWith(pressureUnit: unit);
     var valClient = ref.read(valClientProvider);
     valClient.setString(

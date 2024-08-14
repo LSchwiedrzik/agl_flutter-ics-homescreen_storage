@@ -5,7 +5,6 @@ import 'package:flutter_ics_homescreen/export.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/storage_client.dart';
 import 'package:flutter_ics_homescreen/data/data_providers/initializeSettings.dart';
 
-
 // Mock implementation of Ref if necessary
 class MockRef extends Ref {
   @override
@@ -39,7 +38,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('remove User', () async{
+  test('remove User', () async {
     await storageClient.destroyDB();
     //add User
     final userClient = container.read(usersProvider.notifier);
@@ -56,7 +55,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('add users, select user', () async{
+  test('add users, select user', () async {
     await storageClient.destroyDB();
     //add Users
     final userClient = container.read(usersProvider.notifier);
@@ -73,7 +72,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-    test('selected user default', () async{
+    test('selected user default', () async {
     await storageClient.destroyDB();
 
     //access state
@@ -86,7 +85,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('save Unit preference for a User', () async{
+  test('save Unit preference for a User', () async {
     await storageClient.destroyDB();
     //add Users
     final userClient = container.read(usersProvider.notifier);
@@ -106,7 +105,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('load settings: add users, selcect user, setDistanceUnit, kill state,  initialize', () async{
+  test('load settings: add users, selcect user, setDistanceUnit, kill state,  initialize', () async {
     await storageClient.destroyDB();
 
     //clients
@@ -146,7 +145,7 @@ void main() {
     
     //check success
     unitState = container.read(unitStateProvider);
-    userState = container.read(usersProvider); 
+    userState = container.read(usersProvider);
     expect(userState.selectedUser.id, markId);
     List<String> userNames = userState.users.map((user) => user.name).toList();
     expect(userNames.contains('Mark'), isTrue);
@@ -157,7 +156,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('loadsettings: add users, setDistanceUnit, kill state, initialize', () async{
+  test('loadsettings: add users, setDistanceUnit, kill state, initialize', () async {
     await storageClient.destroyDB();
 
     //clients
@@ -195,7 +194,7 @@ void main() {
     
     //check success
     unitState = container.read(unitStateProvider);
-    userState = container.read(usersProvider); 
+    userState = container.read(usersProvider);
     expect(userState.selectedUser.id, claraId);
     List<String> userNames = userState.users.map((user) => user.name).toList();
     expect(userNames.contains('Mark'), isTrue);
@@ -205,7 +204,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('loadsettings: initialize, add no user, setDistanceUnit, kill state, inizialize', () async{
+  test('loadsettings: initialize, add no user, setDistanceUnit, kill state, inizialize', () async {
     await storageClient.destroyDB();
     await initializeSettings(container);
 
@@ -224,7 +223,7 @@ void main() {
     var unitState = container.read(unitStateProvider);
     userState = container.read(usersProvider);
     expect(userState.users[0].name, 'Heather');
-    expect(unitState.distanceUnit, DistanceUnit.miles); 
+    expect(unitState.distanceUnit, DistanceUnit.miles);
     expect(userState.selectedUser.id, '1');
     
     //killing state
@@ -243,7 +242,7 @@ void main() {
     
     //check success
     unitState = container.read(unitStateProvider);
-    userState = container.read(usersProvider); 
+    userState = container.read(usersProvider);
     expect(userState.users[0].name, 'Heather');
     expect(unitState.distanceUnit, DistanceUnit.miles);
     expect(userState.selectedUser.name, 'Heather');
@@ -251,7 +250,7 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  test('select user: load settings', () async{
+  test('select user: load settings', () async {
     await storageClient.destroyDB();
     //clients
     final userClient = container.read(usersProvider.notifier);
@@ -288,4 +287,3 @@ void main() {
     await storageClient.destroyDB();
   });
 }
-

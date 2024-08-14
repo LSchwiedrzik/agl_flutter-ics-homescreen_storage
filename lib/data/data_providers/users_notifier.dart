@@ -4,11 +4,10 @@ import 'package:uuid/uuid.dart';
 
 import '../models/user.dart';
 
-import 'package:protos/storage-api.dart' as storage_api; 
+import 'package:protos/storage-api.dart' as storage_api;
 import 'initializeSettings.dart';
 
 class UsersNotifier extends Notifier<Users> {
-
   //New build function because of the provider change
   @override
   Users build() {
@@ -18,13 +17,13 @@ class UsersNotifier extends Notifier<Users> {
     return state;
   }
 
-Future <void> loadSettingsUsers() async{
-  final storageClient = ref.read(storageClientProvider);
+  Future <void> loadSettingsUsers() async {
+    final storageClient = ref.read(storageClientProvider);
     try {
       //access users branch
       final searchResponseUsers = await storageClient.search(storage_api.Key(key: VSSPath.vehicleUsers));
       //add default users if no users are inside the storage API
-      if(searchResponseUsers.result.isEmpty){
+      if (searchResponseUsers.result.isEmpty) {
         loadUsers();
         await storageClient.write(storage_api.KeyValue(key: '${VSSPath.vehicleUsers}.${_users[0].id}.id', value: _users[0].id));
         await storageClient.write(storage_api.KeyValue(key: '${VSSPath.vehicleUsers}.${_users[0].id}.name', value: _users[0].name));
@@ -34,18 +33,18 @@ Future <void> loadSettingsUsers() async{
         await storageClient.write(storage_api.KeyValue(key: '${VSSPath.vehicleUsers}.${_users[2].id}.name', value: _users[2].name));
         await selectUser(_users[0].id);
       }
-      else{        
+      else {
         List<User> users = [];
         List<String> idList = [];
-        //get list of all id's
-        for(var key in searchResponseUsers.result){
-          var readResponse = await storageClient.read(storage_api.Key(key: key)); 
-          if(key.contains('.id')){
+        //get list of all ids
+        for (var key in searchResponseUsers.result) {
+          var readResponse = await storageClient.read(storage_api.Key(key: key));
+          if (key.contains('.id')) {
             idList.insert(0, readResponse.result);
           }
         }
-        //extract names corresponding to id's
-        for(var id in idList){
+        //extract names corresponding to ids
+        for (var id in idList) {
           var readResponse = await storageClient.read(storage_api.Key(key:'${VSSPath.vehicleUsers}.$id.name'));
           users.insert(0, User(id: id, name: readResponse.result));
         }
@@ -57,14 +56,13 @@ Future <void> loadSettingsUsers() async{
         final readResponseCurrentUserName = await storageClient.read(storage_api.Key(key: '${VSSPath.vehicleUsers}.$userCurrentId.name'));
         final userCurrentName = readResponseCurrentUserName.result;
         selectedUser = User(id: userCurrentId, name: userCurrentName);
-        
         state =  Users(users: users, selectedUser: selectedUser);
       }
-    }   catch (e) {
+    } catch (e) {
         print('Error loading settings for units: $e');
         loadUsers(); // Fallback to initial defaults if error
         state = state.copyWith(selectedUser: _users[0]);
-    } 
+    }
   }
 
   void loadUsers() {
@@ -77,9 +75,9 @@ Future <void> loadSettingsUsers() async{
     const User(id: '3', name: 'Riley'),
   ];
   
-  Future <void> selectUser(String userId) async{
+  Future <void> selectUser(String userId) async {
     final storageClient = ref.read(storageClientProvider);
-    var seletedUser = state.users.firstWhere((user) => user.id == userId); //need to loead functions
+    var seletedUser = state.users.firstWhere((user) => user.id == userId); //need to load functions
     state = state.copyWith(selectedUser: seletedUser);
     //write to storage API
     try {
@@ -97,9 +95,9 @@ Future <void> loadSettingsUsers() async{
       print('Error loading settings of user: $e');
     }
     
-  }  
+  }
 
-  Future <void> removeUser(String userId) async{
+  Future <void> removeUser(String userId) async {
     final storageClient = ref.read(storageClientProvider);
     state.users.removeWhere((user) => user.id == userId);
     if (state.users.isNotEmpty) {
@@ -108,25 +106,24 @@ Future <void> loadSettingsUsers() async{
       try {
         final searchResponse = await storageClient.search(storage_api.Key(key: userId));
         final keyList = searchResponse.result;
-        for(final key in keyList){       
+        for (final key in keyList) {
           await storageClient.delete(storage_api.Key(
           key: key
-        ));}
-
-    } catch (e) {
-      print('Error removing user with id $userId: $e');
-    }
+          ));
+        }
+      } catch (e) {
+        print('Error removing user with id $userId: $e');
+      }
     }
     if (state.users.isEmpty) {
       state = state.copyWith(selectedUser: const User(id: '0', name: ''));
     }
   }
 
-  Future <void> addUser(String userName) async{
+  Future <void> addUser(String userName) async {
     final storageClient = ref.read(storageClientProvider);
     final id = const Uuid().v1();
     final user = User(id: id, name: userName);
-
     state.users.insert(0, user);
     //new user automaticaly selected
     await selectUser(user.id); 
@@ -140,7 +137,7 @@ Future <void> loadSettingsUsers() async{
         key: '${VSSPath.vehicleUsers}.$id.id',
         value: id
       ));
-  } catch (e) {
+    } catch (e) {
       print('Error adding user with id $id: $e');
     }
   }
