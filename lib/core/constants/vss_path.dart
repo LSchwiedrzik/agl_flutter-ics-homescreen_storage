@@ -51,9 +51,9 @@ class VSSPath {
       'Vehicle.Cabin.Infotainment.HMI.TemperatureUnit';
   static const String vehicleHmiPressureUnit =
       'Vehicle.Cabin.Infotainment.HMI.TirePressureUnit';
-  static const String vehicleCurrentUser = 
+  static const String vehicleCurrentUser =
       'Vehicle.Users.selectedUser';
-  static const String vehicleUsers = 
+  static const String vehicleUsers =
       'Vehicle.Users';
 
   List<String> getSignalsList() {
