@@ -5,7 +5,7 @@ import '../../export.dart';
 @immutable
 class Vehicle {
   final double speed;
-  final double engineSpeed;
+  final int engineSpeed;
   final double insideTemperature;
   final double outsideTemperature;
   final int range;
@@ -94,7 +94,7 @@ class Vehicle {
 
   Vehicle copyWith({
     double? speed,
-    double? engineSpeed,
+    int? engineSpeed,
     double? insideTemperature,
     double? outsideTemperature,
     int? range,
@@ -166,7 +166,7 @@ class Vehicle {
   factory Vehicle.fromMap(Map<String, dynamic> map) {
     return Vehicle(
       map['speed']?.toDouble() ?? 0.0,
-      map['engineSpeed']?.toDouble() ?? 0.0,
+      map['engineSpeed']?.toInt() ?? 0,
       map['insideTemperature']?.toDouble() ?? 0.0,
       map['outsideTemperature']?.toDouble() ?? 0.0,
       map['range']?.toInt() ?? 0,
@@ -204,13 +204,13 @@ class Vehicle {
 
     return other is Vehicle &&
         other.speed == speed &&
+        other.engineSpeed == engineSpeed &&
         other.insideTemperature == insideTemperature &&
         other.outsideTemperature == outsideTemperature &&
         other.range == range &&
         other.fuelLevel == fuelLevel &&
         other.isChildLockActiveLeft == isChildLockActiveLeft &&
         other.isChildLockActiveRight == isChildLockActiveRight &&
-        other.engineSpeed == engineSpeed &&
         other.frontLeftTire == frontLeftTire &&
         other.frontRightTire == frontRightTire &&
         other.rearLeftTire == rearLeftTire &&
@@ -228,13 +228,13 @@ class Vehicle {
   @override
   int get hashCode {
     return speed.hashCode ^
+        engineSpeed.hashCode ^
         insideTemperature.hashCode ^
         outsideTemperature.hashCode ^
         range.hashCode ^
         fuelLevel.hashCode ^
         isChildLockActiveLeft.hashCode ^
         isChildLockActiveRight.hashCode ^
-        engineSpeed.hashCode ^
         frontLeftTire.hashCode ^
         frontRightTire.hashCode ^
         rearLeftTire.hashCode ^

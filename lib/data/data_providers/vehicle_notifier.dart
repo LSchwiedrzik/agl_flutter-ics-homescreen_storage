@@ -54,8 +54,8 @@ class VehicleNotifier extends Notifier<Vehicle> {
         }
         break;
       case VSSPath.vehicleEngineSpeed:
-        if (entry.value.hasFloat()) {
-          state = state.copyWith(engineSpeed: entry.value.float);
+        if (entry.value.hasUint32()) {
+          state = state.copyWith(engineSpeed: entry.value.uint32);
         }
         break;
       case VSSPath.vehicleFrontLeftTire:
@@ -274,7 +274,7 @@ class VehicleNotifier extends Notifier<Vehicle> {
     var range = state.range;
     var psi = state.frontLeftTire;
     var actualSpeed = 0.0;
-    var actualRpm = 0.0;
+    var actualRpm = 0;
     var actualFuelLevel = 0.0;
     var actualInsideTemp = 0.0;
     var actualOutsideTemp = 0.0;

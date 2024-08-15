@@ -91,7 +91,7 @@ class RPMProgressIndicatorState extends ConsumerState<RPMProgressIndicator>
                     width: 220,
                     child: CustomPaint(
                       foregroundPainter: CirclePainter(
-                        value: rpm,
+                        value: rpm.toDouble(),
                         maxValue: maxRpm.toDouble(),
                         isRPM: true,
                       ),

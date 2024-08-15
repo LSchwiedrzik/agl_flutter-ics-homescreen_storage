@@ -47,7 +47,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     }
   }
 
-  void updateHybridState(double speed, double engineSpeed, bool brake) {
+  void updateHybridState(double speed, int engineSpeed, bool brake) {
     // Variable to store the current state
     HybridState currentState = state.hybridState;
 
@@ -58,7 +58,7 @@ class HybridNotifier extends StateNotifier<Hybrid> {
     double avgSpeed = 0.0;
 
     // Variable for storing the average value of RPM
-    double avgRpm = 0.0;
+    double avgRpm = 0;
 
     if (speed == 0 && engineSpeed <= 600) {
       // Set idle state.
