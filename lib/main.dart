@@ -1,12 +1,12 @@
 import 'package:device_preview/device_preview.dart';
 
 import 'export.dart';
-import 'data/data_providers/initializeSettings.dart'; //new
+import 'data/data_providers/initialize_settings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //initialize settings from storage API
+  // Initialize settings from storage API.
   final container = ProviderContainer();
   initializeSettings(container);
 

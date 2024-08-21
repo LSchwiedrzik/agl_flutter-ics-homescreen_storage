@@ -143,7 +143,6 @@ final playControllerProvider = Provider((ref) {
   return PlayController(ref: ref);
 });
 
-//new userProvider (makes it easier to access other providers)
 final usersProvider =
     NotifierProvider<UsersNotifier, Users>(UsersNotifier.new);
 
