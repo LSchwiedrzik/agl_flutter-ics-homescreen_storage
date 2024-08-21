@@ -4,7 +4,7 @@ import 'package:flutter_ics_homescreen/export.dart';
 
 import 'package:flutter_ics_homescreen/data/data_providers/storage_client.dart';
 
-// Mock implementation of Ref if necessary
+// Mock implementation of Ref if necessary.
 class MockRef extends Ref {
   @override
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
@@ -13,7 +13,7 @@ class MockRef extends Ref {
 void main() {
   late StorageClient storageClient;
 
-   //default nameSpace
+   // Default namespace.
   late storage_api.Key keyEmpty;
   late storage_api.Key key1;
   late storage_api.Key key2;
@@ -28,7 +28,7 @@ void main() {
   late storage_api.KeyValue keyValue3;
   late storage_api.KeyValue keyValue4;
 
-  //testSpace nameSpace (non-default) [TS]
+  // Non-default "testSpace" namespace (TS)
   late storage_api.Key key1TS;
   late storage_api.Key key2TS;
   late storage_api.Key key3TS;
@@ -48,7 +48,7 @@ void main() {
       ref: MockRef(),
     );
 
-    //default nameSpace
+    // Default nameSpace.
     keyEmpty = storage_api.Key(key: '');
     keyValueEmpty = storage_api.KeyValue(key: '', value: 'valueEmpty');
 
@@ -76,7 +76,7 @@ void main() {
     keyPartialVehicle = storage_api.Key(key: 'Vehicle');
 
 
-    //testSpace nameSpace (non-default) [TS]
+    // Non-default "testSpace" namespace (TS)
     key1TS = storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace');
     keyValue1TS = storage_api.KeyValue()
     ..key = 'VehicleTS.Infotainment.Radio.CurrentStation'
@@ -105,17 +105,17 @@ void main() {
     keyPartialVehicleTS = storage_api.Key(key: 'VehicleTS', namespace: 'testSpace');
   });
 
-  //prepareTree
+  // PrepareTree.
   Future prepareTree() async{
     await storageClient.destroyDB();
 
-    //default namespace
+    // Default namespace.
     await storageClient.write(keyValue1);
     await storageClient.write(keyValue2);
     await storageClient.write(keyValue3);
     await storageClient.write(keyValue4);
     
-    //testSpace namespace (non-default)
+    // Non-default "testSpace" namespace
     await storageClient.write(keyValue1TS);
     await storageClient.write(keyValue2TS);
     await storageClient.write(keyValue3TS);
@@ -123,19 +123,19 @@ void main() {
   }
   test('prepareTree ', () async{
     await prepareTree();
-    //default namespace
+    // Default namespace.
     final readResponse1 = await storageClient.read(key1);
     final readResponse2 = await storageClient.read(key2);
     final readResponse3 = await storageClient.read(key3);
     final readResponse4 = await storageClient.read(key4);
 
-    //testSpace namespace (non-default)
+    // Non-default "testSpace" namespace
     final readResponse1TS = await storageClient.read(key1TS);
     final readResponse2TS = await storageClient.read(key2TS);
     final readResponse3TS = await storageClient.read(key3TS);
     final readResponse4TS = await storageClient.read(key4TS);
     
-    //default namespace
+    // Default namespace.
     expect(readResponse1, isA<storage_api.ReadResponse>());
     expect(readResponse1.success, isTrue);
     expect(readResponse1.result, equals(keyValue1.value));
@@ -152,7 +152,7 @@ void main() {
     expect(readResponse4.success, isTrue);
     expect(readResponse4.result, equals(keyValue4.value));
 
-    //testSpace namespace (non-default)
+    // Non-default "testSpace" namespace
     expect(readResponse1TS, isA<storage_api.ReadResponse>());
     expect(readResponse1TS.success, isTrue);
     expect(readResponse1TS.result, equals(keyValue1TS.value));
@@ -171,14 +171,14 @@ void main() {
     await storageClient.destroyDB();
   });
 
-  //Read and Write
+  // Read and Write.
   test('write and read node', () async {
     await storageClient.destroyDB();
-    // Act
+    // Act.
     await storageClient.write(keyValue1);
     final readResponse = await storageClient.read(key1);
 
-    // Assert
+    // Assert.
     expect(readResponse, isA<storage_api.ReadResponse>()); // Checks if object is of right instance
     expect(readResponse.success, isTrue); // Checks if read was successful
     expect(readResponse.result, equals(keyValue1.value)); // Checks the result value
@@ -240,7 +240,7 @@ void main() {
       await storageClient.destroyDB();
     });
 
-    //Search
+    // Search.
     test('search substring: Vehicle.Infotainment.Radio', () async {
     await prepareTree();
 
@@ -297,21 +297,22 @@ void main() {
     final searchResponse = await storageClient.search(keyEmpty);
 
     expect(searchResponse.success, isTrue);
+    // Every element of the namespace is returned.
     expect((searchResponse.result), [
             'Vehicle.Communication.Radio.Volume',
             'Vehicle.Infotainment.HVAC.OutdoorTemperature',
             'Vehicle.Infotainment.Radio.CurrentStation',
             'Vehicle.Infotainment.Radio.Volume'
-          ]); //note: every element of the namespace is returned
+          ]);
     await storageClient.destroyDB();
   });
 
-  //delete
+  // Delete.
   test('delete verification of a single key with search ', () async {
     await storageClient.destroyDB();
     await storageClient.write(keyValue1);
     
-    //Check before deletion
+    // Check before deletion.
     final searchResponseBeforeDelete = await storageClient.search(storage_api.Key(key: 'Vehicle.Infotainment.Radio.CurrentStation'));
     expect(searchResponseBeforeDelete, isA<storage_api.ListResponse>());
     expect(searchResponseBeforeDelete.success, isTrue);
@@ -319,10 +320,10 @@ void main() {
     final keyListBeforeDelete = searchResponseBeforeDelete.result;
     expect(keyListBeforeDelete, contains('Vehicle.Infotainment.Radio.CurrentStation'));
 
-    //Deletion
+    // Deletion.
     await storageClient.delete(storage_api.Key(key: 'Vehicle.Infotainment.Radio.CurrentStation'));
 
-    //Check after deletion
+    // Check after deletion.
     final searchResponseAfterDelete = await storageClient.search(storage_api.Key(key: 'Vehicle.Infotainment.Radio.CurrentStation'));
     expect(searchResponseAfterDelete, isA<storage_api.ListResponse>());
     expect(searchResponseAfterDelete.success, isTrue);
@@ -335,7 +336,7 @@ void main() {
     await storageClient.destroyDB();
     await storageClient.write(keyValue1TS);
     
-    //Check before deletion
+    // Check before deletion.
     final searchResponseBeforeDelete = await storageClient.search(storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace'));
     expect(searchResponseBeforeDelete, isA<storage_api.ListResponse>());
     expect(searchResponseBeforeDelete.success, isTrue);
@@ -343,10 +344,10 @@ void main() {
     final keyListBeforeDelete = searchResponseBeforeDelete.result;
     expect(keyListBeforeDelete, contains('VehicleTS.Infotainment.Radio.CurrentStation'));
 
-    //Deletion
+    // Deletion.
     await storageClient.delete(storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace'));
 
-    //Check after deletion
+    // Check after deletion.
     final searchResponseAfterDelete = await storageClient.search(storage_api.Key(key: 'VehicleTS.Infotainment.Radio.CurrentStation', namespace: 'testSpace'));
     expect(searchResponseAfterDelete, isA<storage_api.ListResponse>());
     expect(searchResponseAfterDelete.success, isTrue);
@@ -364,7 +365,7 @@ void main() {
       await storageClient.destroyDB();
     });
 
-    //destroyDB
+    // DestroyDB.
     test('DestroyDB', () async{
       await prepareTree();
       await storageClient.destroyDB();
@@ -375,7 +376,7 @@ void main() {
       await storageClient.destroyDB();
     });
 
-    //deleteNodes
+    // DeleteNodes.
     test('Delete Infotainment node ', () async{
       await prepareTree();
       final deleteNodesResponse = await storageClient.deleteNodes(keyPartialInfotainment);
@@ -435,7 +436,7 @@ void main() {
       await storageClient.destroyDB();
     });
 
-    //listNodes
+    // ListNodes.
     test('listNodes Vehicle layer 1 ', () async{
       await prepareTree();
       late storage_api.SubtreeInfo  subtreeInfo = storage_api.SubtreeInfo(node:'Vehicle');
