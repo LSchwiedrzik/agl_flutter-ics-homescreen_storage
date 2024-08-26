@@ -1,7 +1,7 @@
 import 'package:flutter_ics_homescreen/export.dart';
 import 'package:protos/val-api.dart';
 
-import 'package:protos/storage-api.dart' as storage_api; 
+import 'package:protos/storage-api.dart' as storage_api;
 
 class UnitsNotifier extends Notifier<Units> {
   @override
@@ -9,17 +9,17 @@ class UnitsNotifier extends Notifier<Units> {
     return const Units.initial();
   }
 
-//loads Units state of the selected user from the storage API 
-Future <void> loadSettingsUnits() async{ 
+  // Load Units state of the selected user from the storage API.
+  Future <void> loadSettingsUnits() async {
     final storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
-      //read unit values from the selected user namespace
+      // Read unit values from the selected user namespace.
       final distanceResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiDistanceUnit, namespace: userClient.selectedUser.id));
       final temperatureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiTemperatureUnit, namespace: userClient.selectedUser.id));
       final pressureResponse = await storageClient.read(storage_api.Key(key: VSSPath.vehicleHmiPressureUnit, namespace: userClient.selectedUser.id));
 
-      // prepare state declaration and fall back to default values if the key isnt present in the storage API
+      // Prepare state declaration and fall back to default values if the key is not present in the storage API.
       final distanceUnit = distanceResponse.result == 'MILES'
           ? DistanceUnit.miles
           : DistanceUnit.kilometers;
@@ -34,8 +34,9 @@ Future <void> loadSettingsUnits() async{
 
       state =  Units(distanceUnit, temperatureUnit, pressureUnit);
     } catch (e) {
+      // Fallback to initial defaults if error occurs.
       print('Error loading settings for units: $e');
-      state =  const Units.initial(); // Fallback to initial defaults if error occurs
+      state = const Units.initial();
     }
   }
 
@@ -80,7 +81,7 @@ Future <void> loadSettingsUnits() async{
       unit == DistanceUnit.kilometers ? "KILOMETERS" : "MILES",
       true,
     );
-    //write to storage API (selected user namespace)
+    // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
@@ -94,7 +95,7 @@ Future <void> loadSettingsUnits() async{
     }
   }
 
-  Future <void> setTemperatureUnit(TemperatureUnit unit) async{
+  Future <void> setTemperatureUnit(TemperatureUnit unit) async {
     state = state.copyWith(temperatureUnit: unit);
     var valClient = ref.read(valClientProvider);
     valClient.setString(
@@ -102,7 +103,7 @@ Future <void> loadSettingsUnits() async{
       unit == TemperatureUnit.celsius ? "C" : "F",
       true,
     );
-    //write to storage API (selected user namespace)
+    // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {
@@ -116,7 +117,7 @@ Future <void> loadSettingsUnits() async{
     }
   }
 
-  Future <void> setPressureUnit(PressureUnit unit) async{
+  Future <void> setPressureUnit(PressureUnit unit) async {
     state = state.copyWith(pressureUnit: unit);
     var valClient = ref.read(valClientProvider);
     valClient.setString(
@@ -124,7 +125,7 @@ Future <void> loadSettingsUnits() async{
       unit == PressureUnit.kilopascals ? "KPA" : "PSI",
       true,
     );
-    //write to storage API (selected user namespace)
+    // Write to storage API (to selected user namespace).
     var storageClient = ref.read(storageClientProvider);
     final userClient = ref.read(usersProvider);
     try {

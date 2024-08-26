@@ -1,11 +1,11 @@
 import 'package:flutter_ics_homescreen/export.dart';
-import 'package:protos/storage-api.dart' as storage_api; 
+import 'package:protos/storage-api.dart' as storage_api;
 
 class StorageClient{
-  final StorageConfig config; 
+  final StorageConfig config;
   final Ref ref;
   late storage_api.ClientChannel channel;
-  late storage_api.DatabaseClient stub; 
+  late storage_api.DatabaseClient stub;
 
  StorageClient({required this.config, required this.ref}) {
     debugPrint(
@@ -27,7 +27,7 @@ class StorageClient{
     }
   }
 
-  Future<storage_api.StandardResponse> write(storage_api.KeyValue keyValue) async { 
+  Future<storage_api.StandardResponse> write(storage_api.KeyValue keyValue) async {
     try {
       var response = await stub.write(keyValue);
       return response;
@@ -45,7 +45,7 @@ class StorageClient{
       print(e);
       rethrow;
     }
-  } 
+  }
 
   Future<storage_api.StandardResponse> delete(storage_api.Key key) async{
     try{
@@ -55,9 +55,9 @@ class StorageClient{
       print(e);
       rethrow;
     }
-  } 
+  }
 
-    Future<storage_api.ListResponse> search(storage_api.Key key) async{ 
+    Future<storage_api.ListResponse> search(storage_api.Key key) async{
     try{
       var response = await stub.search(key);
       return response;
@@ -65,7 +65,7 @@ class StorageClient{
       print(e);
       rethrow;
     }
-  } 
+  }
 
     Future<storage_api.StandardResponse> deleteNodes(storage_api.Key key) async{
     try{
@@ -75,7 +75,7 @@ class StorageClient{
       print(e);
       rethrow;
     }
-  } 
+  }
 
     Future<storage_api.ListResponse> listNodes(storage_api.SubtreeInfo subtreeInfo) async{
     try{
@@ -85,5 +85,5 @@ class StorageClient{
       print(e);
       rethrow;
     }
-  } 
+  }
 }
