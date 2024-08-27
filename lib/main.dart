@@ -8,13 +8,20 @@ void main() async {
 
   // Initialize settings from storage API.
   final container = ProviderContainer();
-  initializeSettings(container);
+  await initializeSettings(container);
 
-  runApp(DevicePreview(
-    enabled: debugDisplay,
-    tools: const [
-      ...DevicePreview.defaultTools,
-    ],
-    builder: (context) => const App(),
-  ));
+  // Pass the container to ProviderScope and then run the app.
+  runApp(
+    ProviderScope(
+      parent: container,
+      child: DevicePreview(
+        enabled: debugDisplay,
+        tools: const [
+          ...DevicePreview.defaultTools,
+        ],
+        builder: (context) => const App(),
+      ),
+    ),
+  );
 }
+
