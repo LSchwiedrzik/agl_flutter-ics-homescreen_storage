@@ -99,24 +99,33 @@ class UsersNotifier extends Notifier<Users> {
 
   Future <void> removeUser(String userId) async {
     final storageClient = ref.read(storageClientProvider);
+    var currentUserId = state.selectedUser.id;
     state.users.removeWhere((user) => user.id == userId);
-    if (state.users.isNotEmpty) {
+
+    if (state.users.isNotEmpty && currentUserId == userId) {
       state = state.copyWith(selectedUser: state.users.first);
-      // Delete from storage API.
-      try {
-        final searchResponse = await storageClient.search(storage_api.Key(key: userId));
-        final keyList = searchResponse.result;
-        for (final key in keyList) {
-          await storageClient.delete(storage_api.Key(
-          key: key
-          ));
-        }
-      } catch (e) {
-        print('Error removing user with id $userId: $e');
-      }
+      //Write to API to change selected user.
+      await storageClient.write(storage_api.KeyValue(key: UsersPath.InfotainmentCurrentUser, value: state.users.first.id));
     }
     if (state.users.isEmpty) {
       state = state.copyWith(selectedUser: const User(id: '0', name: ''));
+      //Write to API to change selected user.
+      await storageClient.write(storage_api.KeyValue(key: UsersPath.InfotainmentCurrentUser, value: '0'));
+    }
+    // Delete from storage API.
+    try {
+      final searchResponse = await storageClient.search(storage_api.Key(key: userId));
+      final keyList = searchResponse.result;
+      //Delete id, name entries of the user from the default namespace.
+      for (final key in keyList) {
+        await storageClient.delete(storage_api.Key(
+        key: key
+        ));
+      }
+      //Delete all VSS keys from the user namespace.
+      await storageClient.deleteNodes(storage_api.Key(key: "Vehicle", namespace: userId));
+    } catch (e) {
+      print('Error removing user with id $userId: $e');
     }
   }
 
